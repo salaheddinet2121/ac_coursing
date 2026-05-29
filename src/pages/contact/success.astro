@@ -2,31 +2,24 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { brand } from '../../config/brand';
+import TablerIcon from '../../components/TablerIcon.astro';
 ---
 
-<BaseLayout title="Message Sent" description="Your message has been received.">
+<BaseLayout title="Message envoyé" description="Votre demande a bien été transmise.">
   <Header slot="header" />
 
   <section class="flex min-h-[60vh] items-center justify-center px-4">
     <div class="mx-auto max-w-md text-center">
-      <div class="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-accent/10">
-        <svg class="size-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
+      <div class="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10">
+        <TablerIcon name="check" class="text-3xl leading-none text-primary" />
       </div>
 
-      <h1 class="font-heading text-h1 font-bold uppercase text-text">
-        Message Received
-      </h1>
+      <h1 class="font-heading text-h1 font-bold uppercase text-text">Demande reçue</h1>
       <p class="mt-4 text-text-muted leading-relaxed">
-        Thank you for reaching out. We'll get back to you within one business day.
+        Merci. Nous revenons vers vous sous 24h avec un premier cadrage et, si possible, un devis fixe.
       </p>
-      <a
-        href="/"
-        class="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-md bg-primary px-8 py-3 text-base font-bold text-primary-fg shadow-sm transition-opacity hover:opacity-90"
-      >
-        Back to Home
+      <a href="/" class="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-md bg-primary px-8 py-3 text-base font-bold text-primary-fg shadow-sm transition-opacity hover:opacity-90">
+        Retour à l'accueil
       </a>
     </div>
   </section>

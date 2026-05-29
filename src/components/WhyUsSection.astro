@@ -1,0 +1,97 @@
+---
+import TablerIcon from './TablerIcon.astro';
+
+interface Feature {
+  icon: 'shield-check' | 'check' | 'truck-delivery' | 'clock' | 'phone';
+  text: string;
+}
+
+interface Props {
+  topper?: string;
+  headingStrong?: string;
+  headingItalic?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  features?: Feature[];
+}
+
+const {
+  topper        = 'Pour vous',
+  headingStrong = 'Votre déménagement,',
+  headingItalic = 'géré avec sérieux.',
+  ctaLabel      = 'Demander un devis',
+  ctaHref       = '/devis',
+  imageSrc      = '/images/akh_walid.webp',
+  imageAlt      = "Équipe AC Coursing prête pour votre déménagement",
+  features = [
+    {
+      icon: 'shield-check',
+      text: "Que vous déménagiez à 5 km ou à 500 km, nous cadrons chaque détail pour éliminer les imprévus le jour J.",
+    },
+    {
+      icon: 'check',
+      text: "Devis fixe, assurance transport incluse et équipe joignable: nous protégeons vos intérêts à chaque étape.",
+    },
+    {
+      icon: 'truck-delivery',
+      text: "De l'emballage à la remise en place, notre équipe va au-delà du simple transport pour garantir un résultat impeccable.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section id="garanties" class="bg-background py-section">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+
+    <!-- Top split: content left / image right -->
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+
+      <!-- Left -->
+      <div data-reveal>
+        <div class="inline-flex items-center gap-2.5">
+          <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+        </div>
+
+        <h2 class="mt-5 font-heading text-h1 font-bold uppercase leading-tight text-primary">
+          {headingStrong}<br />
+          <span class="font-normal not-italic text-muted-foreground">{headingItalic}</span>
+        </h2>
+
+        <a
+          href={ctaHref}
+          class="mt-8 inline-flex min-h-[50px] items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          {ctaLabel}
+          <TablerIcon name="arrow-right" class="text-base leading-none" />
+        </a>
+      </div>
+
+      <!-- Right: image -->
+      <div class="overflow-hidden rounded-2xl border border-border shadow-lg aspect-[4/3]" data-reveal style="transition-delay:120ms">
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          loading="lazy"
+          decoding="async"
+          class="size-full object-cover"
+        />
+      </div>
+    </div>
+
+    <!-- Feature bullets below -->
+    <div class="mt-14 grid grid-cols-1 gap-8 border-t border-border pt-12 md:grid-cols-3">
+      {features.map(({ icon, text }, i) => (
+        <div class="flex gap-4" data-reveal style={`transition-delay:${i * 80}ms`}>
+          <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
+            <TablerIcon name={icon} filled class="text-xl leading-none" />
+          </span>
+          <p class="leading-relaxed text-muted-foreground">{text}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,82 @@
+---
+import TablerIcon from './TablerIcon.astro';
+
+interface FAQItem {
+  question: string;
+  answer: string;
+  open?: boolean;
+}
+
+interface Props {
+  topper?: string;
+  heading?: string;
+  items?: FAQItem[];
+}
+
+const {
+  topper = 'FAQ',
+  heading = 'Questions fréquentes',
+  items = [
+    {
+      question: 'Combien coûte un déménagement ?',
+      answer: 'Studio dès 250 €, T2 dès 400 €, T3 dès 600 €. Devis gratuit, sans engagement. Le prix annoncé est le prix final.',
+      open: true,
+    },
+    {
+      question: 'Sous quel délai le devis ?',
+      answer: 'Nous répondons sous 24h, du lundi au samedi, avec un devis détaillé poste par poste.',
+    },
+    {
+      question: 'Mes biens sont-ils assurés ?',
+      answer: 'Oui. L’assurance transport est incluse, avec option de valeur déclarée pour les objets précieux.',
+    },
+    {
+      question: "Combien de temps à l'avance réserver ?",
+      answer: 'Dès que votre date se précise. Plus vous réservez tôt, plus le créneau et la logistique sont simples à sécuriser.',
+    },
+    {
+      question: 'Vous intervenez hors Montpellier ?',
+      answer: "Oui. Nous couvrons l'Hérault, les départements voisins et les déménagements longue distance partout en France.",
+    },
+    {
+      question: 'Vous faites le débarras ?',
+      answer: 'Oui. Nous prenons en charge le débarras, l’enlèvement de meubles, gravats et déchets selon le besoin.',
+    },
+    {
+      question: 'Quels horaires ?',
+      answer: 'Nous intervenons du lundi au samedi de 7h à 20h. Les urgences et longues distances sont étudiées sur demande.',
+    },
+  ],
+} = Astro.props;
+---
+
+<section id="faq" class="bg-background py-section">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+    <div class="mx-auto mb-10 max-w-2xl text-center" data-reveal>
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      </div>
+      <h2 class="mt-4 font-heading text-h2 font-bold uppercase text-primary">{heading}</h2>
+    </div>
+
+    <div class="mx-auto max-w-3xl space-y-3">
+      {items.map((item, i) => (
+        <details class="group rounded-xl border border-border bg-card px-5 py-4 shadow-sm" open={item.open} data-reveal style={`transition-delay:${i * 60}ms`}>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-lg font-semibold text-primary">
+            <span>{item.question}</span>
+            <span class="shrink-0 text-primary transition-transform group-open:rotate-45">
+              <TablerIcon name="plus" class="text-xl leading-none" />
+            </span>
+          </summary>
+          <p class="mt-3 leading-relaxed text-muted-foreground">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+
+    <div class="mt-8 text-center text-sm text-muted-foreground">
+      Vous avez une autre question ?
+      <a href="/contact" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">Contactez-nous</a>
+    </div>
+  </div>
+</section>

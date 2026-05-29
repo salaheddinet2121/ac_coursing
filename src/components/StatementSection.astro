@@ -1,0 +1,129 @@
+---
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  topper?: string;
+  statementBold?: string;
+  statementFade?: string;
+  stats?: Stat[];
+}
+
+const {
+  topper        = 'À propos',
+  statementBold = 'Chez AC Coursing, nous prenons en charge votre déménagement de A à Z,',
+  statementFade = "avec un prix fixe garanti, une équipe ponctuelle et zéro surprise à la livraison.",
+  stats = [
+    { value: '1 500+', label: 'déménagements réalisés' },
+    { value: '194',    label: 'avis 5 étoiles Google' },
+    { value: '11 ans', label: "d'expérience" },
+    { value: '24 h',   label: 'réponse garantie' },
+  ],
+} = Astro.props;
+---
+
+<section class="bg-dark py-14 sm:py-18 lg:py-24">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+
+    <!-- Topper -->
+    <div class="flex justify-center reveal-fade">
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      </div>
+    </div>
+
+    <!-- Two-tone statement — words split for reveal -->
+    <h2 class="mx-auto mt-8 max-w-3xl text-center font-heading text-[clamp(1.5rem,2.8vw,2.25rem)] font-bold uppercase leading-snug">
+      <span data-words={statementBold + ' ' + statementFade} data-color="bright"></span>
+    </h2>
+
+    <!-- Divider -->
+    <div class="mt-16 h-px w-full bg-primary-fg/10 reveal-fade" aria-hidden="true"></div>
+
+    <!-- Stats -->
+    <dl class="mt-10 grid grid-cols-2 gap-y-10 lg:grid-cols-4">
+      {stats.map(({ value, label }) => (
+        <div class="flex flex-col gap-2 reveal-fade">
+          <dt class="font-heading text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-none text-primary-fg"
+              data-count={value}>
+            {value}
+          </dt>
+          <dd class="text-sm text-primary-fg/45">{label}</dd>
+        </div>
+      ))}
+    </dl>
+
+  </div>
+</section>
+
+<style>
+  .word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+  .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(60%);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  .word.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-fade {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function initStatement() {
+    // ── Word-by-word reveal ──────────────────────────────────────────────────
+    let globalWordIndex = 0;
+    document.querySelectorAll<HTMLElement>('[data-words]').forEach(el => { el.innerHTML = ''; });
+    document.querySelectorAll<HTMLElement>('[data-words]').forEach((el) => {
+      const text = (el.dataset.words ?? '').trim();
+      const color = el.dataset.color === 'dim'
+        ? 'color:color-mix(in oklch,var(--primary-fg,#fff) 30%,transparent)'
+        : 'color:var(--primary-fg,#fff)';
+      el.innerHTML = text.split(/\s+/).filter(Boolean).map((word) => {
+        const delay = globalWordIndex * 55;
+        globalWordIndex++;
+        return `<span class="word-wrap"><span class="word" style="transition-delay:${delay}ms;${color}">${word}</span></span>`;
+      }).join(' ');
+    });
+
+    const words = document.querySelectorAll<HTMLElement>('.word');
+    const fades = document.querySelectorAll<HTMLElement>('.reveal-fade');
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        if (el.classList.contains('word')) {
+          el.classList.add('visible');
+        } else {
+          el.classList.add('visible');
+        }
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15 });
+
+    words.forEach((w) => io.observe(w));
+    fades.forEach((f) => io.observe(f));
+  }
+
+  initStatement();
+  document.addEventListener('astro:after-swap', initStatement);
+</script>

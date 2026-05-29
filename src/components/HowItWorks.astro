@@ -1,0 +1,87 @@
+---
+import HowItWorksIcons from './HowItWorksIcons.tsx';
+
+interface Step {
+  title: string;
+  description: string;
+  note: string;
+}
+
+interface Props {
+  topper?: string;
+  heading?: string;
+  steps?: Step[];
+}
+
+const {
+  topper = 'Simple & rapide',
+  heading = "4 étapes. C'est tout.",
+  steps = [
+    {
+      title: 'Vous nous appelez',
+      description: '5 minutes. On cerne votre besoin.',
+      note: 'Ou formulaire — réponse sous 24h.',
+    },
+    {
+      title: 'Devis gratuit & fixe',
+      description: "Prix détaillé, poste par poste. C'est le prix final.",
+      note: 'Visite gratuite si nécessaire.',
+    },
+    {
+      title: 'On gère tout',
+      description: 'Emballage, démontage, transport, remontage.',
+      note: 'Matériel pro inclus.',
+    },
+    {
+      title: 'Vous êtes chez vous',
+      description: 'Tout en place, vérifié avec vous.',
+      note: 'Contrôle final ensemble.',
+    },
+  ],
+} = Astro.props;
+---
+
+<section id="comment-ca-marche" class="bg-dark py-section">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+
+    <div class="mx-auto mb-14 max-w-xl text-center" data-reveal>
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      </div>
+      <h2 class="mt-4 font-heading text-h2 font-bold uppercase text-primary-fg">{heading}</h2>
+    </div>
+
+    <ol class="mx-auto max-w-2xl" role="list">
+      {steps.map(({ title, description, note }, i) => (
+        <li class="relative flex gap-5" data-reveal style={`transition-delay:${i * 100}ms`}>
+
+          <!-- Left: number + line -->
+          <div class="flex flex-col items-center">
+            <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-base font-bold text-primary-foreground shadow-lg ring-4 ring-primary/20">
+              {i + 1}
+            </div>
+            {i < steps.length - 1 && (
+              <div class="mt-1 w-px flex-1 bg-linear-to-b from-primary/40 to-transparent" aria-hidden="true" />
+            )}
+          </div>
+
+          <!-- Right: icon + content -->
+          <div class:list={['flex gap-4 min-w-0', i < steps.length - 1 ? 'pb-10' : 'pb-0']}>
+            <!-- Google Material icon box -->
+            <div class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/20">
+              <HowItWorksIcons index={i} className="text-[1.4rem]" />
+            </div>
+
+            <div class="pt-0.5 min-w-0">
+              <h3 class="font-heading text-h3 font-bold text-primary-fg leading-snug">{title}</h3>
+              <p class="mt-1 text-primary-fg/55 leading-relaxed">{description}</p>
+              <p class="mt-1.5 text-sm font-semibold text-primary">{note}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+  </div>
+</section>

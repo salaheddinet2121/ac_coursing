@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CTA from '../../components/CTA.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import { client } from '../../data/client';
+---
+
+<BaseLayout
+  title="Déménagement d'Objets Volumineux à Montpellier — AC Coursing"
+  description="Transport de canapés, armoires, pianos et électroménager à Montpellier. Matériel adapté, équipe formée, aucun risque d'endommagement. Devis gratuit."
+  schema={{
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: "Déménagement d'objets volumineux",
+    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+    areaServed: { '@type': 'City', name: 'Montpellier' },
+  }}
+>
+  <Header slot="header" />
+
+  <section class="bg-primary py-14 sm:py-16">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <nav aria-label="Breadcrumb" class="mb-4">
+        <ol class="flex items-center gap-1.5 text-sm text-primary-fg/60">
+          <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><a href="/services" class="hover:text-primary-fg transition-colors">Services</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><span class="text-primary-fg" aria-current="page">Objets volumineux</span></li>
+        </ol>
+      </nav>
+      <h1 class="font-heading text-h1 font-bold uppercase text-primary-fg">Déménagement d'objets volumineux</h1>
+      <p class="mt-3 max-w-xl text-primary-fg/80">Canapés, armoires, pianos, électroménager. On a le matériel qu'il faut.</p>
+    </div>
+  </section>
+
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+        <div>
+          <img
+            src="/images/residentiel/residentiel-04.webp"
+            alt="Transport d'objets volumineux — canapé et armoire déplacés par AC Coursing Montpellier"
+            loading="lazy"
+            decoding="async"
+            class="w-full rounded-2xl border border-border object-cover aspect-[4/3]"
+          />
+        </div>
+        <div class="space-y-6">
+          <p class="text-lg leading-relaxed text-muted-foreground">
+            Certains objets demandent plus que de la force. Il faut du matériel adapté, une technique de portage correcte et parfois démonter avant de déplacer. On s'en occupe.
+          </p>
+          <p class="leading-relaxed text-muted-foreground">
+            Piano droit, canapé d'angle, armoire normande, lave-linge encastré — on a déplacé tout ça des dizaines de fois. Rien ne sort abîmé.
+          </p>
+
+          <div class="rounded-2xl border border-border bg-card p-5">
+            <p class="text-sm font-semibold text-primary mb-3">Objets que l'on déplace régulièrement</p>
+            <div class="grid grid-cols-2 gap-2">
+              {['Piano droit ou à queue', 'Canapé d\'angle', 'Armoire normande', 'Réfrigérateur américain', 'Lave-linge encastré', 'Bibliothèque murale', 'Coffre-fort', 'Table de billard'].map((item) => (
+                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                  <TablerIcon name="check" class="size-4 shrink-0 text-primary" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <ul class="space-y-4">
+            {[
+              { icon: 'sofa', text: 'Sangles de portage et diables professionnels' },
+              { icon: 'shield-check', text: 'Protection complète avant déplacement' },
+              { icon: 'elevator', text: 'Monte-meuble disponible si l\'escalier est trop étroit' },
+            ].map(({ icon, text }) => (
+              <li class="flex items-start gap-3">
+                <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary mt-0.5">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="text-muted-foreground leading-relaxed">{text}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a href="/devis" class="inline-flex min-h-[50px] items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90">
+            Demander un devis
+            <TablerIcon name="arrow-right" class="text-base leading-none" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+  <Footer slot="footer" />
+</BaseLayout>

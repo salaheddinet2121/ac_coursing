@@ -1,0 +1,107 @@
+---
+import TablerIcon from './TablerIcon.astro';
+
+const formulas = [
+  {
+    name: 'Formule Économique',
+    icon: 'truck-delivery',
+    text: "Chargement, transport, déchargement et protection standard du mobilier avec fourniture des cartons et installation à l'arrivée.",
+  },
+  {
+    name: 'Formule Standard',
+    icon: 'package',
+    text: 'Notre formule la plus équilibrée, avec démontage, remontage et prise en charge de la vaisselle ainsi que des objets fragiles.',
+  },
+  {
+    name: 'Formule Confort',
+    icon: 'shield-check',
+    text: 'Une prise en charge complète pour réduire votre charge mentale, y compris les vêtements, le linge et les objets non fragiles.',
+  },
+] as const;
+---
+
+<section id="formules" class="bg-card py-section">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+
+    <!-- Header -->
+    <div class="mx-auto max-w-5xl text-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">Les formules</span>
+      </div>
+
+      <h2 class="mx-auto mt-5 max-w-3xl font-heading text-h2 font-bold uppercase text-primary">
+        Choisissez le niveau d'accompagnement qui vous correspond
+      </h2>
+
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+        Du transport simple à la prise en charge complète, choisissez la formule adaptée à votre situation. Devis gratuit pour chaque niveau.
+      </p>
+
+      <div class="mt-7">
+        <a
+          href="/devis"
+          class="inline-flex min-h-[48px] items-center justify-center rounded-md bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          Demander un devis
+        </a>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      {formulas.map((formula, i) => (
+        <article class:list={[
+          'group relative flex flex-col gap-5 rounded-xl border p-7 shadow-sm transition-shadow hover:shadow-md',
+          i === 1
+            ? 'border-primary/40 bg-primary text-primary-foreground'
+            : 'border-border bg-background',
+        ]}>
+
+          <!-- Icon chip -->
+          <div class:list={[
+            'flex size-12 items-center justify-center rounded-lg',
+            i === 1 ? 'bg-primary-foreground/15 text-primary-foreground' : 'bg-primary/10 text-primary',
+          ]}>
+            <TablerIcon name={formula.icon} filled class="text-xl leading-none" />
+          </div>
+
+          <!-- Popular badge on middle card -->
+          {i === 1 && (
+            <span class="absolute right-5 top-5 rounded-full bg-primary-foreground px-3 py-0.5 text-xs font-bold uppercase tracking-wide text-primary">
+              Populaire
+            </span>
+          )}
+
+          <h3 class:list={[
+            'font-heading text-h3 font-bold uppercase',
+            i === 1 ? 'text-primary-foreground' : 'text-primary',
+          ]}>
+            {formula.name}
+          </h3>
+
+          <p class:list={[
+            'flex-1 text-base leading-7',
+            i === 1 ? 'text-primary-foreground/75' : 'text-muted-foreground',
+          ]}>
+            {formula.text}
+          </p>
+
+          <a
+            href="/devis"
+            class:list={[
+              'mt-2 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-md border-2 text-sm font-bold transition-all',
+              i === 1
+                ? 'border-primary-foreground bg-primary-foreground text-primary hover:opacity-90'
+                : 'border-primary text-primary hover:bg-primary hover:text-primary-foreground',
+            ]}
+          >
+            Choisir cette formule
+            <TablerIcon name="arrow-right" class="text-base leading-none" />
+          </a>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>

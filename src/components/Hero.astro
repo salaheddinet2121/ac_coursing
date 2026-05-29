@@ -1,13 +1,6 @@
 ---
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
 import { brand } from '../config/brand';
-import { client } from '../data/client';
-import { heroImage as localHeroImage } from '../config/images';
-
-// Fallback Unsplash URL used until a local image is added to
-// src/assets/images/hero/ and registered in src/config/images.ts
-const PLACEHOLDER = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80';
+import TablerIcon from './TablerIcon.astro';
 
 interface Props {
   topper?: string;
@@ -17,87 +10,94 @@ interface Props {
   ctaHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  imageSrc?: ImageMetadata | string;
+  imageSrc?: string;
   imageAlt?: string;
 }
 
 const {
-  topper = 'Licensed & Insured',
-  heading = brand.tagline,
-  description = brand.description,
-  ctaLabel = 'Get a Free Quote',
-  ctaHref = '/contact',
-  secondaryLabel = 'Our Services',
-  secondaryHref = '/services',
-  imageSrc = localHeroImage ?? PLACEHOLDER,
-  imageAlt = 'Professional tradesperson at work',
+  topper         = 'Déménagement à Montpellier',
+  heading        = brand.tagline,
+  description    = '1 500+ déménagements réussis. Devis gratuit sous 24h. Assurance transport incluse. Prix fixe garanti.',
+  ctaLabel       = 'Estimer le coût gratuitement',
+  ctaHref        = '/devis',
+  secondaryLabel = 'Voir les services',
+  secondaryHref  = '/#services',
+  imageSrc       = '/hero_image.webp',
+  imageAlt       = 'Déménagement AC Coursing Montpellier',
 } = Astro.props;
+
 ---
 
-<section class="relative overflow-hidden bg-background py-12 sm:py-16 md:py-20 lg:py-24">
-  <div class="mx-auto grid max-w-site grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12">
+<section id="accueil" class="relative overflow-hidden bg-background py-10 sm:py-16 lg:py-24">
 
-    <!-- Copy -->
-    <div class="order-2 space-y-5 lg:order-1 lg:space-y-6">
-      {topper && (
-        <span class="inline-block rounded-full bg-accent/10 px-4 py-1.5 text-topper font-bold uppercase tracking-widest text-accent">
-          {topper}
-        </span>
-      )}
+  <div class="relative mx-auto grid max-w-site grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
 
-      <h1
-        class="font-heading text-display font-bold uppercase leading-none tracking-tight text-text"
-        transition:name="hero-heading"
-      >
+    <!-- Content -->
+    <div class="order-1 space-y-5 lg:space-y-6">
+
+      <!-- Topper -->
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="font-heading text-display font-bold uppercase leading-none text-foreground" transition:name="hero-heading">
         {heading}
       </h1>
 
-      <p class="max-w-lg text-lead text-text-muted leading-relaxed">
+      <!-- Description -->
+      <p class="max-w-xl text-lead leading-relaxed text-muted-foreground">
         {description}
       </p>
 
-      <!-- CTA row -->
-      <div class="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:gap-4">
+      <!-- CTAs -->
+      <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:gap-4">
         <a
           href={ctaHref}
-          class="inline-flex min-h-[44px] items-center justify-center rounded-md bg-accent px-6 py-3 text-base font-bold text-accent-fg shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          class="inline-flex min-h-[48px] items-center justify-center rounded-md bg-primary px-7 py-3 text-base font-bold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {ctaLabel}
         </a>
         <a
           href={secondaryHref}
-          class="inline-flex min-h-[44px] items-center justify-center rounded-md border-2 border-primary px-6 py-3 text-base font-bold text-primary transition-colors hover:bg-primary hover:text-primary-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md border-2 border-primary px-7 py-3 text-base font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {secondaryLabel}
+          <TablerIcon name="arrow-right" class="text-base leading-none" />
         </a>
       </div>
 
-      <!-- Tap-to-call -->
-      <a
-        href={`tel:${client.phoneForTel}`}
-        class="inline-flex items-center gap-2 pt-1 text-sm font-semibold text-text-muted transition-colors hover:text-primary"
-      >
-        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-        Call {client.phoneFormatted}
-      </a>
     </div>
 
-    <!-- Hero image -->
-    <div
-      class="relative order-1 overflow-hidden rounded-lg shadow-xl aspect-4/3 lg:order-2"
-      transition:name="hero-image"
-    >
-      <Image
-        src={imageSrc}
-        alt={imageAlt}
-        width={800}
-        height={600}
-        loading="eager"
-        decoding="async"
-        class="size-full object-cover"
-      />
+    <!-- Image — hidden on mobile, visible from lg -->
+    <div class="relative hidden lg:block lg:order-2" transition:name="hero-image">
+
+      <!-- Frame decoration -->
+      <div class="absolute -right-3 -top-3 h-full w-full rounded-xl border-2 border-primary/20" aria-hidden="true"></div>
+
+      <!-- Badge -->
+      <div class="absolute -bottom-4 -left-4 z-10 flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-lg">
+        <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <TablerIcon name="shield-check" filled class="text-lg leading-none" />
+        </span>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wide text-foreground">Assuré & garanti</p>
+          <p class="text-xs text-muted-foreground">Prix fixe · transport inclus</p>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="relative overflow-hidden rounded-xl border border-border bg-card shadow-xl aspect-[4/3]">
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          loading="lazy"
+          decoding="async"
+          class="size-full object-cover"
+        />
+      </div>
     </div>
+
   </div>
 </section>

@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { MovingForm } from "../../components/moving-form/moving-form";
+import { client } from '../../data/client';
+---
+
+<BaseLayout
+  title="Devis Déménagement Montpellier Gratuit — AC Coursing"
+  description="Simulez le coût de votre déménagement à Montpellier en 4 étapes. Devis gratuit, sans engagement, réponse sous 24h. Longue distance, seniors, objets volumineux."
+>
+  <h1 class="sr-only">Devis déménagement Montpellier — AC Coursing</h1>
+  <MovingForm client:load phone={client.phoneFormatted} phoneLink={client.phoneForTel} />
+</BaseLayout>

@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Banner from '../../components/Banner.astro';
 import CTA from '../../components/CTA.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
 import { getCollection } from 'astro:content';
 import { brand } from '../../config/brand';
 
@@ -11,7 +12,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="Blog" description={`Tips, guides, and news from ${brand.name}. Stay informed about home maintenance and improvement.`}>
+<BaseLayout title="Blog" description={`Conseils, guides et actualités de ${brand.name}. Tout ce qu'il faut savoir avant, pendant et après votre déménagement.`}>
   <Header slot="header" />
 
   <Banner title="Blog" />
@@ -19,7 +20,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   <section class="py-section">
     <div class="mx-auto max-w-site px-4 sm:px-6">
       {posts.length === 0 ? (
-        <p class="text-center text-text-muted">No posts yet. Check back soon!</p>
+        <p class="text-center text-text-muted">Aucun article pour l'instant. Revenez bientôt !</p>
       ) : (
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
@@ -40,8 +41,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
                       </>
                     )}
                   </div>
-                  <h2 class="mt-3 font-heading text-h3 font-semibold text-text group-hover:text-primary transition-colors">
-                    <a href={`/blog/${post.id}`} class="after:absolute after:inset-0 relative">
+                  <h2 class="mt-3 font-heading text-h3 font-semibold text-text transition-colors group-hover:text-primary">
+                    <a href={`/blog/${post.id}`} class="relative after:absolute after:inset-0">
                       {post.data.title}
                     </a>
                   </h2>
@@ -49,10 +50,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
                     {post.data.description}
                   </p>
                   <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                    Read more
-                    <svg class="size-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
+                    Lire l'article
+                    <TablerIcon name="chevron-right" class="size-4 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </div>
               </article>

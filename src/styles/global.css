@@ -1,36 +1,61 @@
+@import "@tabler/icons-webfont/dist/tabler-icons.min.css";
+
+@font-face {
+  font-family: "tabler-icons-filled";
+  font-style: normal;
+  font-weight: 400;
+  src: url("@tabler/icons-webfont/dist/fonts/tabler-icons-filled.woff2") format("woff2");
+  font-display: block;
+}
+
+.tif {
+  font-family: "tabler-icons-filled" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 @import "tailwindcss";
 @import "./theme.css";
 @plugin "@tailwindcss/typography";
 
+/* ── Scroll reveal ────────────────────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+[data-reveal="left"] {
+  transform: translateX(-24px);
+}
+[data-reveal="scale"] {
+  transform: translateY(16px) scale(0.97);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
 @layer base {
-  html {
-    scroll-behavior: smooth;
+  * {
+    @apply border-border outline-ring/50;
   }
-
   body {
+    @apply bg-background text-foreground;
     font-family: var(--font-body);
-    color: var(--color-text);
-    transition: background-color 0.3s;
   }
-
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     line-height: 1.2;
-    color: var(--color-text);
   }
-
-  .dark body,
-  body.dark-mode {
-    background-color: var(--color-dark);
-    color: var(--color-surface);
-  }
-
-  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
-  body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
-  body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
-    color: var(--color-surface);
-  }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;

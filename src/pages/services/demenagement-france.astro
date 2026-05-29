@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CTA from '../../components/CTA.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import { client } from '../../data/client';
+---
+
+<BaseLayout
+  title="Déménagement partout en France — AC Coursing Montpellier"
+  description="Déménagement vers toutes les villes de France depuis Montpellier. Emballage, transport, installation : on gère tout. Prix fixe, assurance incluse."
+  schema={{
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Déménagement au sein de la France',
+    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+    areaServed: { '@type': 'Country', name: 'France' },
+  }}
+>
+  <Header slot="header" />
+
+  <section class="bg-primary py-14 sm:py-16">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <nav aria-label="Breadcrumb" class="mb-4">
+        <ol class="flex items-center gap-1.5 text-sm text-primary-fg/60">
+          <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><a href="/services" class="hover:text-primary-fg transition-colors">Services</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><span class="text-primary-fg" aria-current="page">Déménagement France</span></li>
+        </ol>
+      </nav>
+      <h1 class="font-heading text-h1 font-bold uppercase text-primary-fg">Déménagement au sein de l'État</h1>
+      <p class="mt-3 max-w-xl text-primary-fg/80">De Montpellier à n'importe quelle ville de France. On s'occupe de tout.</p>
+    </div>
+  </section>
+
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+        <div>
+          <img
+            src="/images/residentiel/residentiel-01.webp"
+            alt="Chargement du mobilier pour un déménagement partout en France — AC Coursing Montpellier"
+            loading="lazy"
+            decoding="async"
+            class="w-full rounded-2xl border border-border object-cover aspect-[4/3]"
+          />
+        </div>
+        <div class="space-y-6">
+          <p class="text-lg leading-relaxed text-muted-foreground">
+            Que vous partiez à Paris, Lyon, Bordeaux ou dans un village du Sud — on gère le déménagement de bout en bout. Emballage, chargement, transport, livraison et remise en place dans votre nouveau logement.
+          </p>
+          <p class="leading-relaxed text-muted-foreground">
+            Pas de sous-traitants, pas de rupture de charge. Un camion, une équipe, un interlocuteur.
+          </p>
+          <ul class="space-y-4">
+            {[
+              { icon: 'building', text: 'Départ depuis Montpellier et tout le 34' },
+              { icon: 'truck-delivery', text: 'Transport direct sans escale' },
+              { icon: 'box', text: 'Emballage professionnel inclus sur demande' },
+              { icon: 'shield-check', text: 'Assurance transport incluse sur chaque prestation' },
+              { icon: 'calendar', text: 'Créneau confirmé, livraison dans les délais' },
+            ].map(({ icon, text }) => (
+              <li class="flex items-start gap-3">
+                <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary mt-0.5">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="text-muted-foreground leading-relaxed">{text}</span>
+              </li>
+            ))}
+          </ul>
+          <a href="/devis" class="inline-flex min-h-[50px] items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90">
+            Estimer le coût
+            <TablerIcon name="arrow-right" class="text-base leading-none" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+  <Footer slot="footer" />
+</BaseLayout>

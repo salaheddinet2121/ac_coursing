@@ -1,14 +1,32 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 
-export default defineConfig({
-  site: 'https://www.example.com',
-  output: 'static',
+import react from '@astrojs/react';
 
-  integrations: [sitemap(), robotsTxt()],
+export default defineConfig({
+  site: 'https://ac-coursing.fr',
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
+
+  integrations: [
+    sitemap(),
+    robotsTxt({
+      policy: [
+        {
+          userAgent: '*',
+          allow: '/',
+          disallow: ['/devis/merci', '/contact/success'],
+        },
+      ],
+    }),
+    react(),
+  ],
 
   fonts: [
     {
@@ -33,9 +51,39 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      // Expose .env vars to process.env in dev (needed by server-side modules that avoid import.meta.env to prevent key baking)
+      {
+        name: 'env-to-process',
+        config(_, { command }) {
+          if (command === 'serve') {
+            // loadEnv is called by Vite before plugins; vars are available via import.meta.env at this point
+            // We mirror them into process.env so runtime server modules can read them without baking
+          }
+        },
+        configResolved(config) {
+          for (const [k, v] of Object.entries(config.env)) {
+            if (!(k in process.env)) process.env[k] = v;
+          }
+        },
+      },
+    ],
+    server: {
+      watch: process.env.USE_POLLING === 'true'
+        ? {
+            usePolling: true,
+            interval: 1000,
+          }
+        : undefined,
+    },
     build: {
       cssMinify: 'lightningcss',
+    },
+    resolve: {
+      alias: {
+        '@': '/src',
+      },
     },
   },
 });

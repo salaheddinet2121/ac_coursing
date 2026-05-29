@@ -1,0 +1,14 @@
+---
+import TablerIconReact from './TablerIcon.tsx';
+
+interface Props {
+  name: string;
+  filled?: boolean;
+  class?: string;
+  id?: string;
+}
+
+const { name, filled, class: className, id } = Astro.props;
+---
+
+<TablerIconReact name={name} filled={filled} class={className} id={id} />

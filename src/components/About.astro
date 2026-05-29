@@ -1,11 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import { aboutImage as localAboutImage } from '../config/images';
-
-// Fallback Unsplash URL used until a local image is added to
-// src/assets/images/about/ and registered in src/config/images.ts
-const PLACEHOLDER = 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=80';
+import TablerIcon from './TablerIcon.astro';
 
 interface Props {
   topper?: string;
@@ -14,62 +8,66 @@ interface Props {
   benefits?: string[];
   ctaLabel?: string;
   ctaHref?: string;
-  imageSrc?: ImageMetadata | string;
+  imageSrc?: string;
   imageAlt?: string;
 }
 
 const {
-  topper = 'Who We Are',
-  heading = 'Trusted by homeowners for over 15 years',
+  topper   = 'Simple & rapide',
+  heading  = "4 étapes. C'est tout.",
   body = [
-    'We\'re a locally owned and operated business dedicated to delivering honest, dependable service to our community. Our team of licensed professionals takes pride in every job — big or small.',
-    'From day one, we\'ve built our reputation on doing the work right, showing up on time, and treating every home like our own.',
+    "Vous nous appelez ou vous remplissez le formulaire. En quelques minutes, nous cadrons le volume, l'adresse de départ, l'arrivée et les contraintes d'accès.",
+    "Ensuite nous vous transmettons un devis fixe, nous planifions l'intervention et notre équipe prend en charge la protection, le transport et la remise en place.",
   ],
   benefits = [
-    'Background-checked, licensed professionals',
-    'Upfront pricing with no hidden fees',
-    'Satisfaction guaranteed on every project',
+    'Vous nous appelez: 5 minutes pour cerner le besoin.',
+    'Devis gratuit & fixe: poste par poste, sans surprise.',
+    'On gère tout: emballage, démontage, transport, remontage.',
+    'Vous êtes chez vous: tout est remis en place et vérifié avec vous.',
   ],
-  ctaLabel = 'More About Us',
-  ctaHref = '/about',
-  imageSrc = localAboutImage ?? PLACEHOLDER,
-  imageAlt = 'Friendly professional team on a job site',
+  ctaLabel = 'Demander mon devis',
+  ctaHref  = '/devis',
+  imageSrc = '/hero_image.webp',
+  imageAlt = 'Garde-meubles sécurisé AC Coursing',
 } = Astro.props;
 ---
 
-<section class="py-section">
-  <div class="mx-auto grid max-w-site grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
+<section id="processus" class="bg-dark py-section">
+  <div class="mx-auto grid max-w-site grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
 
     <!-- Image -->
-    <div class="overflow-hidden rounded-lg shadow-lg">
-      <Image
+    <div class="relative overflow-hidden rounded-xl border border-primary-fg/15 bg-dark-surface shadow-lg">
+      <img
         src={imageSrc}
         alt={imageAlt}
-        width={700}
-        height={525}
         loading="lazy"
         decoding="async"
         class="size-full object-cover"
       />
+      <!-- Primary strip at bottom -->
+      <!-- <div class="absolute bottom-0 inset-x-0 h-1 bg-primary"></div> -->
     </div>
 
     <!-- Content -->
     <div class="space-y-5">
-      <span class="text-topper font-bold uppercase tracking-widest text-accent">{topper}</span>
-      <h2 class="font-heading text-h2 font-bold uppercase text-text">{heading}</h2>
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      </div>
+
+      <h2 class="font-heading text-h2 font-bold uppercase text-primary-fg">{heading}</h2>
 
       {body.map((paragraph) => (
-        <p class="text-text-muted leading-relaxed">{paragraph}</p>
+        <p class="leading-relaxed text-primary-fg/60">{paragraph}</p>
       ))}
 
-      <!-- Benefits list -->
-      <ul class="space-y-3 pt-2" role="list">
+      <ul class="space-y-3 pt-1" role="list">
         {benefits.map((benefit) => (
           <li class="flex items-start gap-3">
-            <svg class="mt-0.5 size-5 shrink-0 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="text-text">{benefit}</span>
+            <span class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+              <TablerIcon name="check" class="text-sm leading-none" />
+            </span>
+            <span class="text-primary-fg/80">{benefit}</span>
           </li>
         ))}
       </ul>
@@ -77,14 +75,13 @@ const {
       <div class="pt-2">
         <a
           href={ctaHref}
-          class="inline-flex min-h-[44px] items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-bold text-primary-fg shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          class="inline-flex min-h-[48px] items-center gap-2 rounded-md bg-primary px-7 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {ctaLabel}
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+          <TablerIcon name="arrow-right" class="text-base leading-none" />
         </a>
       </div>
     </div>
+
   </div>
 </section>

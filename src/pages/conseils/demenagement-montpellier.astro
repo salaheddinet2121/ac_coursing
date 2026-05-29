@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Banner from '../../components/Banner.astro';
+import CTA from '../../components/CTA.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import { Image } from 'astro:assets';
+import { brand } from '../../config/brand';
+import { client } from '../../data/client';
+
+const offerPoints = [
+  "Prestations ajustées au volume, au niveau de prise en charge et aux contraintes d'accès.",
+  'Protection du mobilier, démontage, remontage et manutention selon la formule retenue.',
+  'Interventions locales, longue distance et projets professionnels au départ ou à destination de Montpellier.',
+];
+
+const quoteFactors = [
+  'Le volume réel des biens à transporter.',
+  "La distance entre l'adresse de départ et Montpellier.",
+  "Les conditions d'accès: étage, ascenseur, stationnement, ruelles étroites.",
+  'Les options choisies: emballage, démontage, garde-meubles, matériel complémentaire.',
+];
+
+const quoteStrengths = [
+  {
+    title: 'Rapide et sans engagement',
+    text: 'La demande se remplit en quelques minutes et reste totalement sans engagement.',
+    icon: 'clock',
+  },
+  {
+    title: 'Rappel sous 24h',
+    text: 'Un conseiller reprend les informations avec vous pour affiner le besoin et éviter les angles morts.',
+    icon: 'phone',
+  },
+  {
+    title: 'Document clair',
+    text: 'Le devis détaille prestations incluses, options, assurances et cadre tarifaire pour éviter les surprises.',
+    icon: 'shield-check',
+  },
+  {
+    title: 'Visite technique si nécessaire',
+    text: "Pour les volumes plus complexes, une visite permet de fiabiliser l'évaluation.",
+    icon: 'home-filled',
+  },
+];
+
+const prepTips = [
+  {
+    title: 'Anticiper les accès',
+    text: "Dans le centre historique, les accès et le stationnement doivent être vérifiés en amont. Certains créneaux et autorisations sont à prévoir.",
+  },
+  {
+    title: 'Réserver la date tôt',
+    text: "L'été, les fins de mois et la rentrée universitaire chargent fortement le planning à Montpellier.",
+  },
+  {
+    title: 'Préparer un sac essentiel',
+    text: "Gardez à part documents, chargeurs, trousse de toilette et vêtements pour les premiers jours afin d'éviter d'ouvrir tous les cartons à l'arrivée.",
+  },
+  {
+    title: 'Privilégier les bons horaires',
+    text: 'En semaine et plutôt le matin, vous limitez les bouchons, les flux de visiteurs et la chaleur en saison haute.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Combien coûte un déménagement à Montpellier ?',
+    a: 'Le prix dépend surtout du volume, de la distance, des accès et de la formule retenue. Le bon réflexe reste de demander un devis précis à partir de votre projet réel.',
+  },
+  {
+    q: 'Quand faut-il réserver ?',
+    a: "Dans l'idéal, trois à quatre semaines à l'avance. Plus tôt encore pour l'été, les fins de mois et les périodes étudiantes.",
+  },
+  {
+    q: 'Pourquoi passer par une entreprise ?',
+    a: 'Pour gagner du temps, réduire le risque sur vos biens, mieux gérer les accès et éviter les imprévus logistiques le jour J.',
+  },
+  {
+    q: 'Quelles informations préparer pour un devis ?',
+    a: "Adresses, date souhaitée, type de logement, volume estimé, meubles particuliers et conditions d'accès sont les bases à transmettre.",
+  },
+];
+---
+
+<BaseLayout
+  title="Conseils déménagement Montpellier"
+  description={`Conseils pratiques pour préparer un déménagement à Montpellier avec ${brand.name}: organisation, accès, devis et points de vigilance.`}
+  schema={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Déménagement à Montpellier',
+    description: `Guide pratique ${brand.name} pour préparer un déménagement à Montpellier et demander un devis clair.`,
+    author: { '@type': 'Organization', name: client.name },
+    publisher: { '@type': 'Organization', name: client.name },
+    mainEntityOfPage: `${client.domain}/conseils/demenagement-montpellier`,
+  }}
+>
+  <Header slot="header" />
+
+  <Banner title="Déménagement à Montpellier" />
+
+  <section class="py-section">
+    <div class="mx-auto grid max-w-site grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+      <div class="space-y-5">
+        <span class="inline-flex items-center gap-3 text-topper font-semibold uppercase tracking-[0.18em] text-primary">
+          <span class="size-2 rounded-full bg-primary"></span>
+          Conseils
+        </span>
+        <h2 class="text-4xl font-semibold tracking-tight text-text sm:text-5xl">
+          Déménager à Montpellier en toute sérénité
+        </h2>
+        <p class="text-base leading-7 text-text-muted">
+          Vous préparez une installation à Montpellier, une mutation professionnelle ou un départ vers l'Hérault ? La ville attire pour son climat, sa vie étudiante, son dynamisme et sa proximité avec la mer, mais un déménagement bien exécuté demande méthode et cadrage.
+        </p>
+        <p class="text-base leading-7 text-text-muted">
+          Chez {brand.name}, nous reprenons les fondamentaux d'un bon déménagement: organisation claire, lecture précise du devis, prise en compte des accès et accompagnement adapté au volume réel du projet. L'objectif est simple: transformer une étape chargée en opération pilotée proprement.
+        </p>
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+        <Image
+          src="https://images.unsplash.com/photo-1600518464441-9154a4dea21b?w=1200&q=80"
+          alt="Cartons et mobilier préparés pour un déménagement à Montpellier"
+          width={1200}
+          height={900}
+          loading="lazy"
+          class="size-full object-cover"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-semibold tracking-tight text-text sm:text-4xl">{brand.name}, des prestations adaptées à votre besoin</h2>
+        <p class="mt-4 text-base leading-7 text-text-muted">
+          Chaque déménagement vers Montpellier ne se ressemble pas. Nous ajustons l'intervention selon votre volume, votre niveau d'autonomie et les contraintes techniques de départ et d'arrivée.
+        </p>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {offerPoints.map((item) => (
+          <article class="rounded-2xl border border-border bg-background p-6 shadow-sm">
+            <div class="flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <TablerIcon name="check" class="text-xl leading-none" />
+            </div>
+            <p class="mt-5 text-base leading-7 text-text-muted">{item}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+        <div class="rounded-2xl border border-border bg-background p-7 shadow-sm">
+          <span class="text-topper font-semibold uppercase tracking-[0.18em] text-primary">Devis Montpellier</span>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text">Un devis gratuit, personnalisé et exploitable</h2>
+          <p class="mt-4 text-base leading-7 text-text-muted">
+            Un bon devis ne sert pas uniquement à afficher un prix. Il doit vous donner une vision réaliste du budget, des options retenues et des contraintes qui pèsent sur l'intervention.
+          </p>
+          <ul class="mt-6 space-y-3" role="list">
+            {quoteFactors.map((item) => (
+              <li class="flex items-start gap-3">
+                <TablerIcon name="chevron-right" class="mt-1 text-base leading-none text-primary" />
+                <span class="text-text-muted">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <div class="mx-auto max-w-3xl">
+            <h3 class="text-2xl font-semibold tracking-tight text-text">Nos points forts pour votre demande de devis</h3>
+            <p class="mt-3 text-base leading-7 text-text-muted">
+              Cette partie reprend la logique du parcours de devis observé chez le site de référence: simplicité, rappel rapide, précision documentaire et possibilité de visite technique.
+            </p>
+          </div>
+
+          <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {quoteStrengths.map((item) => (
+              <article class="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+                <div class="flex size-12 items-center justify-center rounded-full bg-primary text-primary-fg">
+                  <TablerIcon name={item.icon} class="size-5" />
+                </div>
+                <h4 class="mt-5 text-xl font-semibold text-text">{item.title}</h4>
+                <p class="mt-3 text-sm leading-7 text-text-muted">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-semibold tracking-tight text-text sm:text-4xl">Pourquoi passer par une entreprise pour déménager à Montpellier ?</h2>
+        <p class="mt-4 text-base leading-7 text-text-muted">
+          Entre la logistique, les cartons, la manutention, le véhicule, les accès parfois complexes et les démarches de stationnement, la charge opérationnelle grimpe vite. Une entreprise sérieuse réduit l'incertitude, fiabilise le timing et protège mieux vos biens.
+        </p>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <article class="rounded-2xl border border-border bg-background p-6 shadow-sm">
+          <h3 class="text-2xl font-semibold text-text">Expertise locale</h3>
+          <p class="mt-3 text-base leading-7 text-text-muted">
+            Montpellier combine centre ancien, rues plus étroites, zones denses et périodes de circulation tendues. Une équipe qui sait lire ces contraintes prépare mieux l'intervention et limite les improvisations le jour J.
+          </p>
+        </article>
+        <article class="rounded-2xl border border-border bg-background p-6 shadow-sm">
+          <h3 class="text-2xl font-semibold text-text">Gain de temps réel</h3>
+          <p class="mt-3 text-base leading-7 text-text-muted">
+            Emballage, démontage, chargement, transport, remontage et remise en place peuvent être répartis ou pris en charge complètement selon votre formule. Vous récupérez du temps sur les tâches administratives et l'installation.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-semibold tracking-tight text-text sm:text-4xl">Nos conseils pour bien préparer votre déménagement à Montpellier</h2>
+        <p class="mt-4 text-base leading-7 text-text-muted">
+          Voici les points les plus utiles à anticiper si vous préparez un déménagement local ou une arrivée dans l'Hérault.
+        </p>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {prepTips.map((tip) => (
+          <article class="rounded-2xl border border-border bg-background p-6 shadow-sm">
+            <h3 class="text-xl font-semibold text-text">{tip.title}</h3>
+            <p class="mt-3 text-base leading-7 text-text-muted">{tip.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="mx-auto max-w-4xl">
+        <h2 class="text-3xl font-semibold tracking-tight text-text sm:text-4xl">Questions fréquentes</h2>
+        <div class="mt-8 space-y-4">
+          {faqs.map((item) => (
+            <article class="rounded-2xl border border-border bg-background p-6 shadow-sm">
+              <h3 class="text-lg font-semibold text-text">{item.q}</h3>
+              <p class="mt-3 text-base leading-7 text-text-muted">{item.a}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+
+  <Footer slot="footer" />
+</BaseLayout>

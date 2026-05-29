@@ -5,23 +5,52 @@ import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import TrustBar from '../components/TrustBar.astro';
 import Services from '../components/Services.astro';
+import PackagesSection from '../components/PackagesSection.astro';
+import StatementSection from '../components/StatementSection.astro';
+import WhyUsSection from '../components/WhyUsSection.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import ZonesSection from '../components/ZonesSection.astro';
+import FAQSection from '../components/FAQSection.astro';
 import About from '../components/About.astro';
 import Reviews from '../components/Reviews.astro';
 import Gallery from '../components/Gallery.astro';
 import CTA from '../components/CTA.astro';
 import { brand } from '../config/brand';
 import { client } from '../data/client';
+import { getPlacesData, formatRating } from '../lib/google-places';
+
+const places = await getPlacesData();
+const ratingDisplay = formatRating(places.rating);
 ---
 
 <BaseLayout
-  title={brand.name}
+  title="Déménagement Montpellier — Devis gratuit AC Coursing"
   description={brand.description}
   schema={{
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'MovingCompany',
     name: client.name,
     telephone: client.phoneForTel,
     email: client.email,
+    url: client.domain,
+    priceRange: '€€',
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+        opens: '07:00',
+        closes: '20:00',
+      },
+    ],
+    areaServed: [
+      { '@type': 'City', name: 'Montpellier' },
+      { '@type': 'City', name: 'Castelnau-le-Lez' },
+      { '@type': 'City', name: 'Lattes' },
+      { '@type': 'City', name: 'Béziers' },
+      { '@type': 'City', name: 'Nîmes' },
+      { '@type': 'State', name: 'Occitanie' },
+    ],
+    sameAs: [client.socials.google].filter(Boolean),
     address: {
       '@type': 'PostalAddress',
       streetAddress: client.address.lineOne,
@@ -30,17 +59,46 @@ import { client } from '../data/client';
       postalCode: client.address.zip,
       addressCountry: client.address.country,
     },
-    url: client.domain,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: String(places.rating),
+      reviewCount: String(places.reviewCount),
+      bestRating: '5',
+    },
   }}
 >
   <Header slot="header" />
 
   <Hero />
-  <TrustBar />
+  <TrustBar
+    items={[
+      { icon: 'star-filled', value: `${ratingDisplay}/5`, label: 'sur Google' },
+      { icon: 'check', value: String(places.reviewCount), label: 'avis vérifiés' },
+      { icon: 'truck-delivery', value: '1 500+', label: 'déménagements' },
+      { icon: 'shield-check', value: 'Depuis 2015', label: "11 ans d'expérience" },
+      { icon: 'clock', value: '100+', label: 'professionnels' },
+    ]}
+  />
+  <StatementSection
+    stats={[
+      { value: '1 500+', label: 'déménagements réalisés' },
+      { value: String(places.reviewCount), label: 'avis 5 étoiles Google' },
+      { value: '11 ans', label: "d'expérience" },
+      { value: '24 h', label: 'réponse garantie' },
+    ]}
+  />
+  <WhyUsSection />
+  <HowItWorks />
+  <ZonesSection />
   <Services />
+  <PackagesSection />
   <About />
-  <Reviews />
+  <Reviews
+    topper={`${places.reviewCount} avis vérifiés`}
+    heading={`${ratingDisplay} / 5 sur Google`}
+  />
   <Gallery />
+  <FAQSection />
   <CTA />
 
   <Footer slot="footer" />
