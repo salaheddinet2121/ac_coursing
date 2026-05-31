@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { brand } from '../config/brand';
+---
+
+<BaseLayout
+  title="Page introuvable"
+  description="Cette page n'existe pas ou a été déplacée."
+>
+  <Header slot="header" />
+
+  <section class="py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6 text-center space-y-6">
+      <p class="text-topper font-bold uppercase tracking-widest text-primary">Erreur 404</p>
+      <h1 class="font-heading text-h1 font-bold uppercase text-text">Page introuvable</h1>
+      <p class="text-text-muted max-w-md mx-auto leading-relaxed">
+        Cette page n'existe pas ou a été déplacée. Revenez à l'accueil pour retrouver nos services.
+      </p>
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-bold text-primary-foreground shadow transition hover:opacity-90"
+      >
+        Retour à l'accueil
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

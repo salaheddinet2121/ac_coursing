@@ -25,6 +25,8 @@ const navLinks = [
           <img
             src="/logo/full_logo_dark%20(1).svg"
             alt={brand.name}
+            width="220"
+            height="60"
             class="h-auto w-45 max-w-full sm:w-55"
             loading="eager"
             decoding="async"
@@ -37,7 +39,7 @@ const navLinks = [
 
         <a
           href="/contact"
-          class="mt-5 inline-flex min-h-10 items-center gap-2 rounded-md bg-primary px-5 py-2 text-sm font-bold text-primary-foreground transition-all hover:opacity-90"
+          class="mt-5 inline-flex min-h-12 items-center gap-2 rounded-md bg-primary px-5 py-2 text-sm font-bold text-primary-foreground transition-all hover:opacity-90"
         >
           Devis gratuit
           <TablerIcon name="arrow-right" class="text-base leading-none" />
@@ -102,8 +104,12 @@ const navLinks = [
 
     </div>
 
-    <div class="mt-10 border-t border-primary-fg/10 pt-6 text-center text-sm">
-      &copy; {year} {brand.name}. Tous droits réservés.
+    <div class="mt-10 border-t border-primary-fg/10 pt-6 flex flex-col items-center gap-2 text-center text-sm sm:flex-row sm:justify-between">
+      <span>&copy; {year} {brand.name}. Tous droits réservés.</span>
+      <nav aria-label="Liens légaux" class="flex gap-4">
+        <a href="/mentions-legales" class="transition-colors hover:text-primary">Mentions légales</a>
+        <a href="/politique-confidentialite" class="transition-colors hover:text-primary">Confidentialité</a>
+      </nav>
     </div>
   </div>
 </footer>

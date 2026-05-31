@@ -69,30 +69,39 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
 
     <!-- JSON-LD Structured Data -->
     {schema && (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
     )}
 
-    <!-- Google Analytics (loaded only after cookie consent) -->
+    <!-- Consent Mode v2 — defaults + immediate update if already accepted -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      if (localStorage.getItem('cookie_consent') === 'accepted') {
-        (function(){
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-4ZVR7557QV';
-          document.head.appendChild(s);
-        })();
-        gtag('js', new Date());
-        gtag('config', 'G-4ZVR7557QV');
-      }
+      window.gtag = window.gtag || function gtag(){dataLayer.push(arguments);}
+
+      var _consent = localStorage.getItem('cookie_consent');
+
+      gtag('consent', 'default', {
+        analytics_storage:  _consent === 'accepted' ? 'granted' : 'denied',
+        ad_storage:         _consent === 'accepted' ? 'granted' : 'denied',
+        ad_user_data:       _consent === 'accepted' ? 'granted' : 'denied',
+        ad_personalization: _consent === 'accepted' ? 'granted' : 'denied',
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
     </script>
 
-<slot name="head" />
+    <!-- Google Tag Manager -->
+    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T9KGJ6CN');</script>
+
+    <slot name="head" />
     <ClientRouter />
   </head>
 
   <body class="bg-background text-text antialiased">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9KGJ6CN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a
       class="sr-only focus:not-sr-only focus:absolute focus:z-99999 focus:bg-primary focus:text-primary-fg focus:px-4 focus:py-2 focus:rounded-md"
       href="#main"
@@ -131,7 +140,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
       class="fixed bottom-0 left-0 right-0 z-9999 bg-card border-t border-border shadow-lg px-4 py-4 sm:px-6"
       style="display:none"
       role="dialog"
-      aria-live="polite"
+      aria-modal="false"
       aria-label="Consentement aux cookies"
     >
       <div class="mx-auto flex max-w-site flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -158,27 +167,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
 
     <script is:inline>
       (function () {
-        var banner = document.getElementById('cookie-banner');
-        var consent = localStorage.getItem('cookie_consent');
-        if (!consent) banner.style.display = 'block';
+        var GRANTED = {
+          analytics_storage:  'granted',
+          ad_storage:         'granted',
+          ad_user_data:       'granted',
+          ad_personalization: 'granted',
+        };
 
-        function loadGA() {
-          if (typeof gtag === 'undefined') {
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function(){ dataLayer.push(arguments); };
-          }
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-4ZVR7557QV';
-          document.head.appendChild(s);
-          gtag('js', new Date());
-          gtag('config', 'G-4ZVR7557QV');
+        function updateConsent() {
+          gtag('consent', 'update', GRANTED);
         }
+
+        var banner = document.getElementById('cookie-banner');
+        var stored = localStorage.getItem('cookie_consent');
+
+        if (stored === 'accepted') {
+          updateConsent();
+        } else if (!stored) {
+          banner.style.display = 'block';
+        }
+
+        document.addEventListener('astro:after-swap', function () {
+          if (localStorage.getItem('cookie_consent') === 'accepted') updateConsent();
+        });
 
         document.getElementById('cookie-accept').addEventListener('click', function () {
           localStorage.setItem('cookie_consent', 'accepted');
           banner.style.display = 'none';
-          loadGA();
+          updateConsent();
         });
 
         document.getElementById('cookie-reject').addEventListener('click', function () {

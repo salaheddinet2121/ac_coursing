@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Banner from '../components/Banner.astro';
+import { brand } from '../config/brand';
+import { client } from '../data/client';
+---
+
+<BaseLayout
+  title="Mentions légales"
+  description={`Mentions légales de ${brand.name} — informations légales obligatoires conformément à la loi pour la confiance dans l'économie numérique.`}
+>
+  <Header slot="header" />
+
+  <Banner title="Mentions légales" />
+
+  <section class="py-section">
+    <div class="mx-auto max-w-prose px-4 sm:px-6 space-y-8 text-text-muted leading-relaxed">
+
+      <div class="space-y-3">
+        <h2 class="font-heading text-xl font-bold uppercase text-text">Éditeur du site</h2>
+        <p>
+          <strong class="text-text">{client.name}</strong><br />
+          {client.address.lineOne}<br />
+          {client.address.zip} {client.address.city}, France<br />
+          Téléphone : <a href={`tel:${client.phoneForTel}`} class="text-primary underline underline-offset-2">{client.phoneFormatted}</a><br />
+          E-mail : <a href={`mailto:${client.email}`} class="text-primary underline underline-offset-2">{client.email}</a>
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-heading text-xl font-bold uppercase text-text">Hébergement</h2>
+        <p>
+          Ce site est hébergé par <strong class="text-text">Netlify, Inc.</strong><br />
+          44 Montgomery Street, Suite 300, San Francisco, California 94104, USA.<br />
+          <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2">www.netlify.com</a>
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-heading text-xl font-bold uppercase text-text">Propriété intellectuelle</h2>
+        <p>
+          L'ensemble du contenu de ce site (textes, images, graphismes, logo) est la propriété exclusive de {client.name} et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle. Toute reproduction, représentation ou diffusion, même partielle, est interdite sans autorisation écrite préalable.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-heading text-xl font-bold uppercase text-text">Limitation de responsabilité</h2>
+        <p>
+          {client.name} s'efforce d'assurer l'exactitude et la mise à jour des informations publiées sur ce site. Cependant, nous ne pouvons garantir l'exactitude, la complétude ou l'actualité des informations diffusées. L'utilisation des informations fournies sur ce site se fait sous la seule responsabilité de l'utilisateur.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-heading text-xl font-bold uppercase text-text">Données personnelles</h2>
+        <p>
+          Pour toute information relative au traitement de vos données personnelles, consultez notre <a href="/politique-confidentialite" class="text-primary underline underline-offset-2">Politique de confidentialité</a>.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-heading text-xl font-bold uppercase text-text">Droit applicable</h2>
+        <p>
+          Le présent site et ses mentions légales sont soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
