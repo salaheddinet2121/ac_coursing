@@ -51,6 +51,7 @@ import {
   IconToolsKitchen2,
   IconTrash,
   IconTruckDelivery,
+  IconUser,
   IconWashMachine,
   IconX,
 } from '@tabler/icons-react';
@@ -109,6 +110,7 @@ const ICONS: Record<string, typeof Icon> = {
   'tools-kitchen-2':      IconToolsKitchen2,
   trash:                  IconTrash,
   'truck-delivery':       IconTruckDelivery,
+  user:                   IconUser,
   'wash-machine':         IconWashMachine,
   x:                      IconX,
 };
