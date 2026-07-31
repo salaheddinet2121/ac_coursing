@@ -23,7 +23,10 @@ interface FormData {
   fromCity: string;
   toCity: string;
   moveDate: Date | undefined;
-  accessType: AccessType;
+  accessTypeDeparture: AccessType;
+  accessTypeDestination: AccessType;
+  floorDeparture: string;
+  floorDestination: string;
   logementSize: LogementSize | "";
   inventory: InventoryItem[];
   otherItems: string;
@@ -36,8 +39,9 @@ interface FormData {
 const initial: FormData = {
   moveType: "particulier",
   fromCity: "", toCity: "", moveDate: undefined,
-  accessType: "ascenseur", logementSize: "",
-  inventory: [], otherItems: "", specialItems: "",
+  accessTypeDeparture: "ascenseur", accessTypeDestination: "ascenseur",
+  floorDeparture: "", floorDestination: "",
+  logementSize: "", inventory: [], otherItems: "", specialItems: "",
   name: "", phone: "", email: "",
 } as unknown as FormData;
 
@@ -97,10 +101,13 @@ const ROOMS: Room[] = [
 
 // ── Primitives ────────────────────────────────────────────────────────────────
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, icon, children, className }: { label: string; icon?: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className="flex flex-col gap-2">
-      <label className="text-sm font-semibold text-foreground/70">{label}</label>
+    <div className={cn("flex flex-col gap-2", className)}>
+      <label className="flex items-center gap-1.5 text-sm font-semibold text-foreground/70">
+        {icon && <TablerIcon name={icon} className="size-4 text-primary" />}
+        {label}
+      </label>
       {children}
     </div>
   );
@@ -372,6 +379,27 @@ function StepHeader({ step, title, description }: { step: number; title: string;
   );
 }
 
+// ── Floor Stepper ─────────────────────────────────────────────────────────────
+
+function FloorStepper({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const floor = parseInt(value || "0", 10);
+  const dec = () => onChange(String(Math.max(0, floor - 1)));
+  const inc = () => onChange(String(Math.min(20, floor + 1)));
+  return (
+    <div className="flex h-14 w-full items-center justify-between rounded-xl border-2 border-border bg-background px-2">
+      <button type="button" onClick={dec} disabled={floor === 0}
+        className="flex size-10 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        <TablerIcon name="minus" className="size-5" />
+      </button>
+      <span className="text-base font-bold text-foreground">{floor === 0 ? "RDC" : `Étage ${floor}`}</span>
+      <button type="button" onClick={inc} disabled={floor === 20}
+        className="flex size-10 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+        <TablerIcon name="plus" className="size-5" />
+      </button>
+    </div>
+  );
+}
+
 // ── Step 1 ────────────────────────────────────────────────────────────────────
 
 function Step1({ data, onChange, onNext }: {
@@ -379,36 +407,94 @@ function Step1({ data, onChange, onNext }: {
 }) {
   const canNext = data.fromCity.trim() && data.toCity.trim();
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <StepHeader step={1} title="Votre déménagement" description="Dites-nous d'où vous partez et où vous allez." />
-      <div className="space-y-2.5">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Type</p>
+
+      <div className="space-y-3">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Type de déménagement</p>
         <ChoiceCard selected={data.moveType === "particulier"} onClick={() => onChange({ moveType: "particulier" })} icon="home" label="Particulier" sub="Appartement, maison, studio" />
         <ChoiceCard selected={data.moveType === "professionnel"} onClick={() => onChange({ moveType: "professionnel" })} icon="building" label="Professionnel" sub="Bureaux, locaux, commerce" />
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="Ville de départ">
-          <CityInput value={data.fromCity} onChange={(v) => onChange({ fromCity: v })} placeholder="Montpellier" />
-        </Field>
-        <Field label="Ville d'arrivée">
-          <CityInput value={data.toCity} onChange={(v) => onChange({ toCity: v })} placeholder="Paris, Lattes, Lyon..." />
-        </Field>
-        <Field label="Date souhaitée">
-          <DatePicker value={data.moveDate} onChange={(d) => onChange({ moveDate: d })} />
-        </Field>
-        <Field label="Accès">
-          <Select value={data.accessType} onValueChange={(v) => onChange({ accessType: v as AccessType })}>
-            <SelectTrigger className="h-12! w-full rounded-xl border-2 border-border bg-background px-4 text-[0.95rem] text-foreground focus:border-primary data-[state=open]:border-primary">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="rounded-xl border-border shadow-lg">
-              <SelectItem value="ascenseur">Ascenseur disponible</SelectItem>
-              <SelectItem value="escaliers">Escaliers uniquement</SelectItem>
-              <SelectItem value="rdc">Rez-de-chaussée</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
+
+      <div className="space-y-6">
+        {/* Départ */}
+        <div className="space-y-4">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <TablerIcon name="home" className="size-3.5 text-primary" />
+            Départ
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Ville de départ">
+              <CityInput value={data.fromCity} onChange={(v) => onChange({ fromCity: v })} placeholder="Ex : Montpellier" />
+            </Field>
+            <Field label="Type d'accès">
+              <Select value={data.accessTypeDeparture} onValueChange={(v) => onChange({ accessTypeDeparture: v as AccessType })}>
+                <SelectTrigger className="h-12! w-full rounded-xl border-2 border-border bg-background px-4 text-[0.95rem] text-foreground focus:border-primary data-[state=open]:border-primary">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl border-border shadow-lg">
+                  <SelectItem value="ascenseur">Ascenseur disponible</SelectItem>
+                  <SelectItem value="escaliers">Escaliers uniquement</SelectItem>
+                  <SelectItem value="rdc">Rez-de-chaussée</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+          </div>
+          <Field label="Étage départ">
+            <FloorStepper value={data.floorDeparture} onChange={(v) => onChange({ floorDeparture: v })} />
+            <p className="text-xs text-muted-foreground">RDC = rez-de-chaussée. L'étage et le type d'accès influent sur le tarif.</p>
+          </Field>
+        </div>
+
+        <hr className="border-border" />
+
+        {/* Arrivée */}
+        <div className="space-y-4">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <TablerIcon name="map-pin" className="size-3.5 text-primary" />
+            Arrivée
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Ville d'arrivée">
+              <CityInput value={data.toCity} onChange={(v) => onChange({ toCity: v })} placeholder="Ex : Paris, Lattes, Lyon…" />
+            </Field>
+            <Field label="Type d'accès">
+              <Select value={data.accessTypeDestination} onValueChange={(v) => onChange({ accessTypeDestination: v as AccessType })}>
+                <SelectTrigger className="h-12! w-full rounded-xl border-2 border-border bg-background px-4 text-[0.95rem] text-foreground focus:border-primary data-[state=open]:border-primary">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl border-border shadow-lg">
+                  <SelectItem value="ascenseur">Ascenseur disponible</SelectItem>
+                  <SelectItem value="escaliers">Escaliers uniquement</SelectItem>
+                  <SelectItem value="rdc">Rez-de-chaussée</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+          </div>
+          <Field label="Étage arrivée">
+            <FloorStepper value={data.floorDestination} onChange={(v) => onChange({ floorDestination: v })} />
+            <p className="text-xs text-muted-foreground">RDC = rez-de-chaussée. L'étage et le type d'accès influent sur le tarif.</p>
+          </Field>
+        </div>
+
+        <hr className="border-border" />
+
+        {/* Date */}
+        <div className="space-y-4">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <TablerIcon name="calendar" className="size-3.5 text-primary" />
+            Date souhaitée
+          </p>
+          <Field label="Quand souhaitez-vous déménager ?">
+            <DatePicker value={data.moveDate} onChange={(d) => onChange({ moveDate: d })} />
+            <p className="text-xs text-muted-foreground">Pas de date fixe ? Laissez vide, on s'adapte à votre planning.</p>
+          </Field>
+        </div>
       </div>
+
+      {!canNext && (
+        <p className="text-center text-xs text-muted-foreground">Renseignez les villes de départ et d'arrivée pour continuer.</p>
+      )}
       <NavButtons onNext={canNext ? onNext : undefined} />
     </div>
   );
@@ -647,7 +733,10 @@ function Step4({ data, onNext, onPrev }: { data: FormData; onNext: () => void; o
       <div className="rounded-2xl border border-border bg-muted/30 px-4 divide-y divide-border">
         <SummaryRow icon="map-pin" label="Trajet" value={`${data.fromCity} → ${data.toCity}`} />
         {data.moveDate && <SummaryRow icon="calendar" label="Date" value={format(data.moveDate, "d MMMM yyyy", { locale: fr })} />}
-        <SummaryRow icon="elevator" label="Accès" value={ACCESS_LABELS[data.accessType] ?? data.accessType} />
+        <SummaryRow icon="elevator" label="Accès départ" value={ACCESS_LABELS[data.accessTypeDeparture] ?? data.accessTypeDeparture} />
+        <SummaryRow icon="elevator" label="Accès arrivée" value={ACCESS_LABELS[data.accessTypeDestination] ?? data.accessTypeDestination} />
+        {data.floorDeparture && <SummaryRow icon="stairs" label="Étage départ" value={data.floorDeparture === "0" ? "Rez-de-chaussée" : `Étage ${data.floorDeparture}`} />}
+        {data.floorDestination && <SummaryRow icon="stairs" label="Étage arrivée" value={data.floorDestination === "0" ? "Rez-de-chaussée" : `Étage ${data.floorDestination}`} />}
         <SummaryRow icon="package" label="Mobilier" value={inventorySummary} />
         {data.otherItems.trim() && <SummaryRow icon="pencil" label="Autres objets" value={data.otherItems} />}
         {data.specialItems.length > 0 && <SummaryRow icon="alert-triangle" label="Objets particuliers" value={data.specialItems.map((id) => SPECIAL_LABELS[id] ?? id).join(", ")} />}

@@ -57,14 +57,44 @@ const error = Astro.url.searchParams.get('error');
           </div>
 
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <label class="flex flex-col gap-1.5">
-              <span class="text-sm font-medium text-text">Adresse de départ</span>
-              <input type="text" name="departure" class="min-h-[44px] rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" />
-            </label>
-            <label class="flex flex-col gap-1.5">
-              <span class="text-sm font-medium text-text">Adresse d'arrivée</span>
-              <input type="text" name="destination" class="min-h-[44px] rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" />
-            </label>
+            <div class="flex flex-col gap-3">
+              <label class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium text-text">Adresse de départ</span>
+                <input type="text" name="departure" placeholder="Ex: 48 rue de la Paix, Montpellier" class="min-h-11 rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" />
+              </label>
+              <label class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium text-text">Étage départ</span>
+                <select name="floor_departure" class="min-h-11 rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                  <option value="">— Non renseigné</option>
+                  <option value="0">Rez-de-chaussée</option>
+                  <option value="1">1er étage</option>
+                  <option value="2">2e étage</option>
+                  <option value="3">3e étage</option>
+                  <option value="4">4e étage</option>
+                  <option value="5">5e étage</option>
+                  <option value="6">6e étage et +</option>
+                </select>
+              </label>
+            </div>
+            <div class="flex flex-col gap-3">
+              <label class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium text-text">Adresse d'arrivée</span>
+                <input type="text" name="destination" placeholder="Ex: 12 avenue des Fleurs, Paris" class="min-h-11 rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" />
+              </label>
+              <label class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium text-text">Étage arrivée</span>
+                <select name="floor_destination" class="min-h-11 rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                  <option value="">— Non renseigné</option>
+                  <option value="0">Rez-de-chaussée</option>
+                  <option value="1">1er étage</option>
+                  <option value="2">2e étage</option>
+                  <option value="3">3e étage</option>
+                  <option value="4">4e étage</option>
+                  <option value="5">5e étage</option>
+                  <option value="6">6e étage et +</option>
+                </select>
+              </label>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -83,7 +113,7 @@ const error = Astro.url.searchParams.get('error');
             <textarea name="message" rows="5" class="min-h-[120px] resize-y rounded-md border border-border bg-background px-4 py-2.5 text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"></textarea>
           </label>
 
-          <button type="submit" class="mt-2 inline-flex min-h-[44px] cursor-pointer items-center justify-center self-start rounded-md bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          <button type="submit" class="mt-2 inline-flex min-h-12 cursor-pointer items-center justify-center self-start rounded-md bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
             Envoyer la demande
           </button>
         </form>

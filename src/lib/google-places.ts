@@ -5,8 +5,12 @@ export interface PlacesData {
 
 const FALLBACK: PlacesData = { rating: 5.0, reviewCount: 194 };
 
+let cache: { data: PlacesData; expiresAt: number } | null = null;
+const TTL = 60 * 60 * 1000; // 1 hour
+
 export async function getPlacesData(): Promise<PlacesData> {
-  // Use process.env so the key is read at runtime and never inlined into the bundle
+  if (cache && Date.now() < cache.expiresAt) return cache.data;
+
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   const placeId = process.env.GOOGLE_PLACE_ID;
 
@@ -19,10 +23,12 @@ export async function getPlacesData(): Promise<PlacesData> {
 
     if (data.status !== 'OK' || !data.result) return FALLBACK;
 
-    return {
+    const result: PlacesData = {
       rating: data.result.rating ?? FALLBACK.rating,
       reviewCount: data.result.user_ratings_total ?? FALLBACK.reviewCount,
     };
+    cache = { data: result, expiresAt: Date.now() + TTL };
+    return result;
   } catch {
     return FALLBACK;
   }

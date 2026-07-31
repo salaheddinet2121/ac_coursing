@@ -49,8 +49,12 @@ function parsePayload(body: unknown): QuoteRequest | null {
     fromCity: typeof candidate.fromCity === 'string' ? candidate.fromCity.trim() : '',
     toCity: typeof candidate.toCity === 'string' ? candidate.toCity.trim() : '',
     moveDate: typeof candidate.moveDate === 'string' ? candidate.moveDate : undefined,
-    accessType:
-      candidate.accessType === 'escaliers' || candidate.accessType === 'rdc' ? candidate.accessType : 'ascenseur',
+    accessTypeDeparture:
+      candidate.accessTypeDeparture === 'escaliers' || candidate.accessTypeDeparture === 'rdc' ? candidate.accessTypeDeparture : 'ascenseur',
+    accessTypeDestination:
+      candidate.accessTypeDestination === 'escaliers' || candidate.accessTypeDestination === 'rdc' ? candidate.accessTypeDestination : 'ascenseur',
+    floorDeparture: typeof candidate.floorDeparture === 'string' ? candidate.floorDeparture.trim() : '',
+    floorDestination: typeof candidate.floorDestination === 'string' ? candidate.floorDestination.trim() : '',
     inventory,
     otherItems: typeof candidate.otherItems === 'string' ? candidate.otherItems.trim() : '',
     specialItems: Array.isArray(candidate.specialItems)

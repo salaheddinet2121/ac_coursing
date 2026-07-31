@@ -25,7 +25,9 @@ export const POST: APIRoute = async ({ request, redirect, clientAddress }) => {
       phone: asCleanString(formData.get('phone')),
       email: asCleanString(formData.get('email')),
       departure: asCleanString(formData.get('departure')),
+      floorDeparture: asCleanString(formData.get('floor_departure')),
       destination: asCleanString(formData.get('destination')),
+      floorDestination: asCleanString(formData.get('floor_destination')),
       moveDate: asCleanString(formData.get('move_date')),
       volume: asCleanString(formData.get('volume')),
       message: asCleanString(formData.get('message')),
@@ -45,8 +47,8 @@ export const POST: APIRoute = async ({ request, redirect, clientAddress }) => {
       `Nom: ${payload.name}`,
       `Téléphone: ${payload.phone}`,
       `Email: ${payload.email || 'Non renseigné'}`,
-      `Départ: ${payload.departure || 'Non renseigné'}`,
-      `Arrivée: ${payload.destination || 'Non renseigné'}`,
+      `Départ: ${payload.departure || 'Non renseigné'} — Étage: ${payload.floorDeparture || 'Non renseigné'}`,
+      `Arrivée: ${payload.destination || 'Non renseigné'} — Étage: ${payload.floorDestination || 'Non renseigné'}`,
       `Date souhaitée: ${payload.moveDate || 'Non renseignée'}`,
       `Volume estimé: ${payload.volume || 'Non renseigné'}`,
       '',
@@ -61,7 +63,9 @@ export const POST: APIRoute = async ({ request, redirect, clientAddress }) => {
           <tr><th align="left" style="background:#f5f5f5;">Téléphone</th><td>${escapeHtml(payload.phone)}</td></tr>
           <tr><th align="left" style="background:#f5f5f5;">Email</th><td>${escapeHtml(payload.email || 'Non renseigné')}</td></tr>
           <tr><th align="left" style="background:#f5f5f5;">Départ</th><td>${escapeHtml(payload.departure || 'Non renseigné')}</td></tr>
+          <tr><th align="left" style="background:#f5f5f5;">Étage départ</th><td>${escapeHtml(payload.floorDeparture || 'Non renseigné')}</td></tr>
           <tr><th align="left" style="background:#f5f5f5;">Arrivée</th><td>${escapeHtml(payload.destination || 'Non renseigné')}</td></tr>
+          <tr><th align="left" style="background:#f5f5f5;">Étage arrivée</th><td>${escapeHtml(payload.floorDestination || 'Non renseigné')}</td></tr>
           <tr><th align="left" style="background:#f5f5f5;">Date souhaitée</th><td>${escapeHtml(payload.moveDate || 'Non renseignée')}</td></tr>
           <tr><th align="left" style="background:#f5f5f5;">Volume estimé</th><td>${escapeHtml(payload.volume || 'Non renseigné')}</td></tr>
           <tr><th align="left" style="background:#f5f5f5;">Précisions</th><td>${escapeHtml(payload.message || 'Aucune')}</td></tr>

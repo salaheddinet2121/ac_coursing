@@ -5,7 +5,10 @@ export type QuoteRequest = {
   fromCity: string;
   toCity: string;
   moveDate?: string;
-  accessType: 'ascenseur' | 'escaliers' | 'rdc';
+  accessTypeDeparture: 'ascenseur' | 'escaliers' | 'rdc';
+  accessTypeDestination: 'ascenseur' | 'escaliers' | 'rdc';
+  floorDeparture?: string;
+  floorDestination?: string;
   inventory: Array<{ id: string; qty: number }>;
   otherItems: string;
   specialItems: string[];
@@ -84,7 +87,10 @@ export function buildQuoteEmail(payload: QuoteRequest) {
     `Type: ${moveType}`,
     `Trajet: ${payload.fromCity} -> ${payload.toCity}`,
     `Date souhaitée: ${formattedDate}`,
-    `Accès: ${accessLabels[payload.accessType]}`,
+    `Accès départ: ${accessLabels[payload.accessTypeDeparture]}`,
+    `Accès arrivée: ${accessLabels[payload.accessTypeDestination]}`,
+    `Étage départ: ${payload.floorDeparture || 'Non renseigné'}`,
+    `Étage arrivée: ${payload.floorDestination || 'Non renseigné'}`,
     `Mobilier: ${inventory}`,
     `Objets particuliers: ${specialItems}`,
     `Autres objets: ${payload.otherItems || 'Aucun'}`,
@@ -97,7 +103,10 @@ export function buildQuoteEmail(payload: QuoteRequest) {
     ['Type', moveType],
     ['Trajet', `${payload.fromCity} → ${payload.toCity}`],
     ['Date souhaitée', formattedDate],
-    ['Accès', accessLabels[payload.accessType]],
+    ['Accès départ', accessLabels[payload.accessTypeDeparture]],
+    ['Accès arrivée', accessLabels[payload.accessTypeDestination]],
+    ['Étage départ', payload.floorDeparture || 'Non renseigné'],
+    ['Étage arrivée', payload.floorDestination || 'Non renseigné'],
     ['Mobilier', inventory],
     ['Objets particuliers', specialItems],
     ['Autres objets', payload.otherItems || 'Aucun'],

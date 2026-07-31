@@ -47,3 +47,12 @@ pnpm-debug.log*
 # ── Testing ───────────────────────────────────────────────────────────────────
 playwright-report/
 test-results/
+
+# ── Playwright MCP snapshot dumps (throwaway artifacts) ──────────────────────
+.playwright-mcp/
+
+# ── Claude Code local settings ────────────────────────────────────────────────
+.claude/
+
+# ── TypeScript incremental build info ────────────────────────────────────────
+*.tsbuildinfo

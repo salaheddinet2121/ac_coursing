@@ -75,7 +75,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
     <!-- Consent Mode v2 — defaults + immediate update if already accepted -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      window.gtag = window.gtag || function gtag(){dataLayer.push(arguments);}
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = window.gtag || gtag;
 
       var _consent = localStorage.getItem('cookie_consent');
 
@@ -175,7 +176,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         };
 
         function updateConsent() {
-          gtag('consent', 'update', GRANTED);
+          window.gtag('consent', 'update', GRANTED);
         }
 
         var banner = document.getElementById('cookie-banner');

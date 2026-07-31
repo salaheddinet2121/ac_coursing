@@ -47,5 +47,7 @@ export interface MoveDetails {
   toCity: string;
   moveDate: string;
   accessType: "ascenseur" | "escaliers" | "rdc";
+  floorDeparture: string;
+  floorDestination: string;
   densityScore: string;
 }

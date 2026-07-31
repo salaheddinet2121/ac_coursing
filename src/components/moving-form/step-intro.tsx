@@ -145,7 +145,7 @@ export function StepIntro({
               onChange({ accessType: next as MoveDetails["accessType"] })
             }
           >
-            <SelectTrigger className="!h-12 w-full rounded-2xl border-border bg-white px-4 text-sm">
+            <SelectTrigger className="h-12! w-full rounded-2xl border-border bg-white px-4 text-sm">
               <SelectValue placeholder="Choisir un acces" />
             </SelectTrigger>
             <SelectContent>
@@ -154,6 +154,56 @@ export function StepIntro({
               <SelectItem value="rdc">Rez-de-chaussee</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+
+        <div className="space-y-2">
+          <span className="text-sm font-medium text-foreground">Étage départ</span>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => onChange({ floorDeparture: String(Math.max(0, Number(value.floorDeparture) - 1)) })}
+              className="flex size-11 items-center justify-center rounded-xl border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95"
+              aria-label="Diminuer étage départ"
+            >
+              <TablerIcon name="minus" className="text-xl" />
+            </button>
+            <span className="min-w-12 text-center text-2xl font-bold text-primary">
+              {Number(value.floorDeparture) === 0 ? 'RDC' : `Étage ${value.floorDeparture}`}
+            </span>
+            <button
+              type="button"
+              onClick={() => onChange({ floorDeparture: String(Math.min(50, Number(value.floorDeparture) + 1)) })}
+              className="flex size-11 items-center justify-center rounded-xl border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95"
+              aria-label="Augmenter étage départ"
+            >
+              <TablerIcon name="plus" className="text-xl" />
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <span className="text-sm font-medium text-foreground">Étage arrivée</span>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => onChange({ floorDestination: String(Math.max(0, Number(value.floorDestination) - 1)) })}
+              className="flex size-11 items-center justify-center rounded-xl border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95"
+              aria-label="Diminuer étage arrivée"
+            >
+              <TablerIcon name="minus" className="text-xl" />
+            </button>
+            <span className="min-w-12 text-center text-2xl font-bold text-primary">
+              {Number(value.floorDestination) === 0 ? 'RDC' : `Étage ${value.floorDestination}`}
+            </span>
+            <button
+              type="button"
+              onClick={() => onChange({ floorDestination: String(Math.min(50, Number(value.floorDestination) + 1)) })}
+              className="flex size-11 items-center justify-center rounded-xl border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95"
+              aria-label="Augmenter étage arrivée"
+            >
+              <TablerIcon name="plus" className="text-xl" />
+            </button>
+          </div>
         </div>
       </div>
     </StepFrame>
