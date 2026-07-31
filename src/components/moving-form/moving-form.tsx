@@ -16,7 +16,6 @@ const TOTAL_STEPS = 5;
 
 type MoveType = "particulier" | "professionnel";
 type AccessType = "ascenseur" | "escaliers" | "rdc";
-type LogementSize = "studio" | "t2" | "t3" | "t4" | "maison";
 interface InventoryItem { id: string; qty: number }
 interface FormData {
   moveType: MoveType;
@@ -27,7 +26,6 @@ interface FormData {
   accessTypeDestination: AccessType;
   floorDeparture: string;
   floorDestination: string;
-  logementSize: LogementSize | "";
   inventory: InventoryItem[];
   otherItems: string;
   specialItems: string[];
@@ -41,9 +39,9 @@ const initial: FormData = {
   fromCity: "", toCity: "", moveDate: undefined,
   accessTypeDeparture: "ascenseur", accessTypeDestination: "ascenseur",
   floorDeparture: "", floorDestination: "",
-  logementSize: "", inventory: [], otherItems: "", specialItems: "",
+  inventory: [], otherItems: "", specialItems: [],
   name: "", phone: "", email: "",
-} as unknown as FormData;
+};
 
 type Room = { label: string; icon: string; items: { id: string; label: string; icon: string }[] };
 
@@ -101,12 +99,16 @@ const ROOMS: Room[] = [
 
 // ── Primitives ────────────────────────────────────────────────────────────────
 
-function Field({ label, icon, children, className }: { label: string; icon?: string; children: React.ReactNode; className?: string }) {
+function Field({ label, icon, optional, children, className }: {
+  label: string; icon?: string; optional?: boolean;
+  children: React.ReactNode; className?: string;
+}) {
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       <label className="flex items-center gap-1.5 text-sm font-semibold text-foreground/70">
         {icon && <TablerIcon name={icon} className="size-4 text-primary" />}
         {label}
+        {optional && <span className="text-xs font-normal text-muted-foreground">(facultatif)</span>}
       </label>
       {children}
     </div>
@@ -131,25 +133,32 @@ function TextInput({ value, onChange, placeholder, type = "text", autoComplete, 
   );
 }
 
-// ── City autocomplete ─────────────────────────────────────────────────────────
+// ── Address autocomplete ──────────────────────────────────────────────────────
 
-interface CitySuggestion { label: string; postcode: string; context: string }
+interface AddressSuggestion { label: string; postcode: string; context: string }
 
-async function fetchCitySuggestions(query: string): Promise<CitySuggestion[]> {
+async function fetchAddressSuggestions(query: string): Promise<AddressSuggestion[]> {
   const requestPath = `/api/address-search?q=${encodeURIComponent(query)}`;
-  const directUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&type=municipality&limit=6`;
+  const directUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=6&autocomplete=1`;
 
-  const parseSuggestions = (payload: any): CitySuggestion[] => {
+  const parseSuggestions = (payload: any): AddressSuggestion[] => {
     if (Array.isArray(payload?.suggestions)) {
       return payload.suggestions;
     }
 
     if (Array.isArray(payload?.features)) {
-      return payload.features.map((feature: any) => ({
-        label: feature?.properties?.city ?? feature?.properties?.name ?? "",
-        postcode: feature?.properties?.postcode ?? "",
-        context: feature?.properties?.context ?? "",
-      }));
+      return payload.features.map((feature: any) => {
+        const properties = feature?.properties ?? {};
+        const label = properties.type === "municipality"
+          ? properties.city ?? properties.name ?? ""
+          : [properties.name, properties.city].filter(Boolean).join(", ");
+
+        return {
+          label: label || properties.label || "",
+          postcode: properties.postcode ?? "",
+          context: properties.context ?? "",
+        };
+      });
     }
 
     return [];
@@ -173,11 +182,11 @@ async function fetchCitySuggestions(query: string): Promise<CitySuggestion[]> {
   }
 }
 
-function CityInput({ value, onChange, placeholder }: {
+function AddressInput({ value, onChange, placeholder }: {
   value: string; onChange: (v: string) => void; placeholder?: string;
 }) {
   const [query, setQuery] = useState(value);
-  const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
   const [error, setError] = useState("");
@@ -198,7 +207,7 @@ function CityInput({ value, onChange, placeholder }: {
       if (selectedRef.current) return; // selection happened — ignore stale fetch
       try {
         setError("");
-        const results = await fetchCitySuggestions(query);
+        const results = await fetchAddressSuggestions(query);
         if (selectedRef.current) return; // selection happened while fetch was in flight
         const seen = new Set<string>();
         const unique = results.filter((r) => {
@@ -224,8 +233,8 @@ function CityInput({ value, onChange, placeholder }: {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
-  const select = (s: CitySuggestion) => {
-    const display = `${s.label} (${s.postcode})`;
+  const select = (s: AddressSuggestion) => {
+    const display = s.postcode ? `${s.label} (${s.postcode})` : s.label;
     selectedRef.current = true;
     setQuery(display); onChange(display); setSuggestions([]); setOpen(false); setError("");
     // reset flag after a tick so future typing works normally
@@ -386,15 +395,17 @@ function FloorStepper({ value, onChange }: { value: string; onChange: (v: string
   const dec = () => onChange(String(Math.max(0, floor - 1)));
   const inc = () => onChange(String(Math.min(20, floor + 1)));
   return (
-    <div className="flex h-14 w-full items-center justify-between rounded-xl border-2 border-border bg-background px-2">
+    <div className="flex h-12 w-full items-center justify-between rounded-xl border-2 border-border bg-background px-1.5">
       <button type="button" onClick={dec} disabled={floor === 0}
-        className="flex size-10 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
-        <TablerIcon name="minus" className="size-5" />
+        className="flex size-9 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+        aria-label="Diminuer l'étage">
+        <TablerIcon name="minus" className="size-4" />
       </button>
-      <span className="text-base font-bold text-foreground">{floor === 0 ? "RDC" : `Étage ${floor}`}</span>
+      <span className="text-[0.95rem] font-bold text-foreground">{floor === 0 ? "RDC" : `Étage ${floor}`}</span>
       <button type="button" onClick={inc} disabled={floor === 20}
-        className="flex size-10 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
-        <TablerIcon name="plus" className="size-5" />
+        className="flex size-9 items-center justify-center rounded-lg border-2 border-primary bg-primary/10 text-primary transition hover:bg-primary hover:text-white active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+        aria-label="Augmenter l'étage">
+        <TablerIcon name="plus" className="size-4" />
       </button>
     </div>
   );
@@ -402,89 +413,105 @@ function FloorStepper({ value, onChange }: { value: string; onChange: (v: string
 
 // ── Step 1 ────────────────────────────────────────────────────────────────────
 
+function SectionTitle({ icon, children }: { icon: string; children: React.ReactNode }) {
+  return (
+    <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+      <TablerIcon name={icon} className="size-3.5 text-primary" />
+      {children}
+    </p>
+  );
+}
+
+function AccessSelect({ value, onChange }: { value: AccessType; onChange: (v: AccessType) => void }) {
+  return (
+    <Select value={value} onValueChange={(v) => onChange(v as AccessType)}>
+      <SelectTrigger className="h-12! w-full rounded-xl border-2 border-border bg-background px-4 text-[0.95rem] text-foreground focus:border-primary data-[state=open]:border-primary">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent className="rounded-xl border-border shadow-lg">
+        <SelectItem value="ascenseur">Ascenseur disponible</SelectItem>
+        <SelectItem value="escaliers">Escaliers uniquement</SelectItem>
+        <SelectItem value="rdc">Rez-de-chaussée</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+
+/** Adresse + accès + étage, for one end of the move. */
+function AddressBlock({
+  icon, title, address, onAddressChange, placeholder,
+  access, onAccessChange, floor, onFloorChange,
+}: {
+  icon: string; title: string;
+  address: string; onAddressChange: (v: string) => void; placeholder: string;
+  access: AccessType; onAccessChange: (v: AccessType) => void;
+  floor: string; onFloorChange: (v: string) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <SectionTitle icon={icon}>{title}</SectionTitle>
+      <Field label="Adresse" optional>
+        <AddressInput value={address} onChange={onAddressChange} placeholder={placeholder} />
+        <p className="text-xs text-muted-foreground">
+          Une ville ou une commune suffit si vous n'avez pas l'adresse exacte.
+        </p>
+      </Field>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Type d'accès" icon="elevator">
+          <AccessSelect value={access} onChange={onAccessChange} />
+        </Field>
+        <Field label="Étage" icon="stairs">
+          <FloorStepper value={floor} onChange={onFloorChange} />
+        </Field>
+      </div>
+    </div>
+  );
+}
+
 function Step1({ data, onChange, onNext }: {
   data: FormData; onChange: (p: Partial<FormData>) => void; onNext: () => void;
 }) {
-  const canNext = data.fromCity.trim() && data.toCity.trim();
   return (
     <div className="space-y-8">
-      <StepHeader step={1} title="Votre déménagement" description="Dites-nous d'où vous partez et où vous allez." />
+      <StepHeader step={1} title="Votre déménagement" description="Adresses, accès et date. Tout est facultatif à cette étape." />
 
       <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Type de déménagement</p>
+        <SectionTitle icon="truck">Type de déménagement</SectionTitle>
         <ChoiceCard selected={data.moveType === "particulier"} onClick={() => onChange({ moveType: "particulier" })} icon="home" label="Particulier" sub="Appartement, maison, studio" />
         <ChoiceCard selected={data.moveType === "professionnel"} onClick={() => onChange({ moveType: "professionnel" })} icon="building" label="Professionnel" sub="Bureaux, locaux, commerce" />
       </div>
 
       <div className="space-y-6">
-        {/* Départ */}
-        <div className="space-y-4">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            <TablerIcon name="home" className="size-3.5 text-primary" />
-            Départ
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Ville de départ">
-              <CityInput value={data.fromCity} onChange={(v) => onChange({ fromCity: v })} placeholder="Ex : Montpellier" />
-            </Field>
-            <Field label="Type d'accès">
-              <Select value={data.accessTypeDeparture} onValueChange={(v) => onChange({ accessTypeDeparture: v as AccessType })}>
-                <SelectTrigger className="h-12! w-full rounded-xl border-2 border-border bg-background px-4 text-[0.95rem] text-foreground focus:border-primary data-[state=open]:border-primary">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-border shadow-lg">
-                  <SelectItem value="ascenseur">Ascenseur disponible</SelectItem>
-                  <SelectItem value="escaliers">Escaliers uniquement</SelectItem>
-                  <SelectItem value="rdc">Rez-de-chaussée</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-          </div>
-          <Field label="Étage départ">
-            <FloorStepper value={data.floorDeparture} onChange={(v) => onChange({ floorDeparture: v })} />
-            <p className="text-xs text-muted-foreground">RDC = rez-de-chaussée. L'étage et le type d'accès influent sur le tarif.</p>
-          </Field>
-        </div>
+        <AddressBlock
+          icon="home"
+          title="Adresse de départ"
+          address={data.fromCity}
+          onAddressChange={(v) => onChange({ fromCity: v })}
+          placeholder="Ex : 12 rue de la Loge, Montpellier"
+          access={data.accessTypeDeparture}
+          onAccessChange={(v) => onChange({ accessTypeDeparture: v })}
+          floor={data.floorDeparture}
+          onFloorChange={(v) => onChange({ floorDeparture: v })}
+        />
 
         <hr className="border-border" />
 
-        {/* Arrivée */}
-        <div className="space-y-4">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            <TablerIcon name="map-pin" className="size-3.5 text-primary" />
-            Arrivée
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Ville d'arrivée">
-              <CityInput value={data.toCity} onChange={(v) => onChange({ toCity: v })} placeholder="Ex : Paris, Lattes, Lyon…" />
-            </Field>
-            <Field label="Type d'accès">
-              <Select value={data.accessTypeDestination} onValueChange={(v) => onChange({ accessTypeDestination: v as AccessType })}>
-                <SelectTrigger className="h-12! w-full rounded-xl border-2 border-border bg-background px-4 text-[0.95rem] text-foreground focus:border-primary data-[state=open]:border-primary">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-border shadow-lg">
-                  <SelectItem value="ascenseur">Ascenseur disponible</SelectItem>
-                  <SelectItem value="escaliers">Escaliers uniquement</SelectItem>
-                  <SelectItem value="rdc">Rez-de-chaussée</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-          </div>
-          <Field label="Étage arrivée">
-            <FloorStepper value={data.floorDestination} onChange={(v) => onChange({ floorDestination: v })} />
-            <p className="text-xs text-muted-foreground">RDC = rez-de-chaussée. L'étage et le type d'accès influent sur le tarif.</p>
-          </Field>
-        </div>
+        <AddressBlock
+          icon="map-pin"
+          title="Adresse d'arrivée"
+          address={data.toCity}
+          onAddressChange={(v) => onChange({ toCity: v })}
+          placeholder="Ex : 5 avenue de Lodève, Lattes"
+          access={data.accessTypeDestination}
+          onAccessChange={(v) => onChange({ accessTypeDestination: v })}
+          floor={data.floorDestination}
+          onFloorChange={(v) => onChange({ floorDestination: v })}
+        />
 
         <hr className="border-border" />
 
-        {/* Date */}
         <div className="space-y-4">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            <TablerIcon name="calendar" className="size-3.5 text-primary" />
-            Date souhaitée
-          </p>
+          <SectionTitle icon="calendar">Date souhaitée</SectionTitle>
           <Field label="Quand souhaitez-vous déménager ?">
             <DatePicker value={data.moveDate} onChange={(d) => onChange({ moveDate: d })} />
             <p className="text-xs text-muted-foreground">Pas de date fixe ? Laissez vide, on s'adapte à votre planning.</p>
@@ -492,10 +519,7 @@ function Step1({ data, onChange, onNext }: {
         </div>
       </div>
 
-      {!canNext && (
-        <p className="text-center text-xs text-muted-foreground">Renseignez les villes de départ et d'arrivée pour continuer.</p>
-      )}
-      <NavButtons onNext={canNext ? onNext : undefined} />
+      <NavButtons onNext={onNext} />
     </div>
   );
 }
@@ -599,7 +623,8 @@ function Step2({ data, onChange, onNext, onPrev }: {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-foreground/70">
+        <label className="flex items-center gap-1.5 text-sm font-semibold text-foreground/70">
+          <TablerIcon name="box" className="size-4 text-primary" />
           Autres objets <span className="ml-1.5 text-xs font-normal text-muted-foreground">Séparez par des virgules</span>
         </label>
         <div className="relative">
@@ -727,16 +752,25 @@ function Step4({ data, onNext, onPrev }: { data: FormData; onNext: () => void; o
       ).join(", ")
     : "Non renseigné";
 
+  const floorLabel = (floor: string) =>
+    floor === "" ? "" : floor === "0" ? "RDC" : `Étage ${floor}`;
+
+  /** "12 rue de la Loge, Montpellier — Ascenseur disponible · Étage 3" */
+  const endpointValue = (address: string, access: AccessType, floor: string) =>
+    [
+      address.trim() || "Adresse non renseignée",
+      [ACCESS_LABELS[access] ?? access, floorLabel(floor)].filter(Boolean).join(" · "),
+    ]
+      .filter(Boolean)
+      .join(" — ");
+
   return (
     <div className="space-y-6">
       <StepHeader step={4} title="Récapitulatif" description="Vérifiez vos informations avant d'envoyer." />
       <div className="rounded-2xl border border-border bg-muted/30 px-4 divide-y divide-border">
-        <SummaryRow icon="map-pin" label="Trajet" value={`${data.fromCity} → ${data.toCity}`} />
+        <SummaryRow icon="home" label="Départ" value={endpointValue(data.fromCity, data.accessTypeDeparture, data.floorDeparture)} />
+        <SummaryRow icon="map-pin" label="Arrivée" value={endpointValue(data.toCity, data.accessTypeDestination, data.floorDestination)} />
         {data.moveDate && <SummaryRow icon="calendar" label="Date" value={format(data.moveDate, "d MMMM yyyy", { locale: fr })} />}
-        <SummaryRow icon="elevator" label="Accès départ" value={ACCESS_LABELS[data.accessTypeDeparture] ?? data.accessTypeDeparture} />
-        <SummaryRow icon="elevator" label="Accès arrivée" value={ACCESS_LABELS[data.accessTypeDestination] ?? data.accessTypeDestination} />
-        {data.floorDeparture && <SummaryRow icon="stairs" label="Étage départ" value={data.floorDeparture === "0" ? "Rez-de-chaussée" : `Étage ${data.floorDeparture}`} />}
-        {data.floorDestination && <SummaryRow icon="stairs" label="Étage arrivée" value={data.floorDestination === "0" ? "Rez-de-chaussée" : `Étage ${data.floorDestination}`} />}
         <SummaryRow icon="package" label="Mobilier" value={inventorySummary} />
         {data.otherItems.trim() && <SummaryRow icon="pencil" label="Autres objets" value={data.otherItems} />}
         {data.specialItems.length > 0 && <SummaryRow icon="alert-triangle" label="Objets particuliers" value={data.specialItems.map((id) => SPECIAL_LABELS[id] ?? id).join(", ")} />}
@@ -769,15 +803,15 @@ function Step5({ data, onChange, onSubmit, onPrev, phone, phoneLink, isSubmittin
     <div className="space-y-6">
       <StepHeader step={5} title="Vos coordonnées" description="Nous vous enverrons votre estimation gratuite dans les 24h." />
       <div className="space-y-3">
-        <Field label="Nom complet">
+        <Field label="Nom complet" icon="user">
           <TextInput value={data.name} onChange={(v) => onChange({ name: v })} placeholder="Jean Dupont" autoComplete="name" invalid={Boolean(errors.name)} />
           <FieldError message={errors.name} />
         </Field>
-        <Field label="Téléphone">
+        <Field label="Téléphone" icon="phone">
           <TextInput value={data.phone} onChange={(v) => onChange({ phone: v })} placeholder="06 12 34 56 78" type="tel" autoComplete="tel" inputMode="tel" invalid={Boolean(errors.phone)} />
           <FieldError message={errors.phone} />
         </Field>
-        <Field label="Adresse email">
+        <Field label="Adresse email" icon="mail">
           <TextInput value={data.email} onChange={(v) => onChange({ email: v })} placeholder="vous@email.fr" type="email" autoComplete="email" invalid={Boolean(errors.email)} />
           <FieldError message={errors.email} />
         </Field>
@@ -807,7 +841,7 @@ export function MovingForm({ phone = "07 51 24 90 26", phoneLink = "0751249026" 
   phone?: string; phoneLink?: string;
 }) {
   const [step, setStep] = useState(1);
-  const [data, setData] = useState<FormData>({ ...initial, specialItems: [] });
+  const [data, setData] = useState<FormData>(initial);
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [finalStepErrors, setFinalStepErrors] = useState<FinalStepErrors>({});

@@ -91,7 +91,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       return badRequest('Payload invalide.');
     }
 
-    if (!payload.fromCity || !payload.toCity || !payload.name || !payload.phone || !payload.email) {
+    // Les adresses sont facultatives : seules les coordonnées sont requises.
+    if (!payload.name || !payload.phone || !payload.email) {
       return badRequest('Merci de renseigner les champs obligatoires.');
     }
 
@@ -100,18 +101,24 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     const email = buildQuoteEmail(payload);
-    const params = new URLSearchParams({
-      from: payload.fromCity,
-      to: payload.toCity,
-      name: payload.name,
-    });
+    const params = new URLSearchParams({ name: payload.name });
+
+    if (payload.fromCity) {
+      params.set('from', payload.fromCity);
+    }
+
+    if (payload.toCity) {
+      params.set('to', payload.toCity);
+    }
 
     if (payload.moveDate) {
       params.set('date', payload.moveDate);
     }
 
+    const trajet = [payload.fromCity, payload.toCity].filter(Boolean).join(' -> ');
+
     await sendBusinessEmail({
-      subject: `Demande de devis - ${payload.name} - ${payload.fromCity} -> ${payload.toCity}`,
+      subject: `Demande de devis - ${payload.name}${trajet ? ` - ${trajet}` : ''}`,
       html: email.html,
       text: email.text,
       replyTo: payload.email,

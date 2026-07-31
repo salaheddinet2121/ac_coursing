@@ -11,8 +11,12 @@ const moveDate = Astro.url.searchParams.get('date')?.trim() ?? '';
 
 const rows: Array<{ icon: string; label: string; value: string }> = [];
 
-if (fromCity && toCity) {
-  rows.push({ icon: 'map-pin', label: 'Trajet', value: `${fromCity} → ${toCity}` });
+if (fromCity) {
+  rows.push({ icon: 'home', label: 'Adresse de départ', value: fromCity });
+}
+
+if (toCity) {
+  rows.push({ icon: 'map-pin', label: "Adresse d'arrivée", value: toCity });
 }
 
 if (moveDate) {

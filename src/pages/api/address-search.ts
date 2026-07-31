@@ -2,13 +2,61 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-type CitySuggestion = {
+type AddressSuggestion = {
   label: string;
   postcode: string;
   context: string;
 };
 
-async function fetchFromCommunesApi(query: string): Promise<CitySuggestion[]> {
+/**
+ * Full-address lookup (numero + rue + commune). The BAN also returns
+ * municipality-only results, so a user who types just "Montpellier" still
+ * gets a usable suggestion.
+ */
+async function fetchFromAddressApi(query: string): Promise<AddressSuggestion[]> {
+  const upstreamUrl = new URL('https://api-adresse.data.gouv.fr/search/');
+  upstreamUrl.searchParams.set('q', query);
+  upstreamUrl.searchParams.set('limit', '6');
+  upstreamUrl.searchParams.set('autocomplete', '1');
+
+  const response = await fetch(upstreamUrl, {
+    headers: {
+      accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Address API failed with ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (!Array.isArray(data?.features)) {
+    return [];
+  }
+
+  return data.features
+    .map((feature: any) => {
+      const properties = feature?.properties ?? {};
+      // `name` is the street part for housenumber/street results and the
+      // commune name for municipality results.
+      const street = properties.name ?? '';
+      const city = properties.city ?? '';
+      const label = properties.type === 'municipality'
+        ? city
+        : [street, city].filter(Boolean).join(', ');
+
+      return {
+        label: label || properties.label || '',
+        postcode: properties.postcode ?? '',
+        context: properties.context ?? '',
+      };
+    })
+    .filter((item: AddressSuggestion) => item.label);
+}
+
+/** Fallback when the BAN is down: commune-level results only. */
+async function fetchFromCommunesApi(query: string): Promise<AddressSuggestion[]> {
   const upstreamUrl = new URL('https://geo.api.gouv.fr/communes');
   upstreamUrl.searchParams.set('nom', query);
   upstreamUrl.searchParams.set('limit', '6');
@@ -37,38 +85,7 @@ async function fetchFromCommunesApi(query: string): Promise<CitySuggestion[]> {
       postcode: Array.isArray(item?.codesPostaux) ? item.codesPostaux[0] ?? '' : '',
       context: [item?.departement?.nom, item?.region?.nom].filter(Boolean).join(', '),
     }))
-    .filter((item: CitySuggestion) => item.label);
-}
-
-async function fetchFromAddressApi(query: string): Promise<CitySuggestion[]> {
-  const upstreamUrl = new URL('https://api-adresse.data.gouv.fr/search/');
-  upstreamUrl.searchParams.set('q', query);
-  upstreamUrl.searchParams.set('type', 'municipality');
-  upstreamUrl.searchParams.set('limit', '6');
-
-  const response = await fetch(upstreamUrl, {
-    headers: {
-      accept: 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Address API failed with ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (!Array.isArray(data?.features)) {
-    return [];
-  }
-
-  return data.features
-    .map((feature: any) => ({
-      label: feature?.properties?.city ?? feature?.properties?.name ?? '',
-      postcode: feature?.properties?.postcode ?? '',
-      context: feature?.properties?.context ?? '',
-    }))
-    .filter((item: CitySuggestion) => item.label);
+    .filter((item: AddressSuggestion) => item.label);
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -84,13 +101,13 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
-    let suggestions: CitySuggestion[] = [];
+    let suggestions: AddressSuggestion[] = [];
 
     try {
-      suggestions = await fetchFromCommunesApi(query);
-    } catch (firstError) {
-      console.warn('Communes API lookup failed, falling back to address API', firstError);
       suggestions = await fetchFromAddressApi(query);
+    } catch (firstError) {
+      console.warn('Address API lookup failed, falling back to communes API', firstError);
+      suggestions = await fetchFromCommunesApi(query);
     }
 
     return new Response(JSON.stringify({ suggestions }), {
@@ -106,7 +123,7 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response(
       JSON.stringify({
         suggestions: [],
-        error: 'Recherche indisponible pour le moment. Vous pouvez saisir la ville manuellement.',
+        error: "Recherche indisponible pour le moment. Vous pouvez saisir l'adresse manuellement.",
       }),
       {
         status: 502,

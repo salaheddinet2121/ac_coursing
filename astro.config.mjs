@@ -53,18 +53,25 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
-      // Expose .env vars to process.env in dev (needed by server-side modules that avoid import.meta.env to prevent key baking)
+      // Expose .env vars to process.env in dev (needed by server-side modules
+      // that avoid import.meta.env to prevent key baking).
+      //
+      // Note: reading Vite's `config.env` does NOT work here — it only holds
+      // client-exposed vars (VITE_*), so server-only secrets like
+      // RESEND_API_KEY are absent from it and never reach process.env.
+      // Existing process.env values win, so real env vars (Coolify, CI)
+      // always take precedence over a local .env file.
       {
         name: 'env-to-process',
-        config(_, { command }) {
-          if (command === 'serve') {
-            // loadEnv is called by Vite before plugins; vars are available via import.meta.env at this point
-            // We mirror them into process.env so runtime server modules can read them without baking
+        config() {
+          const before = { ...process.env };
+          try {
+            process.loadEnvFile('.env');
+          } catch {
+            return; // no .env file — production supplies real env vars
           }
-        },
-        configResolved(config) {
-          for (const [k, v] of Object.entries(config.env)) {
-            if (!(k in process.env)) process.env[k] = v;
+          for (const key of Object.keys(before)) {
+            if (before[key] !== undefined) process.env[key] = before[key];
           }
         },
       },

@@ -17,7 +17,7 @@ export type QuoteRequest = {
   email: string;
 };
 
-const accessLabels: Record<QuoteRequest['accessType'], string> = {
+const accessLabels: Record<QuoteRequest['accessTypeDeparture'], string> = {
   ascenseur: 'Ascenseur disponible',
   escaliers: 'Escaliers uniquement',
   rdc: 'Rez-de-chaussée',
@@ -71,6 +71,11 @@ export function summarizeSpecialItems(items: string[]) {
   return items.length > 0 ? items.map((item) => specialLabels[item] ?? item).join(', ') : 'Aucun';
 }
 
+function formatFloor(floor: string | undefined) {
+  if (!floor) return 'Non renseigné';
+  return floor === '0' ? 'Rez-de-chaussée' : `Étage ${floor}`;
+}
+
 export function buildQuoteEmail(payload: QuoteRequest) {
   const formattedDate = payload.moveDate ? formatFrenchDate(payload.moveDate) : 'Non renseignée';
   const inventory = summarizeInventory(payload.inventory);
@@ -85,12 +90,13 @@ export function buildQuoteEmail(payload: QuoteRequest) {
     `Email: ${payload.email}`,
     '',
     `Type: ${moveType}`,
-    `Trajet: ${payload.fromCity} -> ${payload.toCity}`,
+    `Adresse de départ: ${payload.fromCity || 'Non renseignée'}`,
+    `Adresse d'arrivée: ${payload.toCity || 'Non renseignée'}`,
     `Date souhaitée: ${formattedDate}`,
     `Accès départ: ${accessLabels[payload.accessTypeDeparture]}`,
     `Accès arrivée: ${accessLabels[payload.accessTypeDestination]}`,
-    `Étage départ: ${payload.floorDeparture || 'Non renseigné'}`,
-    `Étage arrivée: ${payload.floorDestination || 'Non renseigné'}`,
+    `Étage départ: ${formatFloor(payload.floorDeparture)}`,
+    `Étage arrivée: ${formatFloor(payload.floorDestination)}`,
     `Mobilier: ${inventory}`,
     `Objets particuliers: ${specialItems}`,
     `Autres objets: ${payload.otherItems || 'Aucun'}`,
@@ -101,12 +107,13 @@ export function buildQuoteEmail(payload: QuoteRequest) {
     ['Téléphone', payload.phone],
     ['Email', payload.email],
     ['Type', moveType],
-    ['Trajet', `${payload.fromCity} → ${payload.toCity}`],
+    ['Adresse de départ', payload.fromCity || 'Non renseignée'],
+    ["Adresse d'arrivée", payload.toCity || 'Non renseignée'],
     ['Date souhaitée', formattedDate],
     ['Accès départ', accessLabels[payload.accessTypeDeparture]],
     ['Accès arrivée', accessLabels[payload.accessTypeDestination]],
-    ['Étage départ', payload.floorDeparture || 'Non renseigné'],
-    ['Étage arrivée', payload.floorDestination || 'Non renseigné'],
+    ['Étage départ', formatFloor(payload.floorDeparture)],
+    ['Étage arrivée', formatFloor(payload.floorDestination)],
     ['Mobilier', inventory],
     ['Objets particuliers', specialItems],
     ['Autres objets', payload.otherItems || 'Aucun'],
