@@ -1,5 +1,4 @@
 ---
-import { brand } from '../config/brand';
 import TablerIcon from './TablerIcon.astro';
 
 interface Props {
@@ -16,14 +15,14 @@ interface Props {
 
 const {
   topper         = 'Déménagement à Montpellier',
-  heading        = brand.tagline,
+  heading        = 'Déménageur à Montpellier : votre déménagement, géré avec soin.',
   description    = '1 500+ déménagements réussis. Devis gratuit sous 24h. Assurance transport incluse. Prix fixe garanti.',
   ctaLabel       = 'Estimer le coût gratuitement',
   ctaHref        = '/devis',
   secondaryLabel = 'Voir les services',
   secondaryHref  = '/#services',
   imageSrc       = '/hero_image.webp',
-  imageAlt       = 'Déménagement AC Coursing Montpellier',
+  imageAlt       = 'Camion de déménagement AC Coursing dans les rues de Montpellier',
 } = Astro.props;
 
 ---
@@ -36,7 +35,7 @@ const {
     <div class="order-1 space-y-5 lg:space-y-6">
 
       <!-- Topper -->
-      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/8 px-4 py-1.5">
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
         <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
         <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
       </div>
@@ -89,7 +88,8 @@ const {
         <img
           src={imageSrc}
           alt={imageAlt}
-          loading="lazy"
+          loading="eager"
+          fetchpriority="high"
           decoding="async"
           class="size-full object-cover"
         />

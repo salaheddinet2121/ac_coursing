@@ -15,7 +15,6 @@ import About from '../components/About.astro';
 import Reviews from '../components/Reviews.astro';
 import Gallery from '../components/Gallery.astro';
 import CTA from '../components/CTA.astro';
-import { brand } from '../config/brand';
 import { client } from '../data/client';
 import { getPlacesData, formatRating } from '../lib/google-places';
 
@@ -24,8 +23,8 @@ const ratingDisplay = formatRating(places.rating);
 ---
 
 <BaseLayout
-  title="Déménagement Montpellier — Devis gratuit AC Coursing"
-  description={brand.description}
+  title="Déménageur Montpellier | Devis Gratuit | AC Coursing"
+  description="Déménageur à Montpellier depuis 2015. Prix fixe garanti, pas de mauvaise surprise, devis gratuit en 24h. Résidentiel et longue distance. Estimez votre déménagement."
   schema={{
     '@context': 'https://schema.org',
     '@type': 'MovingCompany',
@@ -79,6 +78,7 @@ const ratingDisplay = formatRating(places.rating);
     ]}
   />
   <StatementSection
+    statementBold="Chez AC Coursing, nous prenons en charge votre déménagement à Montpellier de A à Z,"
     stats={[
       { value: '1 500+', label: 'déménagements réalisés' },
       { value: String(places.reviewCount), label: 'avis 5 étoiles Google' },
