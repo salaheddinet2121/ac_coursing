@@ -263,39 +263,6 @@ function DatePicker({ value, onChange }: { value: Date | undefined; onChange: (d
   );
 }
 
-function ChoiceCard({ selected, onClick, icon, label, sub }: {
-  selected: boolean; onClick: () => void; icon: string; label: string; sub?: string;
-}) {
-  return (
-    <button type="button" onClick={onClick} className={cn(
-      "flex w-full items-center gap-4 rounded-2xl border-2 p-4 text-left transition-all",
-      selected ? "border-primary bg-primary/5 shadow-[0_0_0_3px_color-mix(in_oklch,var(--primary)_15%,transparent)]"
-               : "border-border bg-background hover:border-primary/40 hover:bg-muted/50",
-    )}>
-      <span className={cn(
-        "flex size-11 shrink-0 items-center justify-center rounded-xl",
-        selected ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground",
-      )}>
-        <TablerIcon name={icon} className="size-5" />
-      </span>
-      <div className="flex-1 min-w-0">
-        <p className="font-bold text-foreground">{label}</p>
-        {sub && <p className="text-sm text-muted-foreground mt-0.5">{sub}</p>}
-      </div>
-      <span className={cn(
-        "flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-all",
-        selected ? "border-primary bg-primary" : "border-border",
-      )}>
-        {selected && (
-          <svg viewBox="0 0 10 8" fill="none" className="size-2.5">
-            <path d="M1 4l2.5 3L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        )}
-      </span>
-    </button>
-  );
-}
-
 function NavButtons({ onPrev, onNext, nextLabel = "Continuer", isLast }: {
   onPrev?: () => void; onNext?: () => void; nextLabel?: string; isLast?: boolean;
 }) {
@@ -332,50 +299,46 @@ const STEPPER_STEPS: { icon: string; label: string }[] = [
 ];
 
 function Stepper({ step }: { step: number }) {
+  const current = STEPPER_STEPS[step - 1];
   return (
-    <ol className="flex items-center" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
-      {STEPPER_STEPS.map((s, i) => {
-        const n = i + 1;
-        const isDone = n < step;
-        const isCurrent = n === step;
-        const isLast = n === STEPPER_STEPS.length;
-        return (
-          <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
-            <div className="flex flex-col items-center gap-1.5">
+    <div className="space-y-2">
+      <ol className="flex items-center" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
+        {STEPPER_STEPS.map((s, i) => {
+          const n = i + 1;
+          const isDone = n < step;
+          const isCurrent = n === step;
+          const isLast = n === STEPPER_STEPS.length;
+          return (
+            <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
               <span
                 aria-current={isCurrent ? "step" : undefined}
                 className={cn(
-                  "flex size-8 shrink-0 items-center justify-center rounded-full border-2 transition-colors sm:size-9",
+                  "flex size-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
                   isDone || isCurrent
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border bg-background text-muted-foreground",
                 )}
               >
                 {isDone ? (
-                  <TablerIcon name="check" className="size-4" />
+                  <TablerIcon name="check" className="size-3.5" />
                 ) : (
-                  <TablerIcon name={s.icon} className="size-4" />
+                  <TablerIcon name={s.icon} className="size-3.5" />
                 )}
               </span>
-              <span
-                className={cn(
-                  "hidden text-[11px] font-semibold whitespace-nowrap sm:block",
-                  isDone || isCurrent ? "text-foreground" : "text-muted-foreground",
-                )}
-              >
-                {s.label}
-              </span>
-            </div>
-            {!isLast && (
-              <span
-                aria-hidden="true"
-                className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors sm:mx-2", isDone ? "bg-primary" : "bg-border")}
-              />
-            )}
-          </li>
-        );
-      })}
-    </ol>
+              {!isLast && (
+                <span
+                  aria-hidden="true"
+                  className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors", isDone ? "bg-primary" : "bg-border")}
+                />
+              )}
+            </li>
+          );
+        })}
+      </ol>
+      <p className="text-xs font-medium text-muted-foreground">
+        Étape {step} sur {TOTAL_STEPS} <span aria-hidden="true">&middot;</span> <span className="font-semibold text-foreground">{current.label}</span>
+      </p>
+    </div>
   );
 }
 
@@ -474,17 +437,41 @@ function AddressBlock({
 function Step1({ data, onChange, onNext }: {
   data: FormData; onChange: (p: Partial<FormData>) => void; onNext: () => void;
 }) {
+  const [showArrival, setShowArrival] = useState(Boolean(data.toCity));
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <StepHeader step={1} title="Votre déménagement" description="Adresses, accès et date. Tout est facultatif à cette étape." />
 
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         <SectionTitle icon="truck">Type de déménagement</SectionTitle>
-        <ChoiceCard selected={data.moveType === "particulier"} onClick={() => onChange({ moveType: "particulier" })} icon="home" label="Particulier" sub="Appartement, maison, studio" />
-        <ChoiceCard selected={data.moveType === "professionnel"} onClick={() => onChange({ moveType: "professionnel" })} icon="building" label="Professionnel" sub="Bureaux, locaux, commerce" />
+        <div className="grid grid-cols-2 gap-1 rounded-xl border-2 border-border bg-muted/40 p-1">
+          <button
+            type="button"
+            onClick={() => onChange({ moveType: "particulier" })}
+            className={cn(
+              "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all",
+              data.moveType === "particulier" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            <TablerIcon name="home" className="size-4" />
+            Particulier
+          </button>
+          <button
+            type="button"
+            onClick={() => onChange({ moveType: "professionnel" })}
+            className={cn(
+              "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all",
+              data.moveType === "professionnel" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            <TablerIcon name="building" className="size-4" />
+            Professionnel
+          </button>
+        </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-5">
         <AddressBlock
           icon="home"
           title="Adresse de départ"
@@ -499,21 +486,34 @@ function Step1({ data, onChange, onNext }: {
 
         <hr className="border-border" />
 
-        <AddressBlock
-          icon="map-pin"
-          title="Adresse d'arrivée"
-          address={data.toCity}
-          onAddressChange={(v) => onChange({ toCity: v })}
-          placeholder="Ex : 5 avenue de Lodève, Lattes"
-          access={data.accessTypeDestination}
-          onAccessChange={(v) => onChange({ accessTypeDestination: v })}
-          floor={data.floorDestination}
-          onFloorChange={(v) => onChange({ floorDestination: v })}
-        />
+        {showArrival ? (
+          <AddressBlock
+            icon="map-pin"
+            title="Adresse d'arrivée"
+            address={data.toCity}
+            onAddressChange={(v) => onChange({ toCity: v })}
+            placeholder="Ex : 5 avenue de Lodève, Lattes"
+            access={data.accessTypeDestination}
+            onAccessChange={(v) => onChange({ accessTypeDestination: v })}
+            floor={data.floorDestination}
+            onFloorChange={(v) => onChange({ floorDestination: v })}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowArrival(true)}
+            className="flex w-full items-center gap-3 rounded-xl border-2 border-dashed border-border px-4 py-3 text-left text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
+              <TablerIcon name="plus" className="size-4" />
+            </span>
+            Ajouter l'adresse d'arrivée
+          </button>
+        )}
 
         <hr className="border-border" />
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           <SectionTitle icon="calendar">Date souhaitée</SectionTitle>
           <Field label="Quand souhaitez-vous déménager ?">
             <DatePicker value={data.moveDate} onChange={(d) => onChange({ moveDate: d })} />
