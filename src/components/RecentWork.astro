@@ -13,9 +13,9 @@ interface Props {
 const {
   heading        = 'Nos réalisations. À Montpellier et partout en France.',
   description    = "Chaque déménagement reçoit le même soin : protection systématique du mobilier, chargement méthodique et équipe ponctuelle. Voici un aperçu de nos interventions récentes.",
-  ctaLabel       = 'Obtenir mon devis gratuit',
+  ctaLabel       = 'Devis gratuit',
   ctaHref        = '/devis',
-  secondaryLabel = 'Voir toutes nos réalisations',
+  secondaryLabel = 'Voir nos réalisations',
   secondaryHref  = '/galerie',
 } = Astro.props;
 
@@ -38,16 +38,17 @@ const photos = [
       <div class="space-y-5" data-reveal>
         <h2 class="font-heading text-display leading-tight text-foreground">{heading}</h2>
         <p class="max-w-md text-lead leading-relaxed text-muted-foreground">{description}</p>
-        <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
+        <div class="flex flex-wrap items-center gap-3 pt-1">
           <a
             href={ctaHref}
-            class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 py-3 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            class="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
+            <TablerIcon name="shield-check" filled class="text-base leading-none" />
             {ctaLabel}
           </a>
           <a
             href={secondaryHref}
-            class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-primary px-7 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            class="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary"
           >
             {secondaryLabel}
             <TablerIcon name="arrow-right" class="text-base leading-none" />
