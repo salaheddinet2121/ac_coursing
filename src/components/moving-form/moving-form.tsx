@@ -837,11 +837,23 @@ function Step5({ data, onChange, onSubmit, onPrev, phone, phoneLink, isSubmittin
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-export function MovingForm({ phone = "07 51 24 90 26", phoneLink = "0751249026" }: {
+export function MovingForm({
+  phone = "07 51 24 90 26", phoneLink = "0751249026",
+  prefillAddress, prefillFloor, prefillDate,
+}: {
   phone?: string; phoneLink?: string;
+  prefillAddress?: string; prefillFloor?: string; prefillDate?: string;
 }) {
   const [step, setStep] = useState(1);
-  const [data, setData] = useState<FormData>(initial);
+  const [data, setData] = useState<FormData>(() => {
+    const parsedDate = prefillDate ? new Date(prefillDate) : undefined;
+    return {
+      ...initial,
+      fromCity: prefillAddress ?? initial.fromCity,
+      floorDeparture: prefillFloor ?? initial.floorDeparture,
+      moveDate: parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate : initial.moveDate,
+    };
+  });
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [finalStepErrors, setFinalStepErrors] = useState<FinalStepErrors>({});
