@@ -5,128 +5,195 @@ interface Props {
   topper?: string;
   heading?: string;
   description?: string;
-  ctaLabel?: string;
-  ctaHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
   imageSrc?: string;
   imageAlt?: string;
+  formTitle?: string;
+  formAction?: string;
+  submitLabel?: string;
   ratingValue?: string;
-  reviewQuote?: string;
   points?: { icon: 'shield-check' | 'truck-delivery' | 'check'; label: string }[];
+  services?: { value: string; label: string }[];
+  timelines?: { value: string; label: string }[];
 }
 
 const {
   topper         = 'Déménagement à Montpellier',
   heading        = 'Déménageur à Montpellier : votre déménagement, géré avec soin.',
   description    = "AC Coursing est votre déménageur à Montpellier, avec un devis gratuit sous 24h et un prix fixe garanti du premier jour au dernier carton.",
-  ctaLabel       = 'Devis gratuit',
-  ctaHref        = '/devis',
   secondaryLabel = 'Voir les services',
   secondaryHref  = '/#services',
   imageSrc       = '/hero_image.webp',
   imageAlt       = 'Camion de déménagement AC Coursing dans les rues de Montpellier',
+  formTitle      = 'Obtenez votre devis gratuit',
+  formAction     = '/devis',
+  submitLabel    = 'Obtenir mon devis gratuit',
   ratingValue    = '5,0/5',
-  reviewQuote    = "Rien n'a été cassé, tout était bien protégé.",
   points = [
     { icon: 'shield-check',   label: "11 ans d'expérience" },
     { icon: 'truck-delivery', label: '1 500+ déménagements' },
     { icon: 'check',          label: '194 avis vérifiés' },
   ],
+  services = [
+    { value: 'demenagement-local',    label: 'Déménagement local' },
+    { value: 'longue-distance',       label: 'Déménagement longue distance' },
+    { value: 'demenagement-france',   label: 'Déménagement en France' },
+    { value: 'mise-en-carton',        label: 'Mise en carton' },
+    { value: 'objets-volumineux',     label: 'Objets volumineux' },
+    { value: 'seniors',               label: 'Déménagement seniors' },
+    { value: 'enlevement-dechets',    label: 'Enlèvement de déchets' },
+  ],
+  timelines = [
+    { value: 'cette-semaine',  label: 'Cette semaine' },
+    { value: 'ce-mois',        label: 'Ce mois-ci' },
+    { value: '1-3-mois',       label: 'Dans 1 à 3 mois' },
+    { value: 'je-me-renseigne', label: 'Je me renseigne' },
+  ],
 } = Astro.props;
 
 ---
 
-<section id="accueil" class="relative overflow-hidden bg-background py-10 sm:py-16 lg:py-24">
+<section id="accueil" class="relative isolate overflow-hidden bg-dark">
 
-  <div class="relative mx-auto grid max-w-site grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+  <!-- Background photo -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <img
+      src={imageSrc}
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="size-full object-cover"
+    />
+    <div class="absolute inset-0 bg-linear-to-t from-dark/85 via-dark/45 to-dark/60"></div>
+  </div>
+
+  <div class="relative mx-auto grid max-w-site grid-cols-1 gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.3fr_0.9fr] lg:items-center lg:gap-16 lg:py-32">
 
     <!-- Content -->
-    <div class="order-1 space-y-5 lg:space-y-6">
+    <div class="order-1">
 
       <!-- Topper -->
-      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
-        <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
-        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      <div class="inline-flex items-center gap-2.5">
+        <span class="h-px w-8 bg-primary-soft" aria-hidden="true"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary-soft">{topper}</span>
       </div>
 
       <!-- Heading -->
-      <h1 class="font-heading text-h1 leading-tight text-foreground" transition:name="hero-heading">
+      <h1 class="mt-5 font-heading text-h1 leading-tight text-primary-fg" transition:name="hero-heading">
         {heading}
       </h1>
 
       <!-- Description -->
-      <p class="max-w-xl text-lead leading-relaxed text-muted-foreground">
+      <p class="mt-5 max-w-xl text-lead leading-relaxed text-primary-fg/70">
         {description}
       </p>
 
-      <!-- CTAs -->
-      <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:gap-4">
-        <a
-          href={ctaHref}
-          class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 py-3 text-base font-bold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          {ctaLabel}
-        </a>
-        <a
-          href={secondaryHref}
-          class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-primary px-7 py-3 text-base font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          {secondaryLabel}
-          <TablerIcon name="arrow-right" class="text-base leading-none" />
-        </a>
-      </div>
-
       <!-- Trust points -->
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-3 text-sm font-semibold text-muted-foreground">
+      <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm font-semibold text-primary-fg/80">
         {points.map(({ icon, label }) => (
           <span class="inline-flex items-center gap-1.5">
-            <TablerIcon name={icon} class="text-base leading-none text-primary" />
+            <TablerIcon name={icon} class="text-base leading-none text-primary-soft" />
             {label}
           </span>
         ))}
       </div>
 
-      <!-- Trust line -->
-      <div class="flex flex-wrap items-center gap-2 pt-1 text-sm text-muted-foreground">
+      <!-- Rating -->
+      <div class="mt-2 flex flex-wrap items-center gap-2 text-sm text-primary-fg/70">
         <span class="inline-flex items-center gap-0.5" aria-hidden="true">
           {Array.from({ length: 5 }).map(() => (
-            <TablerIcon name="star-filled" class="text-base leading-none text-primary" />
+            <TablerIcon name="star-filled" class="text-base leading-none text-primary-soft" />
           ))}
         </span>
-        <span class="font-semibold text-foreground">{ratingValue}</span>
+        <span class="font-semibold text-primary-fg">{ratingValue}</span>
         <span>sur Google</span>
-        <span aria-hidden="true">&mdash;</span>
-        <span class="italic">&ldquo;{reviewQuote}&rdquo;</span>
       </div>
 
+      <!-- Secondary CTA -->
+      <div class="mt-7">
+        <a
+          href={secondaryHref}
+          class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-primary-fg/30 px-7 py-3 text-base font-bold text-primary-fg transition-colors hover:bg-primary-fg/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fg"
+        >
+          {secondaryLabel}
+          <TablerIcon name="arrow-right" class="text-base leading-none" />
+        </a>
+      </div>
     </div>
 
-    <!-- Image — hidden on mobile, visible from lg -->
-    <div class="relative hidden lg:block lg:order-2" transition:name="hero-image">
+    <!-- Estimate form card -->
+    <div class="order-2 w-full rounded-2xl bg-dark-surface p-6 shadow-lg ring-1 ring-primary-fg/10 sm:p-7" transition:name="hero-image">
+      <h2 class="font-heading text-h3 leading-snug text-primary-fg">{formTitle}</h2>
 
-      <!-- Badge -->
-      <div class="absolute -bottom-4 -left-4 z-10 flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-lg">
-        <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <TablerIcon name="shield-check" filled class="text-lg leading-none" />
-        </span>
-        <div>
-          <p class="text-xs font-bold uppercase tracking-wide text-foreground">Assuré & garanti</p>
-          <p class="text-xs text-muted-foreground">Prix fixe · transport inclus</p>
+      <form method="get" action={formAction} class="mt-5 space-y-4">
+        <div class="space-y-3">
+          <label class="block">
+            <span class="mb-1.5 block text-xs font-medium text-primary-fg/60">Service</span>
+            <div class="relative flex items-center">
+              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/50 [&_svg]:size-4">
+                <TablerIcon name="tools" />
+              </span>
+              <select
+                name="service"
+                class="w-full appearance-none rounded-lg border border-primary-fg/10 bg-dark py-2.5 pr-8 pl-9 text-sm font-medium text-primary-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {services.map((s) => <option value={s.value}>{s.label}</option>)}
+              </select>
+              <span class="pointer-events-none absolute right-3 flex size-3.5 rotate-90 items-center justify-center overflow-hidden text-primary-fg/40 [&_svg]:size-3.5">
+                <TablerIcon name="chevron-right" />
+              </span>
+            </div>
+          </label>
+
+          <label class="block">
+            <span class="mb-1.5 block text-xs font-medium text-primary-fg/60">Délai</span>
+            <div class="relative flex items-center">
+              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/50 [&_svg]:size-4">
+                <TablerIcon name="calendar" />
+              </span>
+              <select
+                name="timeline"
+                class="w-full appearance-none rounded-lg border border-primary-fg/10 bg-dark py-2.5 pr-8 pl-9 text-sm font-medium text-primary-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {timelines.map((t) => <option value={t.value}>{t.label}</option>)}
+              </select>
+              <span class="pointer-events-none absolute right-3 flex size-3.5 rotate-90 items-center justify-center overflow-hidden text-primary-fg/40 [&_svg]:size-3.5">
+                <TablerIcon name="chevron-right" />
+              </span>
+            </div>
+          </label>
         </div>
-      </div>
 
-      <!-- Image -->
-      <div class="relative overflow-hidden rounded-hero border border-border bg-card shadow-xl aspect-[4/3]">
-        <img
-          src={imageSrc}
-          alt={imageAlt}
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="size-full object-cover"
-        />
-      </div>
+        <!-- Stats -->
+        <div class="grid grid-cols-2 divide-x divide-primary-fg/10 border-t border-primary-fg/10 pt-4">
+          <div>
+            <p class="text-xs text-primary-fg/50">Réponse</p>
+            <p class="mt-0.5 text-sm font-bold text-primary-fg">Sous 24h</p>
+          </div>
+          <div class="pl-4">
+            <p class="text-xs text-primary-fg/50">Prix</p>
+            <p class="mt-0.5 text-sm font-bold text-primary-fg">Fixe garanti</p>
+          </div>
+        </div>
+
+        <!-- Free / insured line -->
+        <div class="flex items-center justify-between text-sm">
+          <p class="text-primary-fg"><span class="font-bold">Gratuit</span> <span class="text-primary-fg/60">&middot; sans engagement</span></p>
+          <p class="inline-flex items-center gap-1 text-primary-fg/60">
+            <TablerIcon name="shield-check" class="text-base leading-none" />
+            Assuré & licencié
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-background px-6 py-3 text-base font-bold text-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+        >
+          {submitLabel}
+        </button>
+      </form>
     </div>
 
   </div>
