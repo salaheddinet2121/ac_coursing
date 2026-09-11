@@ -20,13 +20,13 @@ const {
 } = Astro.props;
 
 const photos = [
-  { src: '/images/residentiel/residentiel-01.webp', alt: "Déménagement appartement à Montpellier — chargement du mobilier par l'équipe AC Coursing" },
-  { src: '/images/professionnel/professionnel-01.webp', alt: 'Déménagement de bureaux professionnels à Montpellier — AC Coursing' },
-  { src: '/images/residentiel/residentiel-04.webp', alt: 'Installation et remise en place du mobilier dans un appartement — AC Coursing Montpellier' },
-  { src: '/images/longue-distance/longue-distance-01.webp', alt: 'Déménagement longue distance depuis Montpellier — camion prêt au départ AC Coursing' },
-  { src: '/images/professionnel/professionnel-02.webp', alt: "Emballage et protection de matériel professionnel lors d'un transfert de locaux" },
-  { src: '/images/residentiel/residentiel-03.webp', alt: 'Transport sécurisé d\'objets fragiles en camion pour un déménagement à Montpellier' },
-  { src: '/images/garde-meubles/garde-meubles-02.webp', alt: 'Garde-meubles organisé pour stockage temporaire de mobilier à Montpellier' },
+  { src: '/images/residentiel/residentiel-01.webp', width: 1200, height: 1600, alt: "Déménagement appartement à Montpellier — chargement du mobilier par l'équipe AC Coursing" },
+  { src: '/images/professionnel/professionnel-01.webp', width: 1600, height: 1200, alt: 'Déménagement de bureaux professionnels à Montpellier — AC Coursing' },
+  { src: '/images/residentiel/residentiel-04.webp', width: 1600, height: 1200, alt: 'Installation et remise en place du mobilier dans un appartement — AC Coursing Montpellier' },
+  { src: '/images/longue-distance/longue-distance-01.webp', width: 678, height: 452, alt: 'Déménagement longue distance depuis Montpellier — camion prêt au départ AC Coursing' },
+  { src: '/images/professionnel/professionnel-02.webp', width: 1536, height: 2048, alt: "Emballage et protection de matériel professionnel lors d'un transfert de locaux" },
+  { src: '/images/residentiel/residentiel-03.webp', width: 1368, height: 1824, alt: 'Transport sécurisé d\'objets fragiles en camion pour un déménagement à Montpellier' },
+  { src: '/images/garde-meubles/garde-meubles-02.webp', width: 1600, height: 1200, alt: 'Garde-meubles organisé pour stockage temporaire de mobilier à Montpellier' },
 ];
 ---
 
@@ -56,11 +56,11 @@ const photos = [
       </div>
 
       <!-- Masonry photo collage -->
-      <div class="columns-2 gap-3 sm:gap-4 lg:columns-3" data-reveal style="transition-delay:120ms">
+      <div class="columns-2 gap-3 [column-fill:balance] sm:gap-4 lg:columns-3" data-reveal style="transition-delay:120ms">
 
-        {photos.slice(0, 1).map(({ src, alt }) => (
+        {photos.slice(0, 1).map(({ src, alt, width, height }) => (
           <div class="mb-3 overflow-hidden rounded-photo border border-border bg-card sm:mb-4">
-            <img src={src} alt={alt} loading="lazy" decoding="async" class="h-auto w-full object-cover" />
+            <img src={src} width={width} height={height} alt={alt} loading="lazy" decoding="async" class="h-auto w-full object-cover" />
           </div>
         ))}
 
@@ -73,9 +73,9 @@ const photos = [
           <p class="text-xs font-semibold text-primary-fg/50">Thomas R. &middot; Lattes</p>
         </div>
 
-        {photos.slice(1).map(({ src, alt }) => (
+        {photos.slice(1).map(({ src, alt, width, height }) => (
           <div class="mb-3 overflow-hidden rounded-photo border border-border bg-card sm:mb-4">
-            <img src={src} alt={alt} loading="lazy" decoding="async" class="h-auto w-full object-cover" />
+            <img src={src} width={width} height={height} alt={alt} loading="lazy" decoding="async" class="h-auto w-full object-cover" />
           </div>
         ))}
 

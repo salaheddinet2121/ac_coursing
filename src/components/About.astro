@@ -13,26 +13,25 @@ interface Props {
 }
 
 const {
-  topper   = 'Simple & rapide',
-  heading  = "4 étapes. C'est tout.",
+  topper   = 'Notre structure',
+  heading  = 'Une équipe cadrée, un interlocuteur unique',
   body = [
-    "Vous nous appelez ou vous remplissez le formulaire. En quelques minutes, nous cadrons le volume, l'adresse de départ, l'arrivée et les contraintes d'accès.",
-    "Ensuite nous vous transmettons un devis fixe, nous planifions l'intervention et notre équipe prend en charge la protection, le transport et la remise en place.",
+    "AC Coursing accompagne les déménagements à Montpellier et dans toute la région depuis 2015. Nous intervenons aussi sur les trajets longue distance, les besoins de stockage, les débarras et les transferts professionnels.",
+    "Notre approche est simple: cadrage précis, devis fixe, planning clair et exécution propre. L'objectif est de réduire la friction côté client, pas de la déplacer.",
   ],
   benefits = [
-    'Vous nous appelez: 5 minutes pour cerner le besoin.',
-    'Devis gratuit & fixe: poste par poste, sans surprise.',
-    'On gère tout: emballage, démontage, transport, remontage.',
-    'Vous êtes chez vous: tout est remis en place et vérifié avec vous.',
+    "Ponctualité et équipe joignable avant, pendant et après l'intervention.",
+    'Prix annoncé = prix facturé, sauf changement de périmètre validé avec vous.',
+    'Protection du mobilier, assurance transport et soin sur les objets fragiles.',
   ],
   ctaLabel = 'Demander mon devis',
   ctaHref  = '/devis',
-  imageSrc = '/hero_image.webp',
-  imageAlt = 'Garde-meubles sécurisé AC Coursing',
+  imageSrc = '/images/residentiel/residentiel-04.webp',
+  imageAlt = 'Installation et remise en place du mobilier dans un appartement — AC Coursing Montpellier',
 } = Astro.props;
 ---
 
-<section id="processus" class="bg-dark py-section">
+<section id="a-propos" class="bg-dark py-section">
   <div class="mx-auto grid max-w-site grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
 
     <!-- Image -->

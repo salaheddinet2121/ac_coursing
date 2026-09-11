@@ -12,17 +12,17 @@ const ratingDisplay = formatRating(places.rating);
 const categories = ['Tout', 'Résidentiel', 'Professionnel', 'Longue distance', 'Garde-meubles'];
 
 const photos = [
-  { src: '/images/residentiel/residentiel-01.webp',       alt: 'Déménagement appartement à Montpellier — chargement du mobilier par l\'équipe AC Coursing',   cat: 'Résidentiel' },
-  { src: '/images/residentiel/residentiel-02.webp',       alt: 'Protection et emballage soigné de mobilier lors d\'un déménagement résidentiel à Montpellier', cat: 'Résidentiel' },
-  { src: '/images/residentiel/residentiel-03.webp',       alt: 'Transport sécurisé d\'objets fragiles en camion pour un déménagement à Montpellier',           cat: 'Résidentiel' },
-  { src: '/images/residentiel/residentiel-04.webp',       alt: 'Installation et remise en place du mobilier dans un appartement — AC Coursing Montpellier',    cat: 'Résidentiel' },
-  { src: '/images/residentiel/residentiel-05.webp',       alt: 'Déménagement maison à Montpellier — équipe AC Coursing en action',                            cat: 'Résidentiel' },
-  { src: '/images/professionnel/professionnel-01.webp',   alt: 'Déménagement de bureaux professionnels à Montpellier — AC Coursing',                          cat: 'Professionnel' },
-  { src: '/images/professionnel/professionnel-02.webp',   alt: 'Emballage et protection de matériel professionnel lors d\'un transfert de locaux',             cat: 'Professionnel' },
-  { src: '/images/longue-distance/longue-distance-01.webp', alt: 'Déménagement longue distance depuis Montpellier — camion prêt au départ AC Coursing',      cat: 'Longue distance' },
-  { src: '/images/longue-distance/longue-distance-02.webp', alt: 'Livraison soignée lors d\'un déménagement longue distance partout en France',               cat: 'Longue distance' },
-  { src: '/images/garde-meubles/garde-meubles-01.webp',   alt: 'Stockage sécurisé en garde-meubles à Montpellier — entrepôt AC Coursing',                    cat: 'Garde-meubles' },
-  { src: '/images/garde-meubles/garde-meubles-02.webp',   alt: 'Garde-meubles organisé pour stockage temporaire de mobilier à Montpellier',                   cat: 'Garde-meubles' },
+  { src: '/images/residentiel/residentiel-01.webp',       width: 1200, height: 1600, alt: 'Déménagement appartement à Montpellier — chargement du mobilier par l\'équipe AC Coursing',   cat: 'Résidentiel' },
+  { src: '/images/residentiel/residentiel-02.webp',       width: 1368, height: 1824, alt: 'Protection et emballage soigné de mobilier lors d\'un déménagement résidentiel à Montpellier', cat: 'Résidentiel' },
+  { src: '/images/residentiel/residentiel-03.webp',       width: 1368, height: 1824, alt: 'Transport sécurisé d\'objets fragiles en camion pour un déménagement à Montpellier',           cat: 'Résidentiel' },
+  { src: '/images/residentiel/residentiel-04.webp',       width: 1600, height: 1200, alt: 'Installation et remise en place du mobilier dans un appartement — AC Coursing Montpellier',    cat: 'Résidentiel' },
+  { src: '/images/residentiel/residentiel-05.webp',       width: 1152, height: 2048, alt: 'Déménagement maison à Montpellier — équipe AC Coursing en action',                            cat: 'Résidentiel' },
+  { src: '/images/professionnel/professionnel-01.webp',   width: 1600, height: 1200, alt: 'Déménagement de bureaux professionnels à Montpellier — AC Coursing',                          cat: 'Professionnel' },
+  { src: '/images/professionnel/professionnel-02.webp',   width: 1536, height: 2048, alt: 'Emballage et protection de matériel professionnel lors d\'un transfert de locaux',             cat: 'Professionnel' },
+  { src: '/images/longue-distance/longue-distance-01.webp', width: 678,  height: 452,  alt: 'Déménagement longue distance depuis Montpellier — camion prêt au départ AC Coursing',      cat: 'Longue distance' },
+  { src: '/images/longue-distance/longue-distance-02.webp', width: 1600, height: 1200, alt: 'Livraison soignée lors d\'un déménagement longue distance partout en France',               cat: 'Longue distance' },
+  { src: '/images/garde-meubles/garde-meubles-01.webp',   width: 900,  height: 1600, alt: 'Stockage sécurisé en garde-meubles à Montpellier — entrepôt AC Coursing',                    cat: 'Garde-meubles' },
+  { src: '/images/garde-meubles/garde-meubles-02.webp',   width: 1600, height: 1200, alt: 'Garde-meubles organisé pour stockage temporaire de mobilier à Montpellier',                   cat: 'Garde-meubles' },
 ];
 
 const stats = [
@@ -93,7 +93,7 @@ const stats = [
 
       <!-- Masonry grid -->
       <div id="gallery-grid" class="columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:balance]">
-        {photos.map(({ src, alt, cat }, i) => (
+        {photos.map(({ src, alt, cat, width, height }, i) => (
           <div
             class="gallery-item group relative mb-4 cursor-pointer overflow-hidden rounded-2xl bg-card"
             data-cat={cat}
@@ -106,6 +106,8 @@ const stats = [
 
             <img
               src={src}
+              width={width}
+              height={height}
               alt={alt}
               loading="lazy"
               decoding="async"
