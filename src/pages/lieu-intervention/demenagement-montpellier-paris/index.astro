@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import CTA from '../../../components/CTA.astro';
+import FAQSection from '../../../components/FAQSection.astro';
+import TablerIcon from '../../../components/TablerIcon.astro';
+import { client } from '../../../data/client';
+import { getPlacesData, formatRating } from '../../../lib/google-places';
+
+const places = await getPlacesData();
+const ratingDisplay = formatRating(places.rating);
+
+const faqItems = [
+  {
+    question: 'Combien de temps prend un déménagement Montpellier-Paris ?',
+    answer: "Comptez environ 750 km et 7 à 8 heures de route. Selon le volume et l'organisation retenue, la livraison peut avoir lieu le jour même ou le lendemain du chargement.",
+    open: true,
+  },
+  {
+    question: 'Le transport est-il direct ou groupé avec d\'autres déménagements ?',
+    answer: "Nous privilégions un transport dédié à votre déménagement dès que le volume le justifie. Le point est fait avec vous au moment du devis selon votre budget et vos contraintes de date.",
+  },
+  {
+    question: 'Le prix dépend-il de la distance ou du volume ?',
+    answer: "Les deux : la distance Montpellier-Paris fixe une base de trajet, et le volume à transporter (mobilier, cartons, objets volumineux) ajuste le prix final. Le devis détaille chaque poste.",
+  },
+  {
+    question: 'Peut-on avoir un déménagement urgent vers Paris ?',
+    answer: "Oui, sous réserve de disponibilité. Plus la date est communiquée tôt, plus il est simple de sécuriser un créneau et le bon véhicule pour le trajet.",
+  },
+];
+---
+
+<BaseLayout
+  title="Déménagement Montpellier-Paris | Devis | AC Coursing"
+  description="Déménagement Montpellier-Paris organisé de bout en bout : transport direct, prix fixe garanti, livraison dans les délais. Devis gratuit sous 24h."
+  schema={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'Déménagement Montpellier-Paris',
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: [
+          { '@type': 'City', name: 'Montpellier' },
+          { '@type': 'City', name: 'Paris' },
+        ],
+        description: 'Déménagement longue distance entre Montpellier et Paris, transport direct et prix fixe garanti.',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Prestations', item: `${client.domain}/prestations/` },
+          { '@type': 'ListItem', position: 3, name: 'Lieux d\'intervention', item: `${client.domain}/prestations/#zones` },
+          { '@type': 'ListItem', position: 4, name: 'Déménagement Montpellier-Paris', item: `${client.domain}/lieu-intervention/demenagement-montpellier-paris/` },
+        ],
+      },
+    ],
+  }}
+>
+  <Header slot="header" />
+
+  <section class="bg-primary py-14 sm:py-16">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <nav aria-label="Breadcrumb" class="mb-4">
+        <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-fg/60">
+          <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><a href="/prestations" class="hover:text-primary-fg transition-colors">Prestations</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><span class="text-primary-fg" aria-current="page">Montpellier - Paris</span></li>
+        </ol>
+      </nav>
+      <h1 class="font-heading text-h1 text-primary-fg">Déménagement Montpellier-Paris</h1>
+      <p class="mt-3 max-w-xl text-primary-fg/80">Environ 750 km, un trajet cadré du chargement à la livraison, avec un interlocuteur unique tout au long du déménagement.</p>
+    </div>
+  </section>
+
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+
+        <div>
+          <img
+            src="/hero_image.webp"
+            alt="Camion AC Coursing chargé pour un déménagement longue distance"
+            loading="lazy"
+            decoding="async"
+            class="w-full rounded-2xl border border-border object-cover aspect-[4/3]"
+          />
+        </div>
+
+        <div class="space-y-6">
+          <p class="text-lg leading-relaxed text-muted-foreground">
+            Un déménagement entre Montpellier et Paris se prépare comme un vrai projet logistique : itinéraire, créneau de chargement, contraintes d'accès aux deux adresses. On cadre tout avant le jour J pour que le trajet se déroule sans mauvaise surprise.
+          </p>
+
+          <ul class="space-y-4">
+            {[
+              { icon: 'map-pin', text: 'Environ 750 km — Montpellier ↔ Paris et région parisienne' },
+              { icon: 'truck-delivery', text: 'Transport dédié dès que le volume le justifie, sans rupture de charge' },
+              { icon: 'shield-check', text: 'Assurance transport incluse sur toute la distance du trajet' },
+              { icon: 'calendar', text: 'Créneau de chargement et de livraison confirmé à l\'avance' },
+              { icon: 'box', text: 'Emballage professionnel disponible pour sécuriser les objets fragiles' },
+            ].map(({ icon, text }) => (
+              <li class="flex items-start gap-3">
+                <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary mt-0.5">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="text-muted-foreground leading-relaxed">{text}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="/devis"
+            class="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90"
+          >
+            Devis gratuit
+            <TablerIcon name="arrow-right" class="text-base leading-none" />
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-16 rounded-2xl border border-border bg-panel p-8 sm:p-10">
+        <h2 class="font-heading text-h3 text-foreground">Ce qui influence le prix d'un Montpellier-Paris</h2>
+        <p class="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
+          Chaque trajet longue distance a ses propres contraintes. Le devis détaille précisément ce qui compose le prix final — aucun montant n'est avancé avant d'avoir vu votre situation.
+        </p>
+        <ul class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {[
+            'Volume à transporter (mobilier, cartons, objets volumineux)',
+            'Accès aux deux adresses (étage, ascenseur, stationnement)',
+            'Date souhaitée et flexibilité du créneau',
+            'Prestations additionnelles (mise en carton, démontage/remontage)',
+          ].map((text) => (
+            <li class="flex items-start gap-2.5 text-sm text-muted-foreground">
+              <TablerIcon name="check" class="mt-0.5 shrink-0 text-base leading-none text-primary" />
+              {text}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 gap-6 border-t border-border pt-12 sm:grid-cols-3">
+        {[
+          { value: '1 500+', label: 'déménagements réalisés' },
+          { value: `${ratingDisplay}/5`, label: 'note Google' },
+          { value: '24h', label: 'réponse garantie' },
+        ].map(({ value, label }) => (
+          <div class="text-center" data-reveal>
+            <p class="font-heading text-4xl font-bold text-primary">{value}</p>
+            <p class="mt-1 text-sm text-muted-foreground">{label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FAQSection topper="FAQ Montpellier-Paris" heading="Questions sur ce trajet" items={faqItems} />
+
+  <CTA
+    title="Votre devis Montpellier-Paris en 4 étapes"
+    description="Adresses, dates, volume : remplissez le formulaire et recevez un prix fixe garanti sous 24h."
+  />
+  <Footer slot="footer" />
+</BaseLayout>
