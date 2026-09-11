@@ -23,6 +23,7 @@ interface Props {
   formAction?: string;
   submitLabel?: string;
   floors?: FloorOption[];
+  imageSrc?: string;
 }
 
 const {
@@ -41,11 +42,23 @@ const {
     { value: '4', label: '4e étage' },
     { value: '5', label: '5e étage et plus' },
   ],
+  imageSrc = '/hero_image.webp',
 } = Astro.props;
 ---
 
-<section class="bg-primary py-14 sm:py-16 lg:py-20">
-  <div class="mx-auto max-w-site px-4 sm:px-6">
+<section class="relative isolate overflow-hidden bg-dark py-14 sm:py-16 lg:py-20">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img
+      src={imageSrc}
+      alt=""
+      loading="eager"
+      decoding="async"
+      class="size-full object-cover"
+    />
+    <div class="absolute inset-0 bg-dark/72"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-site px-4 sm:px-6">
     <nav aria-label="Breadcrumb" class="mb-6">
       <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-fg/60">
         <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
