@@ -437,8 +437,6 @@ function AddressBlock({
 function Step1({ data, onChange, onNext }: {
   data: FormData; onChange: (p: Partial<FormData>) => void; onNext: () => void;
 }) {
-  const [showArrival, setShowArrival] = useState(Boolean(data.toCity));
-
   return (
     <div className="space-y-6">
       <StepHeader step={1} title="Votre déménagement" description="Adresses, accès et date. Tout est facultatif à cette étape." />
@@ -452,7 +450,7 @@ function Step1({ data, onChange, onNext }: {
             onClick={() => onChange({ moveType: "particulier" })}
             className={cn(
               "flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold transition-all",
-              data.moveType === "particulier" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+              data.moveType === "particulier" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-background/70 hover:text-foreground",
             )}
           >
             <TablerIcon name="home" className="size-4" />
@@ -464,7 +462,7 @@ function Step1({ data, onChange, onNext }: {
             onClick={() => onChange({ moveType: "professionnel" })}
             className={cn(
               "flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold transition-all",
-              data.moveType === "professionnel" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+              data.moveType === "professionnel" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-background/70 hover:text-foreground",
             )}
           >
             <TablerIcon name="building" className="size-4" />
@@ -488,30 +486,17 @@ function Step1({ data, onChange, onNext }: {
 
         <hr className="border-border" />
 
-        {showArrival ? (
-          <AddressBlock
-            icon="map-pin"
-            title="Adresse d'arrivée"
-            address={data.toCity}
-            onAddressChange={(v) => onChange({ toCity: v })}
-            placeholder="Ex : 5 avenue de Lodève, Lattes"
-            access={data.accessTypeDestination}
-            onAccessChange={(v) => onChange({ accessTypeDestination: v })}
-            floor={data.floorDestination}
-            onFloorChange={(v) => onChange({ floorDestination: v })}
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={() => setShowArrival(true)}
-            className="flex w-full items-center gap-3 rounded-xl border-2 border-dashed border-border px-4 py-3 text-left text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-          >
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
-              <TablerIcon name="plus" className="size-4" />
-            </span>
-            Ajouter l'adresse d'arrivée
-          </button>
-        )}
+        <AddressBlock
+          icon="map-pin"
+          title="Adresse d'arrivée"
+          address={data.toCity}
+          onAddressChange={(v) => onChange({ toCity: v })}
+          placeholder="Ex : 5 avenue de Lodève, Lattes"
+          access={data.accessTypeDestination}
+          onAccessChange={(v) => onChange({ accessTypeDestination: v })}
+          floor={data.floorDestination}
+          onFloorChange={(v) => onChange({ floorDestination: v })}
+        />
 
         <hr className="border-border" />
 
