@@ -121,24 +121,24 @@ const error = Astro.url.searchParams.get('error');
 
       <aside class="space-y-8 lg:col-span-2">
         <div>
-          <h3 class="font-heading text-lg font-semibold text-text">Téléphone</h3>
+          <h3 class="font-heading text-lg font-medium text-text">Téléphone</h3>
           <a href={`tel:${client.phoneForTel}`} class="mt-1 block font-medium text-primary-light transition-colors hover:text-primary">{client.phoneFormatted}</a>
         </div>
 
         <div>
-          <h3 class="font-heading text-lg font-semibold text-text">Email</h3>
+          <h3 class="font-heading text-lg font-medium text-text">Email</h3>
           <a href={`mailto:${client.email}`} class="mt-1 block font-medium text-primary-light transition-colors hover:text-primary">{client.email}</a>
         </div>
 
         <div>
-          <h3 class="font-heading text-lg font-semibold text-text">Zone principale</h3>
+          <h3 class="font-heading text-lg font-medium text-text">Zone principale</h3>
           <a href={client.address.mapLink} target="_blank" rel="noopener noreferrer" class="mt-1 block text-text-muted transition-colors hover:text-text">
             {client.address.city}, Hérault et départements voisins
           </a>
         </div>
 
         <div>
-          <h3 class="font-heading text-lg font-semibold text-text">Disponibilité</h3>
+          <h3 class="font-heading text-lg font-medium text-text">Disponibilité</h3>
           <p class="mt-1 text-text-muted">
             Lundi – samedi: 7h – 20h<br />
             Longue distance et urgence: sur demande
