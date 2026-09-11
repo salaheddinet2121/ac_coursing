@@ -290,55 +290,57 @@ function NavButtons({ onPrev, onNext, nextLabel = "Continuer", isLast }: {
   );
 }
 
-const STEPPER_STEPS: { icon: string; label: string }[] = [
-  { icon: "truck-delivery", label: "Trajet" },
-  { icon: "box", label: "Inventaire" },
-  { icon: "package", label: "Spécial" },
-  { icon: "file-description", label: "Résumé" },
-  { icon: "user", label: "Contact" },
+const STEPPER_STEPS: { label: string; description: string }[] = [
+  { label: "Trajet", description: "Adresses et date" },
+  { label: "Inventaire", description: "Vos meubles" },
+  { label: "Spécial", description: "Objets particuliers" },
+  { label: "Résumé", description: "Vérifiez tout" },
+  { label: "Contact", description: "Vos coordonnées" },
 ];
 
 function Stepper({ step }: { step: number }) {
-  const current = STEPPER_STEPS[step - 1];
   return (
-    <div className="space-y-2">
-      <ol className="flex items-center" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
-        {STEPPER_STEPS.map((s, i) => {
-          const n = i + 1;
-          const isDone = n < step;
-          const isCurrent = n === step;
-          const isLast = n === STEPPER_STEPS.length;
-          return (
-            <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
+    <ol className="flex items-center justify-between" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
+      {STEPPER_STEPS.map((s, i) => {
+        const n = i + 1;
+        const isDone = n < step;
+        const isCurrent = n === step;
+        const isLast = n === STEPPER_STEPS.length;
+        return (
+          <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
+            <div className="flex flex-col items-center">
               <span
                 aria-current={isCurrent ? "step" : undefined}
                 className={cn(
-                  "flex size-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-                  isDone || isCurrent
+                  "flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold transition-colors sm:size-10 sm:text-sm",
+                  isDone
                     ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-background text-muted-foreground",
+                    : isCurrent
+                      ? "border-primary text-primary"
+                      : "border-border text-muted-foreground",
                 )}
               >
-                {isDone ? (
-                  <TablerIcon name="check" className="size-3.5" />
-                ) : (
-                  <TablerIcon name={s.icon} className="size-3.5" />
-                )}
+                {isDone ? <TablerIcon name="check" className="size-4 sm:size-5" /> : n}
               </span>
-              {!isLast && (
-                <span
-                  aria-hidden="true"
-                  className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors", isDone ? "bg-primary" : "bg-border")}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ol>
-      <p className="text-xs font-medium text-muted-foreground">
-        Étape {step} sur {TOTAL_STEPS} <span aria-hidden="true">&middot;</span> <span className="font-semibold text-foreground">{current.label}</span>
-      </p>
-    </div>
+              <div className="mt-1.5 text-center">
+                <p className={cn("text-[11px] font-semibold whitespace-nowrap sm:text-xs", n <= step ? "text-foreground" : "text-muted-foreground")}>
+                  {s.label}
+                </p>
+                <p className="hidden text-[10px] whitespace-nowrap text-muted-foreground sm:block">
+                  {s.description}
+                </p>
+              </div>
+            </div>
+            {!isLast && (
+              <span
+                aria-hidden="true"
+                className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors sm:mx-2", isDone ? "bg-primary" : "bg-border")}
+              />
+            )}
+          </li>
+        );
+      })}
+    </ol>
   );
 }
 
