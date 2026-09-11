@@ -13,12 +13,16 @@ const places = await getPlacesData();
 const ratingDisplay = formatRating(places.rating);
 
 const reviews = [
-  { quote: "J'ai fait appel à AC Coursing pour mon déménagement. Tout s'est vraiment bien passé et les professionnels ont été très efficaces.", name: 'Anaïs Foulu', location: 'Montpellier', rating: 5 },
-  { quote: 'Perfect professional level. Respect.', name: 'Davidus Saitama', location: 'Montpellier', rating: 5 },
-  { quote: "Équipe très réactive et soigneuse. Rien n'a été cassé, tout était bien protégé.", name: 'Marie L.', location: 'Castelnau-le-Lez', rating: 5 },
-  { quote: 'Déménagement rapide et sans stress. Le prix annoncé était le prix payé.', name: 'Thomas R.', location: 'Lattes', rating: 5 },
-  { quote: "Troisième déménagement avec eux. Toujours impeccable, toujours à l'heure.", name: 'Sophie M.', location: 'Montpellier', rating: 5 },
-  { quote: "Très bon suivi du devis jusqu'à la remise des clés. Je recommande.", name: 'Pol Kamal', location: 'Juvignac', rating: 5 },
+  { quote: "Walid et Abdelhak ont réalisé notre déménagement et c'était parfait du début à la fin ! Très polis, professionnels et chaleureux, ils ont fait preuve d'une grande attention dans le transport. Ils ont même insisté pour raccorder la machine à laver et pour installer le matelas proprement. Je recommande les yeux fermés !", name: 'Enzo C.', location: 'Avis Google · juillet', rating: 5 },
+  { quote: "Très grand merci à cette société qui m'a sauvé dimanche. J'avais engagé une autre entreprise de déménagement, ils ont pris mon acompte et depuis plus de nouvelles. J'ai appelé AC Coursing, je suis tombé sur le patron, je lui ai expliqué mon cas…", name: 'Marc Sammartano', location: 'Avis Google · juillet', rating: 5 },
+  { quote: "Un immense merci à toute l'équipe, et tout particulièrement à Walid, pour leur professionnalisme et leur gentillesse.", name: 'Marion Cavallier', location: 'Avis Google · juin', rating: 5 },
+  { quote: "Une expérience exceptionnelle du début à la fin ! L'équipe AC Coursing a été ponctuelle, professionnelle, efficace et très soigneuse avec toutes nos affaires.", name: 'Valérie Germon', location: 'Avis Google · juillet', rating: 5 },
+  { quote: "Franchement un super déménagement avec AC Coursing. L'équipe a été ponctuelle, efficace et surtout très humaine. Ils ont pris soin de tous les meubles et ont travaillé dans la bonne humeur du début à la fin.", name: 'Driss Rafiq', location: 'Avis Google · février', rating: 5 },
+  { quote: "J'ai fait appel à AC Coursing pour mon déménagement le mardi 14 octobre. Tout s'est vraiment bien passé et les professionnels ont été très efficaces ! Tout a été bien rangé et soigneusement emballé.", name: 'Anaïs Foulu', location: 'Avis Google · octobre', rating: 5 },
+  { quote: 'Très satisfaits de notre déménagement avec AC Coursing. Rapides, efficaces et soigneux, le tout à un prix très raisonnable. Je recommande !', name: 'Justine Chiquet', location: 'Avis Google · août', rating: 5 },
+  { quote: "Très bonne expérience pour mon déménagement. Walid était sérieux, efficace et à l'écoute. Il a pris le temps de bien protéger les meubles et de tout installer correctement dans mon nouveau logement. Le service est vraiment de qualité.", name: 'Sègbéou David Zannou', location: 'Avis Google · mars', rating: 5 },
+  { quote: 'Une entreprise et son équipe compétente avec une écoute attentive de nos besoins, pour le déménagement de notre établissement de 3000 m² et tout son mobilier et matériels.', name: 'Isabelle Donati', location: 'Avis Google · février', rating: 5 },
+  { quote: "Déménageurs rapides, efficaces et très ponctuels. Tout a été parfaitement géré dans les temps, avec beaucoup de professionnalisme. En plus d'être respectueux, ils ont été très gentils et agréables tout au long du déménagement. Je recommande sans hésiter !", name: 'Sofia Sigh', location: 'Avis Google · mai', rating: 5 },
 ];
 ---
 
