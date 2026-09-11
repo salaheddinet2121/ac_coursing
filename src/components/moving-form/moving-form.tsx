@@ -445,12 +445,13 @@ function Step1({ data, onChange, onNext }: {
 
       <div className="space-y-2.5">
         <SectionTitle icon="truck">Type de déménagement</SectionTitle>
-        <div className="grid grid-cols-2 gap-1 rounded-xl border-2 border-border bg-muted/40 p-1">
+        <div role="group" aria-label="Type de déménagement" className="grid grid-cols-2 gap-1 rounded-xl border-2 border-border bg-muted/40 p-1">
           <button
             type="button"
+            aria-pressed={data.moveType === "particulier"}
             onClick={() => onChange({ moveType: "particulier" })}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all",
+              "flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold transition-all",
               data.moveType === "particulier" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -459,9 +460,10 @@ function Step1({ data, onChange, onNext }: {
           </button>
           <button
             type="button"
+            aria-pressed={data.moveType === "professionnel"}
             onClick={() => onChange({ moveType: "professionnel" })}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all",
+              "flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold transition-all",
               data.moveType === "professionnel" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
             )}
           >

@@ -1,8 +1,6 @@
 ---
 import TablerIcon from './TablerIcon.astro';
-import { HeroAddressField } from './HeroAddressField';
-import { HeroFloorSelect } from './HeroFloorSelect';
-import { HeroDatePicker } from './HeroDatePicker';
+import { HeroFormFields } from './HeroFormFields';
 
 interface Props {
   topper?: string;
@@ -123,26 +121,7 @@ const {
       <h2 class="font-heading text-h2 leading-snug text-primary-fg">{formTitle}</h2>
 
       <form method="get" action={formAction} class="mt-6 space-y-4">
-        <label class="block">
-          <span class="mb-1.5 block text-xs font-medium text-primary-fg/85">Adresse de départ</span>
-          <HeroAddressField
-            client:load
-            name="address"
-            placeholder="Ex : 12 rue de la Loge, Montpellier"
-          />
-        </label>
-
-        <div class="grid grid-cols-2 gap-3">
-          <label class="block">
-            <span class="mb-1.5 block text-xs font-medium text-primary-fg/85">Étage</span>
-            <HeroFloorSelect client:load name="floor" floors={floors} />
-          </label>
-
-          <label class="block">
-            <span class="mb-1.5 block text-xs font-medium text-primary-fg/85">Date</span>
-            <HeroDatePicker client:load name="date" placeholder="Choisir une date" />
-          </label>
-        </div>
+        <HeroFormFields client:load floors={floors} />
 
         <button
           type="submit"
