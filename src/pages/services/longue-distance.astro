@@ -16,11 +16,23 @@ const ratingDisplay = formatRating(places.rating);
   description="Déménagement longue distance depuis Montpellier vers toutes les villes de France. Transport direct, prix fixe garanti, livraison dans les délais."
   schema={{
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Déménagement longue distance',
-    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
-    areaServed: { '@type': 'Country', name: 'France' },
-    description: 'Déménagement longue distance depuis Montpellier vers toutes les villes de France.',
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'Déménagement longue distance',
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: { '@type': 'Country', name: 'France' },
+        description: 'Déménagement longue distance depuis Montpellier vers toutes les villes de France.',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${client.domain}/services` },
+          { '@type': 'ListItem', position: 3, name: 'Longue distance', item: `${client.domain}/services/longue-distance` },
+        ],
+      },
+    ],
   }}
 >
   <Header slot="header" />

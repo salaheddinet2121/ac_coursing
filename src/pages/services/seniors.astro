@@ -12,11 +12,23 @@ import { client } from '../../data/client';
   description="Service de déménagement attentionné pour les personnes âgées à Montpellier. Accompagnement complet, patience et soin à chaque étape. Devis gratuit."
   schema={{
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Déménagement pour seniors',
-    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
-    areaServed: { '@type': 'City', name: 'Montpellier' },
-    description: 'Service de déménagement spécialisé pour les personnes âgées à Montpellier.',
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'Déménagement pour seniors',
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: { '@type': 'City', name: 'Montpellier' },
+        description: 'Service de déménagement spécialisé pour les personnes âgées à Montpellier.',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${client.domain}/services` },
+          { '@type': 'ListItem', position: 3, name: 'Seniors', item: `${client.domain}/services/seniors` },
+        ],
+      },
+    ],
   }}
 >
   <Header slot="header" />

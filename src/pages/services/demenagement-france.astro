@@ -12,10 +12,22 @@ import { client } from '../../data/client';
   description="Déménagement vers toutes les villes de France depuis Montpellier. Emballage, transport, installation : on gère tout. Prix fixe, assurance incluse."
   schema={{
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Déménagement au sein de la France',
-    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
-    areaServed: { '@type': 'Country', name: 'France' },
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'Déménagement au sein de la France',
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: { '@type': 'Country', name: 'France' },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${client.domain}/services` },
+          { '@type': 'ListItem', position: 3, name: 'Déménagement France', item: `${client.domain}/services/demenagement-france` },
+        ],
+      },
+    ],
   }}
 >
   <Header slot="header" />

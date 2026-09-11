@@ -6,27 +6,12 @@ import Banner from '../../components/Banner.astro';
 import CTA from '../../components/CTA.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import { client } from '../../data/client';
-
-const services = [
-  { title: 'Déménagement local', icon: 'map-pin', href: '/services/demenagement-local' },
-  { title: "Déménagement d'entreprise", icon: 'building', href: '/services/demenagement-entreprise-montpellier' },
-  { title: 'Déménagement longue distance', icon: 'truck-delivery', href: '/services/longue-distance' },
-  { title: 'Mise en carton', icon: 'box', href: '/services/mise-en-carton' },
-  { title: 'Objets volumineux', icon: 'sofa', href: '/services/objets-volumineux' },
-  { title: 'Déménagement seniors', icon: 'heart', href: '/services/seniors' },
-  { title: 'Déménagement dans toute la France', icon: 'building', href: '/services/demenagement-france' },
-  { title: 'Enlèvement de déchets', icon: 'trash', href: '/services/enlevement-dechets' },
-  { title: 'Tarif déménagement', icon: 'file-description', href: '/services/tarif-demenagement-montpellier' },
-];
-
-const routes = [
-  { title: 'Déménagement Montpellier — Paris', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-paris' },
-];
+import { services, routes } from '../../data/prestations';
 ---
 
 <BaseLayout
-  title="Prestations | Déménagement Montpellier | AC Coursing"
-  description="Toutes les prestations AC Coursing à Montpellier : services de déménagement, trajets longue distance, tarifs. Devis gratuit sous 24h."
+  title="Toutes nos Prestations | AC Coursing Montpellier"
+  description="Retrouvez tous nos services de déménagement, nos trajets longue distance et nos ressources tarifaires AC Coursing, avec un devis gratuit sous 24h."
   schema={{
     '@context': 'https://schema.org',
     '@graph': [

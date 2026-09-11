@@ -12,10 +12,22 @@ import { client } from '../../data/client';
   description="Transport de canapés, armoires, pianos et électroménager à Montpellier. Matériel adapté, équipe formée, aucun risque d'endommagement. Devis gratuit."
   schema={{
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: "Déménagement d'objets volumineux",
-    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
-    areaServed: { '@type': 'City', name: 'Montpellier' },
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: "Déménagement d'objets volumineux",
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: { '@type': 'City', name: 'Montpellier' },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${client.domain}/services` },
+          { '@type': 'ListItem', position: 3, name: 'Objets volumineux', item: `${client.domain}/services/objets-volumineux` },
+        ],
+      },
+    ],
   }}
 >
   <Header slot="header" />

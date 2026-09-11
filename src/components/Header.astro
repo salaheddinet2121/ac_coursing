@@ -2,13 +2,13 @@
 import { brand } from '../config/brand';
 import { client } from '../data/client';
 import TablerIcon from './TablerIcon.astro';
+import { services, routes } from '../data/prestations';
 
 const nav = [
-  { label: 'Accueil',   href: '/' },
-  { label: 'Services',  href: '/services' },
-  { label: 'Galerie',   href: '/galerie' },
-  { label: 'Avis',      href: '/reviews' },
-  { label: 'Contact',   href: '/contact' },
+  { label: 'Accueil', href: '/' },
+  { label: 'Galerie',  href: '/galerie' },
+  { label: 'Avis',     href: '/reviews' },
+  { label: 'Contact',  href: '/contact' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -16,6 +16,7 @@ const isActive = (href: string) => {
   const path = href.split('#')[0] || '/';
   return path === currentPath || (path !== '/' && currentPath.startsWith(path));
 };
+const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].some(isActive);
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-md">
@@ -34,7 +35,85 @@ const isActive = (href: string) => {
 
     <!-- Desktop nav -->
     <nav class="hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
-      {nav.map(({ label, href }) => (
+      <a
+        href={nav[0].href}
+        aria-current={isActive(nav[0].href) ? 'page' : undefined}
+        class:list={[
+          'relative flex items-center min-h-11 px-3 text-sm font-medium rounded-lg transition-colors',
+          isActive(nav[0].href)
+            ? 'text-primary bg-primary/8'
+            : 'text-foreground/70 hover:text-foreground hover:bg-muted',
+        ]}
+      >
+        {nav[0].label}
+      </a>
+
+      <!-- Prestations dropdown -->
+      <div class="group relative pb-2 -mb-2">
+        <button
+          type="button"
+          id="prestations-trigger"
+          aria-expanded="false"
+          aria-controls="prestations-panel"
+          class:list={[
+            'relative flex items-center gap-1 min-h-11 px-3 text-sm font-medium rounded-lg transition-colors',
+            isPrestationsActive
+              ? 'text-primary bg-primary/8'
+              : 'text-foreground/70 hover:text-foreground hover:bg-muted',
+          ]}
+        >
+          Prestations
+          <TablerIcon id="prestations-chevron" name="chevron-right" class="text-xs leading-none transition-transform duration-150 group-hover:rotate-90" />
+        </button>
+
+        <div
+          id="prestations-panel"
+          class="invisible absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 rounded-2xl border border-border bg-card p-2 opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100"
+        >
+          <div class="grid grid-cols-[1.4fr_1fr]">
+            <div class="p-4">
+              <div class="mb-1 flex items-center justify-between gap-2 px-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nos services</p>
+                <a href="/services" class="text-xs font-semibold text-primary transition-opacity hover:opacity-80">Voir tout</a>
+              </div>
+              <ul class="grid grid-cols-2 gap-x-1 gap-y-0.5">
+                {services.map(({ title, icon, href }) => (
+                  <li>
+                    <a href={href} class="group/item flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm leading-snug text-foreground/80 transition-colors hover:bg-muted hover:text-primary">
+                      <TablerIcon name={icon} class="mt-0.5 shrink-0 self-start text-base leading-none text-primary" />
+                      <span>{title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="m-2 flex flex-col justify-between rounded-xl bg-panel p-4">
+              <div>
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Lieux d'intervention</p>
+                <ul class="space-y-1">
+                  {routes.map(({ title, icon, href }) => (
+                    <li>
+                      <a href={href} class="group/item flex items-start gap-2 rounded-lg px-1 py-1.5 text-sm font-medium text-foreground/85 transition-colors hover:text-primary">
+                        <TablerIcon name={icon} class="mt-0.5 shrink-0 text-base leading-none text-primary" />
+                        <span>{title}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <a
+                href="/prestations"
+                class="mt-4 flex items-center justify-between gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
+              >
+                Toutes les prestations
+                <TablerIcon name="arrow-right" class="text-sm leading-none" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {nav.slice(1).map(({ label, href }) => (
         <a
           href={href}
           aria-current={isActive(href) ? 'page' : undefined}
@@ -85,7 +164,56 @@ const isActive = (href: string) => {
   <!-- Mobile menu -->
   <div id="mobile-menu" class="hidden border-t border-border bg-background px-4 pb-6 pt-3 lg:hidden">
     <nav class="flex flex-col gap-0.5" aria-label="Navigation mobile">
-      {nav.map(({ label, href }) => (
+      <a
+        href={nav[0].href}
+        class:list={[
+          'rounded-xl px-4 py-3 text-[0.95rem] font-medium transition-colors',
+          isActive(nav[0].href)
+            ? 'bg-primary/10 text-primary font-semibold'
+            : 'text-foreground/70 hover:bg-muted hover:text-foreground',
+        ]}
+      >
+        {nav[0].label}
+      </a>
+
+      <details class="group rounded-xl" open={isPrestationsActive}>
+        <summary
+          class:list={[
+            'flex cursor-pointer list-none items-center justify-between gap-2 rounded-xl px-4 py-3 text-[0.95rem] font-medium transition-colors [&::-webkit-details-marker]:hidden',
+            isPrestationsActive
+              ? 'bg-primary/10 text-primary font-semibold'
+              : 'text-foreground/70 hover:bg-muted hover:text-foreground',
+          ]}
+        >
+          Prestations
+          <TablerIcon name="chevron-right" class="text-sm leading-none transition-transform group-open:rotate-90" />
+        </summary>
+        <div class="pb-2 pl-4">
+          <div class="mb-1 mt-2 flex items-center justify-between gap-2 px-2">
+            <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nos services</p>
+            <a href="/services" class="text-xs font-semibold text-primary">Voir tout</a>
+          </div>
+          {services.map(({ title, icon, href }) => (
+            <a href={href} class="flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground">
+              <TablerIcon name={icon} class="shrink-0 text-base leading-none text-primary" />
+              {title}
+            </a>
+          ))}
+          <p class="mb-1 mt-3 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Lieux d'intervention</p>
+          {routes.map(({ title, icon, href }) => (
+            <a href={href} class="flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground">
+              <TablerIcon name={icon} class="shrink-0 text-base leading-none text-primary" />
+              {title}
+            </a>
+          ))}
+          <a href="/prestations" class="mt-2 flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-semibold text-primary">
+            Toutes les prestations
+            <TablerIcon name="arrow-right" class="text-sm leading-none" />
+          </a>
+        </div>
+      </details>
+
+      {nav.slice(1).map(({ label, href }) => (
         <a
           href={href}
           class:list={[
@@ -122,6 +250,7 @@ const isActive = (href: string) => {
 <script>
   (() => {
     let menuOpen = false;
+    let prestationsOpen = false;
 
     const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches;
 
@@ -130,6 +259,9 @@ const isActive = (href: string) => {
       menu:      document.getElementById('mobile-menu') as HTMLElement | null,
       iconOpen:  document.getElementById('menu-icon-open') as HTMLElement | null,
       iconClose: document.getElementById('menu-icon-close') as HTMLElement | null,
+      prestTrigger: document.getElementById('prestations-trigger') as HTMLButtonElement | null,
+      prestPanel:   document.getElementById('prestations-panel') as HTMLElement | null,
+      prestChevron: document.getElementById('prestations-chevron') as HTMLElement | null,
     });
 
     const setOpen = (next: boolean) => {
@@ -140,6 +272,16 @@ const isActive = (href: string) => {
       menu.classList.toggle('hidden', !menuOpen);
       iconOpen?.classList.toggle('hidden', menuOpen);
       iconClose?.classList.toggle('hidden', !menuOpen);
+    };
+
+    const setPrestationsOpen = (next: boolean) => {
+      const { prestTrigger, prestPanel, prestChevron } = getEls();
+      if (!prestTrigger || !prestPanel) return;
+      prestationsOpen = next;
+      prestTrigger.setAttribute('aria-expanded', String(prestationsOpen));
+      prestPanel.classList.toggle('invisible', !prestationsOpen);
+      prestPanel.classList.toggle('opacity-0', !prestationsOpen);
+      prestChevron?.classList.toggle('rotate-90', prestationsOpen);
     };
 
     const syncLinks = () => {
@@ -168,13 +310,29 @@ const isActive = (href: string) => {
       } else if (menuOpen && target.closest('#mobile-menu a[href]')) {
         setOpen(false);
       }
+
+      if (target.closest('#prestations-trigger')) {
+        setPrestationsOpen(!prestationsOpen);
+      } else if (prestationsOpen && target.closest('#prestations-panel a[href]')) {
+        setPrestationsOpen(false);
+      } else if (prestationsOpen && !target.closest('#prestations-panel') && !target.closest('#prestations-trigger')) {
+        setPrestationsOpen(false);
+      }
     });
 
-    window.addEventListener('resize', () => { if (isDesktop()) setOpen(false); }, { passive: true });
-    document.addEventListener('astro:before-preparation', () => setOpen(false));
-    document.addEventListener('astro:after-swap', () => { setOpen(false); syncLinks(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (prestationsOpen) setPrestationsOpen(false);
+        if (menuOpen) setOpen(false);
+      }
+    });
+
+    window.addEventListener('resize', () => { if (isDesktop()) setOpen(false); setPrestationsOpen(false); }, { passive: true });
+    document.addEventListener('astro:before-preparation', () => { setOpen(false); setPrestationsOpen(false); });
+    document.addEventListener('astro:after-swap', () => { setOpen(false); setPrestationsOpen(false); syncLinks(); });
 
     setOpen(false);
+    setPrestationsOpen(false);
     syncLinks();
   })();
 </script>

@@ -8,14 +8,26 @@ import { client } from '../../data/client';
 ---
 
 <BaseLayout
-  title="Enlèvement de Déchets et Débarras lors d'un Déménagement — AC Coursing"
+  title="Enlèvement de Déchets — AC Coursing Montpellier"
   description="Évacuation d'encombrants, débarras de mobilier et collecte de déchets lors de votre déménagement à Montpellier. Traitement responsable, prix fixe."
   schema={{
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Enlèvement de déchets liés à un déménagement',
-    provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
-    areaServed: { '@type': 'City', name: 'Montpellier' },
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: 'Enlèvement de déchets liés à un déménagement',
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: { '@type': 'City', name: 'Montpellier' },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${client.domain}/services` },
+          { '@type': 'ListItem', position: 3, name: 'Enlèvement de déchets', item: `${client.domain}/services/enlevement-dechets` },
+        ],
+      },
+    ],
   }}
 >
   <Header slot="header" />
