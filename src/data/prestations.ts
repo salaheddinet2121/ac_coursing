@@ -17,5 +17,7 @@ export const services: PrestationLink[] = [
 ];
 
 export const routes: PrestationLink[] = [
+  { title: 'Montpellier', icon: 'home', href: '/' },
+  { title: 'Nîmes', icon: 'map-pin', href: '/lieu-intervention/demenageur-nimes' },
   { title: 'Déménagement Montpellier — Paris', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-paris' },
 ];
