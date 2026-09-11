@@ -13,6 +13,7 @@ interface Props {
   imageAlt?: string;
   ratingValue?: string;
   reviewQuote?: string;
+  points?: { icon: 'shield-check' | 'truck-delivery' | 'check'; label: string }[];
 }
 
 const {
@@ -27,6 +28,11 @@ const {
   imageAlt       = 'Camion de déménagement AC Coursing dans les rues de Montpellier',
   ratingValue    = '5,0/5',
   reviewQuote    = "Rien n'a été cassé, tout était bien protégé.",
+  points = [
+    { icon: 'shield-check',   label: "11 ans d'expérience" },
+    { icon: 'truck-delivery', label: '1 500+ déménagements' },
+    { icon: 'check',          label: '194 avis vérifiés' },
+  ],
 } = Astro.props;
 
 ---
@@ -71,8 +77,18 @@ const {
         </a>
       </div>
 
+      <!-- Trust points -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-3 text-sm font-semibold text-muted-foreground">
+        {points.map(({ icon, label }) => (
+          <span class="inline-flex items-center gap-1.5">
+            <TablerIcon name={icon} class="text-base leading-none text-primary" />
+            {label}
+          </span>
+        ))}
+      </div>
+
       <!-- Trust line -->
-      <div class="flex flex-wrap items-center gap-2 pt-2 text-sm text-muted-foreground">
+      <div class="flex flex-wrap items-center gap-2 pt-1 text-sm text-muted-foreground">
         <span class="inline-flex items-center gap-0.5" aria-hidden="true">
           {Array.from({ length: 5 }).map(() => (
             <TablerIcon name="star-filled" class="text-base leading-none text-primary" />
