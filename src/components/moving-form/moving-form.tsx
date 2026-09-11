@@ -299,48 +299,54 @@ const STEPPER_STEPS: { label: string; description: string }[] = [
 ];
 
 function Stepper({ step }: { step: number }) {
+  const current = STEPPER_STEPS[step - 1];
   return (
-    <ol className="flex items-center justify-between" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
-      {STEPPER_STEPS.map((s, i) => {
-        const n = i + 1;
-        const isDone = n < step;
-        const isCurrent = n === step;
-        const isLast = n === STEPPER_STEPS.length;
-        return (
-          <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
-            <div className="flex flex-col items-center">
-              <span
-                aria-current={isCurrent ? "step" : undefined}
-                className={cn(
-                  "flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold transition-colors sm:size-10 sm:text-sm",
-                  isDone
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : isCurrent
-                      ? "border-primary text-primary"
-                      : "border-border text-muted-foreground",
-                )}
-              >
-                {isDone ? <TablerIcon name="check" className="size-4 sm:size-5" /> : n}
-              </span>
-              <div className="mt-1.5 text-center">
-                <p className={cn("text-[11px] font-semibold whitespace-nowrap sm:text-xs", n <= step ? "text-foreground" : "text-muted-foreground")}>
-                  {s.label}
-                </p>
-                <p className="hidden text-[10px] whitespace-nowrap text-muted-foreground sm:block">
-                  {s.description}
-                </p>
+    <div className="space-y-2">
+      <ol className="flex items-center justify-between" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
+        {STEPPER_STEPS.map((s, i) => {
+          const n = i + 1;
+          const isDone = n < step;
+          const isCurrent = n === step;
+          const isLast = n === STEPPER_STEPS.length;
+          return (
+            <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
+              <div className="flex flex-col items-center">
+                <span
+                  aria-current={isCurrent ? "step" : undefined}
+                  className={cn(
+                    "flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold transition-colors sm:size-10 sm:text-sm",
+                    isDone
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : isCurrent
+                        ? "border-primary text-primary"
+                        : "border-border text-muted-foreground",
+                  )}
+                >
+                  {isDone ? <TablerIcon name="check" className="size-4 sm:size-5" /> : n}
+                </span>
+                <div className="mt-1.5 hidden text-center sm:block">
+                  <p className={cn("text-xs font-semibold whitespace-nowrap", n <= step ? "text-foreground" : "text-muted-foreground")}>
+                    {s.label}
+                  </p>
+                  <p className="text-[10px] whitespace-nowrap text-muted-foreground">
+                    {s.description}
+                  </p>
+                </div>
               </div>
-            </div>
-            {!isLast && (
-              <span
-                aria-hidden="true"
-                className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors sm:mx-2", isDone ? "bg-primary" : "bg-border")}
-              />
-            )}
-          </li>
-        );
-      })}
-    </ol>
+              {!isLast && (
+                <span
+                  aria-hidden="true"
+                  className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors sm:mx-2", isDone ? "bg-primary" : "bg-border")}
+                />
+              )}
+            </li>
+          );
+        })}
+      </ol>
+      <p className="text-center text-xs font-medium text-muted-foreground sm:hidden">
+        Étape {step} sur {TOTAL_STEPS} <span aria-hidden="true">&middot;</span> <span className="font-semibold text-foreground">{current.label}</span>
+      </p>
+    </div>
   );
 }
 
