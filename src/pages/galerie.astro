@@ -40,27 +40,27 @@ const stats = [
   <Header slot="header" />
 
   <!-- Hero -->
-  <section class="relative overflow-hidden bg-dark py-20 sm:py-24">
+  <section class="relative overflow-hidden bg-panel py-20 sm:py-24">
     <div class="relative mx-auto max-w-site px-4 sm:px-6">
       <div class="mx-auto max-w-2xl text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-primary-soft/30 bg-primary-soft/10 px-4 py-1.5">
-          <span class="size-2 rounded-full bg-primary-soft" aria-hidden="true"></span>
-          <span class="text-topper font-bold uppercase tracking-widest text-primary-soft">Nos réalisations</span>
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+          <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-topper font-bold uppercase tracking-widest text-primary">Nos réalisations</span>
         </div>
-        <h1 class="mt-5 font-heading text-h1 leading-tight text-primary-fg">
-          Chaque déménagement, <span class="text-primary-soft">géré avec soin.</span>
+        <h1 class="mt-5 font-heading text-h1 leading-tight text-foreground">
+          Chaque déménagement, <span class="text-primary">géré avec soin.</span>
         </h1>
-        <p class="mt-4 text-lg leading-relaxed text-primary-fg/60">
+        <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
           Aperçu de nos interventions récentes — résidentielles, professionnelles et longue distance.
         </p>
       </div>
 
       <!-- Stats row -->
-      <div class="mt-12 flex flex-wrap items-center justify-center gap-8 border-t border-primary-fg/10 pt-10">
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-8 border-t border-border pt-10">
         {stats.map(({ value, label }) => (
           <div class="text-center">
-            <p class="font-heading text-3xl font-bold text-primary-fg">{value}</p>
-            <p class="mt-0.5 text-sm text-primary-fg/50">{label}</p>
+            <p class="font-heading text-3xl font-bold text-foreground">{value}</p>
+            <p class="mt-0.5 text-sm text-muted-foreground">{label}</p>
           </div>
         ))}
       </div>

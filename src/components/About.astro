@@ -31,11 +31,11 @@ const {
 } = Astro.props;
 ---
 
-<section id="a-propos" class="bg-dark py-section">
+<section id="a-propos" class="bg-background py-section">
   <div class="mx-auto grid max-w-site grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
 
     <!-- Image -->
-    <div class="relative overflow-hidden rounded-xl border border-primary-fg/15 bg-dark-surface shadow-lg">
+    <div class="relative overflow-hidden rounded-xl border border-border bg-card shadow-lg">
       <img
         src={imageSrc}
         alt={imageAlt}
@@ -47,20 +47,20 @@ const {
 
     <!-- Content -->
     <div class="space-y-5">
-      <div class="inline-flex items-center gap-2 rounded-full border border-primary-soft/30 bg-primary-soft/10 px-4 py-1.5">
-        <span class="size-2 rounded-full bg-primary-soft"></span>
-        <span class="text-topper font-bold uppercase tracking-widest text-primary-soft">{topper}</span>
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
       </div>
 
-      <h2 class="font-heading text-h2 text-primary-fg">{heading}</h2>
+      <h2 class="font-heading text-h2 text-foreground">{heading}</h2>
 
       {body.map((paragraph) => (
-        <p class="leading-relaxed text-primary-fg/60" set:html={paragraph} />
+        <p class="leading-relaxed text-muted-foreground" set:html={paragraph} />
       ))}
 
       <ul class="space-y-2.5 pt-1" role="list">
         {benefits.map((benefit) => (
-          <li class="text-primary-fg/80">{benefit}</li>
+          <li class="text-foreground/80">{benefit}</li>
         ))}
       </ul>
 

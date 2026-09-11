@@ -41,15 +41,15 @@ const {
 } = Astro.props;
 ---
 
-<section id="comment-ca-marche" class="bg-dark py-section">
+<section id="comment-ca-marche" class="bg-background py-section">
   <div class="mx-auto max-w-site px-4 sm:px-6">
 
     <div class="mx-auto mb-14 max-w-xl text-center" data-reveal>
-      <div class="inline-flex items-center gap-2 rounded-full border border-primary-soft/30 bg-primary-soft/10 px-4 py-1.5">
-        <span class="size-2 rounded-full bg-primary-soft" aria-hidden="true"></span>
-        <span class="text-topper font-bold uppercase tracking-widest text-primary-soft">{topper}</span>
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
       </div>
-      <h2 class="mt-4 font-heading text-h2 text-primary-fg">{heading}</h2>
+      <h2 class="mt-4 font-heading text-h2 text-foreground">{heading}</h2>
     </div>
 
     <ol class="mx-auto max-w-2xl" role="list">
@@ -69,14 +69,14 @@ const {
           <!-- Right: icon + content -->
           <div class:list={['flex gap-4 min-w-0', i < steps.length - 1 ? 'pb-10' : 'pb-0']}>
             <!-- Google Material icon box -->
-            <div class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary-soft/15 text-primary-soft ring-1 ring-primary-soft/20">
+            <div class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
               <HowItWorksIcons index={i} className="text-[1.4rem]" />
             </div>
 
             <div class="pt-0.5 min-w-0">
-              <h3 class="font-heading text-h3 text-primary-fg leading-snug">{title}</h3>
-              <p class="mt-1 text-primary-fg/55 leading-relaxed">{description}</p>
-              <p class="mt-1.5 text-sm font-semibold text-primary-soft">{note}</p>
+              <h3 class="font-heading text-h3 text-foreground leading-snug">{title}</h3>
+              <p class="mt-1 text-muted-foreground leading-relaxed">{description}</p>
+              <p class="mt-1.5 text-sm font-semibold text-primary">{note}</p>
             </div>
           </div>
         </li>

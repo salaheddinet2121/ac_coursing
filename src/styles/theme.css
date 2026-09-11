@@ -111,6 +111,7 @@
   --color-accent-fg:     var(--accent-foreground);
   --color-dark:          #1C1917;
   --color-dark-surface:  #262220;
+  --color-panel:         #F1F1EF;
 
   /* ── Typography scale ── */
   --text-topper:  clamp(0.75rem, 1.4vw, 0.875rem);
