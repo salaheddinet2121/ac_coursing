@@ -15,7 +15,7 @@ interface Props {
  * hydration cost instead of three. */
 export function HeroFormFields({ floors }: Props) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <label className="block">
         <span className="mb-1.5 block text-xs font-medium text-primary-fg/85">Adresse de départ</span>
         <HeroAddressField name="address" placeholder="Ex : 12 rue de la Loge, Montpellier" />
