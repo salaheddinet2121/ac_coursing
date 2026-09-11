@@ -125,6 +125,7 @@
   /* ── Fonts ── */
   --font-heading: var(--font-display), 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
   --font-body:    var(--font-body),    'Inter',  ui-sans-serif, system-ui, sans-serif;
+  --font-doodle:  var(--font-doodle),  cursive;
 
   /* ── Layout ── */
   --container-site:  75rem;

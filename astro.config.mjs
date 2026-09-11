@@ -43,6 +43,13 @@ export default defineConfig({
       weights: ['400', '500', '700'],
       styles: ['normal'],
     },
+    {
+      provider: fontProviders.google(),
+      name: 'Caveat',
+      cssVariable: '--font-doodle',
+      weights: ['600'],
+      styles: ['normal'],
+    },
   ],
 
   prefetch: {
