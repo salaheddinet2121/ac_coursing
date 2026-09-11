@@ -5,6 +5,7 @@ interface Props {
   topper?: string;
   headingStrong?: string;
   headingItalic?: string;
+  description?: string;
   ctaLabel?: string;
   ctaHref?: string;
   imageSrc?: string;
@@ -15,6 +16,7 @@ const {
   topper        = 'Pour vous',
   headingStrong = 'Votre déménagement,',
   headingItalic = 'géré avec sérieux.',
+  description   = "Un interlocuteur unique du premier appel à la remise des clés, pour un déménagement à Montpellier organisé du début à la fin.",
   ctaLabel      = 'Devis gratuit',
   ctaHref       = '/devis',
   imageSrc      = '/images/akh_walid.webp',
@@ -39,6 +41,8 @@ const {
           {headingStrong}<br />
           <span class="font-normal not-italic text-muted-foreground">{headingItalic}</span>
         </h2>
+
+        <p class="mt-4 max-w-md leading-relaxed text-muted-foreground">{description}</p>
 
         <a
           href={ctaHref}
