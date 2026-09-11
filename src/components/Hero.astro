@@ -1,5 +1,6 @@
 ---
 import TablerIcon from './TablerIcon.astro';
+import { HeroAddressField } from './HeroAddressField';
 
 interface Props {
   topper?: string;
@@ -122,17 +123,11 @@ const {
       <form method="get" action={formAction} class="mt-6 space-y-4">
         <label class="block">
           <span class="mb-1.5 block text-xs font-medium text-primary-fg/85">Adresse de départ</span>
-          <div class="relative flex items-center">
-            <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/70 [&_svg]:size-4">
-              <TablerIcon name="map-pin" />
-            </span>
-            <input
-              type="text"
-              name="address"
-              placeholder="Ex : 12 rue de la Loge, Montpellier"
-              class="w-full rounded-lg border border-primary-fg/15 bg-primary-fg/[0.06] py-3 pr-3 pl-9 text-sm font-medium text-primary-fg placeholder:text-primary-fg/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            />
-          </div>
+          <HeroAddressField
+            client:load
+            name="address"
+            placeholder="Ex : 12 rue de la Loge, Montpellier"
+          />
         </label>
 
         <div class="grid grid-cols-2 gap-3">

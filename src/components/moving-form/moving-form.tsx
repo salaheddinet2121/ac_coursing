@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ArrowLeft, ArrowRight, CheckCircle, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { fetchAddressSuggestions, type AddressSuggestion } from "@/lib/address-suggestions";
 import { TablerIcon } from "./tabler-icon";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
@@ -134,53 +135,8 @@ function TextInput({ value, onChange, placeholder, type = "text", autoComplete, 
 }
 
 // ── Address autocomplete ──────────────────────────────────────────────────────
-
-interface AddressSuggestion { label: string; postcode: string; context: string }
-
-async function fetchAddressSuggestions(query: string): Promise<AddressSuggestion[]> {
-  const requestPath = `/api/address-search?q=${encodeURIComponent(query)}`;
-  const directUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=6&autocomplete=1`;
-
-  const parseSuggestions = (payload: any): AddressSuggestion[] => {
-    if (Array.isArray(payload?.suggestions)) {
-      return payload.suggestions;
-    }
-
-    if (Array.isArray(payload?.features)) {
-      return payload.features.map((feature: any) => {
-        const properties = feature?.properties ?? {};
-        const label = properties.type === "municipality"
-          ? properties.city ?? properties.name ?? ""
-          : [properties.name, properties.city].filter(Boolean).join(", ");
-
-        return {
-          label: label || properties.label || "",
-          postcode: properties.postcode ?? "",
-          context: properties.context ?? "",
-        };
-      });
-    }
-
-    return [];
-  };
-
-  const tryFetch = async (url: string) => {
-    const response = await fetch(url);
-    const payload = await response.json();
-
-    if (!response.ok) {
-      throw new Error(payload?.error || "La recherche d'adresses a échoué.");
-    }
-
-    return parseSuggestions(payload);
-  };
-
-  try {
-    return await tryFetch(requestPath);
-  } catch {
-    return tryFetch(directUrl);
-  }
-}
+// fetchAddressSuggestions / AddressSuggestion now live in @/lib/address-suggestions
+// so the hero card's address field can share the same lookup.
 
 function AddressInput({ value, onChange, placeholder }: {
   value: string; onChange: (v: string) => void; placeholder?: string;
