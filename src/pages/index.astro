@@ -13,7 +13,7 @@ import ZonesSection from '../components/ZonesSection.astro';
 import FAQSection from '../components/FAQSection.astro';
 import About from '../components/About.astro';
 import Reviews from '../components/Reviews.astro';
-import Gallery from '../components/Gallery.astro';
+import RecentWork from '../components/RecentWork.astro';
 import CTA from '../components/CTA.astro';
 import { client } from '../data/client';
 import { getPlacesData, formatRating } from '../lib/google-places';
@@ -96,7 +96,7 @@ const ratingDisplay = formatRating(places.rating);
     topper={`${places.reviewCount} avis vérifiés`}
     heading={`${ratingDisplay} / 5 sur Google`}
   />
-  <Gallery />
+  <RecentWork />
   <FAQSection />
   <CTA />
 

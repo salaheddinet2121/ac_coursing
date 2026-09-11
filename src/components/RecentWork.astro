@@ -1,0 +1,86 @@
+---
+import TablerIcon from './TablerIcon.astro';
+
+interface Props {
+  heading?: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const {
+  heading        = 'Nos réalisations. À Montpellier et partout en France.',
+  description    = "Chaque déménagement reçoit le même soin : protection systématique du mobilier, chargement méthodique et équipe ponctuelle. Voici un aperçu de nos interventions récentes.",
+  ctaLabel       = 'Obtenir mon devis gratuit',
+  ctaHref        = '/devis',
+  secondaryLabel = 'Voir toutes nos réalisations',
+  secondaryHref  = '/galerie',
+} = Astro.props;
+
+const photos = [
+  { src: '/images/residentiel/residentiel-01.webp', alt: "Déménagement appartement à Montpellier — chargement du mobilier par l'équipe AC Coursing" },
+  { src: '/images/professionnel/professionnel-01.webp', alt: 'Déménagement de bureaux professionnels à Montpellier — AC Coursing' },
+  { src: '/images/residentiel/residentiel-04.webp', alt: 'Installation et remise en place du mobilier dans un appartement — AC Coursing Montpellier' },
+  { src: '/images/longue-distance/longue-distance-01.webp', alt: 'Déménagement longue distance depuis Montpellier — camion prêt au départ AC Coursing' },
+  { src: '/images/professionnel/professionnel-02.webp', alt: "Emballage et protection de matériel professionnel lors d'un transfert de locaux" },
+  { src: '/images/residentiel/residentiel-03.webp', alt: 'Transport sécurisé d\'objets fragiles en camion pour un déménagement à Montpellier' },
+  { src: '/images/garde-meubles/garde-meubles-02.webp', alt: 'Garde-meubles organisé pour stockage temporaire de mobilier à Montpellier' },
+];
+---
+
+<section class="bg-background py-section">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+
+      <!-- Content -->
+      <div class="space-y-5" data-reveal>
+        <h2 class="font-heading text-display leading-tight text-foreground">{heading}</h2>
+        <p class="max-w-md text-lead leading-relaxed text-muted-foreground">{description}</p>
+        <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
+          <a
+            href={ctaHref}
+            class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 py-3 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            {ctaLabel}
+          </a>
+          <a
+            href={secondaryHref}
+            class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-primary px-7 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            {secondaryLabel}
+            <TablerIcon name="arrow-right" class="text-base leading-none" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Masonry photo collage -->
+      <div class="columns-2 gap-3 sm:gap-4 lg:columns-3" data-reveal style="transition-delay:120ms">
+
+        {photos.slice(0, 1).map(({ src, alt }) => (
+          <div class="mb-3 overflow-hidden rounded-photo border border-border bg-card sm:mb-4">
+            <img src={src} alt={alt} loading="lazy" decoding="async" class="h-auto w-full object-cover" />
+          </div>
+        ))}
+
+        <!-- Testimonial card — real customer review, embedded in the grid -->
+        <div class="mb-3 flex flex-col justify-between gap-4 rounded-photo bg-dark p-5 sm:mb-4">
+          <TablerIcon name="truck-delivery" class="text-2xl leading-none text-primary-soft" />
+          <p class="text-sm leading-relaxed text-primary-fg/90">
+            &ldquo;Déménagement rapide et sans stress. Le prix annoncé était le prix payé. Ça change des autres.&rdquo;
+          </p>
+          <p class="text-xs font-semibold text-primary-fg/50">Thomas R. &middot; Lattes</p>
+        </div>
+
+        {photos.slice(1).map(({ src, alt }) => (
+          <div class="mb-3 overflow-hidden rounded-photo border border-border bg-card sm:mb-4">
+            <img src={src} alt={alt} loading="lazy" decoding="async" class="h-auto w-full object-cover" />
+          </div>
+        ))}
+
+      </div>
+
+    </div>
+  </div>
+</section>
