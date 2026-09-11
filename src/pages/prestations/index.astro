@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Banner from '../../components/Banner.astro';
+import CTA from '../../components/CTA.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import { client } from '../../data/client';
+
+const services = [
+  { title: 'Déménagement local', icon: 'map-pin', href: '/services/demenagement-local' },
+  { title: "Déménagement d'entreprise", icon: 'building', href: '/services/demenagement-entreprise-montpellier' },
+  { title: 'Déménagement longue distance', icon: 'truck-delivery', href: '/services/longue-distance' },
+  { title: 'Mise en carton', icon: 'box', href: '/services/mise-en-carton' },
+  { title: 'Objets volumineux', icon: 'sofa', href: '/services/objets-volumineux' },
+  { title: 'Déménagement seniors', icon: 'heart', href: '/services/seniors' },
+  { title: 'Déménagement dans toute la France', icon: 'building', href: '/services/demenagement-france' },
+  { title: 'Enlèvement de déchets', icon: 'trash', href: '/services/enlevement-dechets' },
+  { title: 'Tarif déménagement', icon: 'file-description', href: '/services/tarif-demenagement-montpellier' },
+];
+
+const routes = [
+  { title: 'Déménagement Montpellier — Paris', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-paris' },
+];
+---
+
+<BaseLayout
+  title="Prestations | Déménagement Montpellier | AC Coursing"
+  description="Toutes les prestations AC Coursing à Montpellier : services de déménagement, trajets longue distance, tarifs. Devis gratuit sous 24h."
+  schema={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'MovingCompany',
+        name: client.name,
+        telephone: client.phoneForTel,
+        url: client.domain,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Prestations', item: `${client.domain}/prestations/` },
+        ],
+      },
+    ],
+  }}
+>
+  <Header slot="header" />
+
+  <Banner title="Nos prestations" />
+
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+
+      <div class="mx-auto mb-12 max-w-2xl text-center" data-reveal>
+        <p class="leading-relaxed text-muted-foreground">
+          Retrouvez ici l'ensemble de nos services de déménagement, nos trajets longue distance et nos ressources tarifaires. Pour une estimation personnalisée, passez directement par le devis gratuit.
+        </p>
+      </div>
+
+      <!-- Services -->
+      <div data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Nos services</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {services.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Lieux d'intervention -->
+      <div class="mt-14" data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Lieux d'intervention</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {routes.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Votre devis -->
+      <div class="mt-14 rounded-2xl border-2 border-primary bg-primary/5 p-8 text-center sm:p-10" data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Prêt à obtenir votre devis ?</h2>
+        <p class="mx-auto mt-2 max-w-xl leading-relaxed text-muted-foreground">Adresses, étage, date : remplissez le formulaire et recevez un prix fixe garanti sous 24h.</p>
+        <a
+          href="/devis"
+          class="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90"
+        >
+          Devis gratuit
+          <TablerIcon name="arrow-right" class="text-base leading-none" />
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <CTA />
+
+  <Footer slot="footer" />
+</BaseLayout>
