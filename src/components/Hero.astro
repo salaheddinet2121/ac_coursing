@@ -5,6 +5,7 @@ interface Props {
   topper?: string;
   heading?: string;
   description?: string;
+  descriptionSupport?: string;
   ctaLabel?: string;
   ctaHref?: string;
   secondaryLabel?: string;
@@ -16,7 +17,8 @@ interface Props {
 const {
   topper         = 'Déménagement à Montpellier',
   heading        = 'Déménageur à Montpellier : votre déménagement, géré avec soin.',
-  description    = '1 500+ déménagements réussis. Devis gratuit sous 24h. Assurance transport incluse. Prix fixe garanti.',
+  description    = "AC Coursing est votre déménageur à Montpellier depuis 2015 : devis gratuit sous 24h, prix fixe garanti et assurance transport incluse, pour un déménagement sans mauvaise surprise.",
+  descriptionSupport = "De l'emballage au dernier carton posé, notre équipe s'occupe de tout — résidentiel, longue distance ou garde-meubles — avec un interlocuteur unique du premier appel jusqu'à la remise des clés.",
   ctaLabel       = 'Estimer le coût gratuitement',
   ctaHref        = '/devis',
   secondaryLabel = 'Voir les services',
@@ -46,9 +48,10 @@ const {
       </h1>
 
       <!-- Description -->
-      <p class="max-w-xl text-lead leading-relaxed text-muted-foreground">
-        {description}
-      </p>
+      <div class="max-w-xl space-y-3 text-lead leading-relaxed text-muted-foreground">
+        <p>{description}</p>
+        <p>{descriptionSupport}</p>
+      </div>
 
       <!-- CTAs -->
       <div class="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:gap-4">

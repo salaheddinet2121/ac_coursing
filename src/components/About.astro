@@ -16,8 +16,8 @@ const {
   topper   = 'Notre structure',
   heading  = 'Une équipe cadrée, un interlocuteur unique',
   body = [
-    "AC Coursing accompagne les déménagements à Montpellier et dans toute la région depuis 2015. Nous intervenons aussi sur les trajets longue distance, les besoins de stockage, les débarras et les transferts professionnels.",
-    "Notre approche est simple: cadrage précis, devis fixe, planning clair et exécution propre. L'objectif est de réduire la friction côté client, pas de la déplacer.",
+    "AC Coursing accompagne les déménagements à Montpellier et dans toute la région depuis 2015 : résidentiel, longue distance, garde-meubles, débarras et transferts professionnels, avec une seule équipe du premier appel à la remise des clés.",
+    "Chaque intervention suit le même cadrage : devis <em>fixe</em> établi avant le jour J, planning clair partagé avec vous, et exécution soignée jusqu'au dernier carton. L'objectif est de réduire la friction côté client, pas de la déplacer.",
   ],
   benefits = [
     "Ponctualité et équipe joignable avant, pendant et après l'intervention.",
@@ -55,17 +55,12 @@ const {
       <h2 class="font-heading text-h2 text-primary-fg">{heading}</h2>
 
       {body.map((paragraph) => (
-        <p class="leading-relaxed text-primary-fg/60">{paragraph}</p>
+        <p class="leading-relaxed text-primary-fg/60" set:html={paragraph} />
       ))}
 
-      <ul class="space-y-3 pt-1" role="list">
+      <ul class="space-y-2.5 pt-1" role="list">
         {benefits.map((benefit) => (
-          <li class="flex items-start gap-3">
-            <span class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-soft/20 text-primary-soft">
-              <TablerIcon name="check" class="text-sm leading-none" />
-            </span>
-            <span class="text-primary-fg/80">{benefit}</span>
-          </li>
+          <li class="text-primary-fg/80">{benefit}</li>
         ))}
       </ul>
 
