@@ -94,7 +94,7 @@ const services = [
         {services.map((service, i) => (
           <li data-reveal style={`transition-delay:${i * 80}ms`}>
             {service.href ? (
-              <a href={service.href} class="group flex h-full gap-5 rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+              <a href={service.href} class="group flex h-full gap-5 rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:shadow-md">
                 <div class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <TablerIcon name={service.icon} class="text-xl leading-none" />
                 </div>
@@ -108,7 +108,7 @@ const services = [
                 </div>
               </a>
             ) : (
-              <div class="flex h-full gap-5 rounded-xl border border-border bg-card p-6 shadow-sm">
+              <div class="flex h-full gap-5 rounded-xl border border-border bg-card p-6">
                 <div class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <TablerIcon name={service.icon} class="text-xl leading-none" />
                 </div>

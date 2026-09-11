@@ -30,7 +30,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
               day: 'numeric',
             });
             return (
-              <article class="group flex flex-col overflow-hidden rounded-lg border border-border bg-background shadow-sm transition-shadow hover:shadow-md">
+              <article class="group flex flex-col overflow-hidden rounded-lg border border-border bg-background transition-shadow hover:shadow-md">
                 <div class="flex flex-1 flex-col p-6">
                   <div class="flex items-center gap-2 text-sm text-text-muted">
                     <time datetime={post.data.date.toISOString()}>{formattedDate}</time>

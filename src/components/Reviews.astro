@@ -42,7 +42,7 @@ const {
 
     <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" role="list">
       {reviews.map(({ quote, name, location, rating = 5 }, i) => (
-        <li class="flex flex-col rounded-xl border border-border bg-background p-6 shadow-sm" data-reveal style={`transition-delay:${i * 80}ms`}>
+        <li class="flex flex-col rounded-xl border border-border bg-background p-6" data-reveal style={`transition-delay:${i * 80}ms`}>
           <!-- Stars -->
           <div class="mb-4 flex gap-1" aria-label={`Noté ${rating} sur 5`}>
             {Array.from({ length: 5 }).map((_, i) => (
