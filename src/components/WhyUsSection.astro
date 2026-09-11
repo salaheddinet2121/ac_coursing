@@ -1,11 +1,6 @@
 ---
 import TablerIcon from './TablerIcon.astro';
 
-interface Feature {
-  icon: 'shield-check' | 'check' | 'truck-delivery' | 'clock' | 'phone';
-  text: string;
-}
-
 interface Props {
   topper?: string;
   headingStrong?: string;
@@ -14,7 +9,6 @@ interface Props {
   ctaHref?: string;
   imageSrc?: string;
   imageAlt?: string;
-  features?: Feature[];
 }
 
 const {
@@ -25,20 +19,6 @@ const {
   ctaHref       = '/devis',
   imageSrc      = '/images/akh_walid.webp',
   imageAlt      = "Équipe AC Coursing prête pour votre déménagement",
-  features = [
-    {
-      icon: 'shield-check',
-      text: "Que vous déménagiez à 5 km ou à 500 km, nous cadrons chaque détail pour éliminer les imprévus le jour J.",
-    },
-    {
-      icon: 'check',
-      text: "Devis fixe, assurance transport incluse et équipe joignable: nous protégeons vos intérêts à chaque étape.",
-    },
-    {
-      icon: 'truck-delivery',
-      text: "De l'emballage à la remise en place, notre équipe va au-delà du simple transport pour garantir un résultat impeccable.",
-    },
-  ],
 } = Astro.props;
 ---
 
@@ -79,18 +59,6 @@ const {
           class="size-full object-cover"
         />
       </div>
-    </div>
-
-    <!-- Feature bullets below -->
-    <div class="mt-14 grid grid-cols-1 gap-8 border-t border-border pt-12 md:grid-cols-3">
-      {features.map(({ icon, text }, i) => (
-        <div class="flex gap-4" data-reveal style={`transition-delay:${i * 80}ms`}>
-          <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
-            <TablerIcon name={icon} filled class="text-xl leading-none" />
-          </span>
-          <p class="leading-relaxed text-muted-foreground">{text}</p>
-        </div>
-      ))}
     </div>
 
   </div>
