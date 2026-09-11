@@ -13,7 +13,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 4;
 
 type MoveType = "particulier" | "professionnel";
 type AccessType = "ascenseur" | "escaliers" | "rdc";
@@ -294,8 +294,7 @@ const STEPPER_STEPS: { label: string; description: string }[] = [
   { label: "Trajet", description: "Adresses et date" },
   { label: "Inventaire", description: "Vos meubles" },
   { label: "Spécial", description: "Objets particuliers" },
-  { label: "Résumé", description: "Vérifiez tout" },
-  { label: "Contact", description: "Vos coordonnées" },
+  { label: "Résumé", description: "Vos coordonnées" },
 ];
 
 function Stepper({ step }: { step: number }) {
@@ -740,7 +739,21 @@ function SummaryRow({ icon, label, value }: { icon: string; label: string; value
   );
 }
 
-function Step4({ data, onNext, onPrev }: { data: FormData; onNext: () => void; onPrev: () => void }) {
+type FinalStepErrors = {
+  name?: string;
+  phone?: string;
+  email?: string;
+};
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p className="text-xs font-medium text-red-600">{message}</p>;
+}
+
+function Step4({ data, onChange, onSubmit, onPrev, phone, phoneLink, isSubmitting, errors }: {
+  data: FormData; onChange: (p: Partial<FormData>) => void; onSubmit: () => void; onPrev: () => void;
+  phone: string; phoneLink: string; isSubmitting?: boolean; errors: FinalStepErrors;
+}) {
   const totalItems = data.inventory.reduce((s, i) => s + i.qty, 0);
   const inventorySummary = totalItems > 0
     ? ROOMS.flatMap((r) => r.items
@@ -762,9 +775,11 @@ function Step4({ data, onNext, onPrev }: { data: FormData; onNext: () => void; o
       .filter(Boolean)
       .join(" — ");
 
+  const canSubmit = data.name.trim() && data.phone.trim() && data.email.trim();
+
   return (
     <div className="space-y-6">
-      <StepHeader step={4} title="Récapitulatif" description="Vérifiez vos informations avant d'envoyer." />
+      <StepHeader step={4} title="Récapitulatif" description="Vérifiez vos informations et laissez vos coordonnées." />
       <div className="rounded-2xl border border-border bg-muted/30 px-4 divide-y divide-border">
         <SummaryRow icon="home" label="Départ" value={endpointValue(data.fromCity, data.accessTypeDeparture, data.floorDeparture)} />
         <SummaryRow icon="map-pin" label="Arrivée" value={endpointValue(data.toCity, data.accessTypeDestination, data.floorDestination)} />
@@ -773,33 +788,7 @@ function Step4({ data, onNext, onPrev }: { data: FormData; onNext: () => void; o
         {data.otherItems.trim() && <SummaryRow icon="pencil" label="Autres objets" value={data.otherItems} />}
         {data.specialItems.length > 0 && <SummaryRow icon="alert-triangle" label="Objets particuliers" value={data.specialItems.map((id) => SPECIAL_LABELS[id] ?? id).join(", ")} />}
       </div>
-      <p className="text-center text-sm text-muted-foreground">Tout semble correct ? Finalisez en 30 secondes.</p>
-      <NavButtons onPrev={onPrev} onNext={onNext} nextLabel="Finaliser" />
-    </div>
-  );
-}
 
-// ── Step 5 ────────────────────────────────────────────────────────────────────
-
-type FinalStepErrors = {
-  name?: string;
-  phone?: string;
-  email?: string;
-};
-
-function FieldError({ message }: { message?: string }) {
-  if (!message) return null;
-  return <p className="text-xs font-medium text-red-600">{message}</p>;
-}
-
-function Step5({ data, onChange, onSubmit, onPrev, phone, phoneLink, isSubmitting, errors }: {
-  data: FormData; onChange: (p: Partial<FormData>) => void; onSubmit: () => void; onPrev: () => void;
-  phone: string; phoneLink: string; isSubmitting?: boolean; errors: FinalStepErrors;
-}) {
-  const canSubmit = data.name.trim() && data.phone.trim() && data.email.trim();
-  return (
-    <div className="space-y-6">
-      <StepHeader step={5} title="Vos coordonnées" description="Nous vous enverrons votre estimation gratuite dans les 24h." />
       <div className="space-y-3">
         <Field label="Nom complet" icon="user">
           <TextInput value={data.name} onChange={(v) => onChange({ name: v })} placeholder="Jean Dupont" autoComplete="name" invalid={Boolean(errors.name)} />
@@ -814,6 +803,7 @@ function Step5({ data, onChange, onSubmit, onPrev, phone, phoneLink, isSubmittin
           <FieldError message={errors.email} />
         </Field>
       </div>
+
       <div className="flex items-start gap-3 rounded-xl border border-border bg-muted/30 p-4">
         <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-background text-muted-foreground shadow-sm">
           <TablerIcon name="lock" className="size-4" />
@@ -823,6 +813,7 @@ function Step5({ data, onChange, onSubmit, onPrev, phone, phoneLink, isSubmittin
           <a href={`tel:+33${phoneLink.slice(1)}`} className="font-semibold text-foreground underline underline-offset-2">{phone}</a>
         </p>
       </div>
+
       <NavButtons
         onPrev={onPrev}
         onNext={!isSubmitting && canSubmit ? onSubmit : undefined}
@@ -964,9 +955,8 @@ export function MovingForm({
           {step === 1 && <Step1 data={data} onChange={patch} onNext={next} />}
           {step === 2 && <Step2 data={data} onChange={patch} onNext={next} onPrev={prev} />}
           {step === 3 && <Step3 data={data} onChange={patch} onNext={next} onPrev={prev} />}
-          {step === 4 && <Step4 data={data} onNext={next} onPrev={prev} />}
-          {step === 5 && <Step5 data={data} onChange={patch} onSubmit={handleSubmit} onPrev={prev} phone={phone} phoneLink={phoneLink} isSubmitting={isSubmitting} errors={finalStepErrors} />}
-          {(submitError || isSubmitting) && step === 5 && (
+          {step === 4 && <Step4 data={data} onChange={patch} onSubmit={handleSubmit} onPrev={prev} phone={phone} phoneLink={phoneLink} isSubmitting={isSubmitting} errors={finalStepErrors} />}
+          {(submitError || isSubmitting) && step === 4 && (
             <div className={cn(
               "mt-4 rounded-xl border px-4 py-3 text-sm",
               submitError ? "border-red-300 bg-red-50 text-red-700" : "border-primary/20 bg-primary/5 text-foreground/80",
