@@ -68,7 +68,7 @@ const ratingDisplay = formatRating(places.rating);
 >
   <Header slot="header" />
 
-  <Hero />
+  <Hero ratingValue={`${ratingDisplay}/5`} />
   <TrustBar
     items={[
       { icon: 'star-filled', value: `${ratingDisplay}/5`, label: 'sur Google' },
