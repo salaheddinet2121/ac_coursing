@@ -1,6 +1,8 @@
 ---
 import TablerIcon from './TablerIcon.astro';
 import { HeroAddressField } from './HeroAddressField';
+import { HeroFloorSelect } from './HeroFloorSelect';
+import { HeroDatePicker } from './HeroDatePicker';
 
 interface Props {
   topper?: string;
@@ -133,34 +135,12 @@ const {
         <div class="grid grid-cols-2 gap-3">
           <label class="block">
             <span class="mb-1.5 block text-xs font-medium text-primary-fg/85">Étage</span>
-            <div class="relative flex items-center">
-              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/70 [&_svg]:size-4">
-                <TablerIcon name="stairs" />
-              </span>
-              <select
-                name="floor"
-                class="w-full appearance-none rounded-lg border border-primary-fg/15 bg-primary-fg/[0.06] py-3 pr-8 pl-9 text-sm font-medium text-primary-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                {floors.map((f) => <option class="text-foreground" value={f.value}>{f.label}</option>)}
-              </select>
-              <span class="pointer-events-none absolute right-3 flex size-3.5 rotate-90 items-center justify-center overflow-hidden text-primary-fg/60 [&_svg]:size-3.5">
-                <TablerIcon name="chevron-right" />
-              </span>
-            </div>
+            <HeroFloorSelect client:load name="floor" floors={floors} />
           </label>
 
           <label class="block">
             <span class="mb-1.5 block text-xs font-medium text-primary-fg/85">Date</span>
-            <div class="relative flex items-center">
-              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/70 [&_svg]:size-4">
-                <TablerIcon name="calendar" />
-              </span>
-              <input
-                type="date"
-                name="date"
-                class="w-full appearance-none rounded-lg border border-primary-fg/15 bg-primary-fg/[0.06] py-3 pr-3 pl-9 text-sm font-medium text-primary-fg [color-scheme:dark] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              />
-            </div>
+            <HeroDatePicker client:load name="date" placeholder="Choisir une date" />
           </label>
         </div>
 

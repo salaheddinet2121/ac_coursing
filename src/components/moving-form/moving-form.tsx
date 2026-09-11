@@ -323,19 +323,66 @@ function NavButtons({ onPrev, onNext, nextLabel = "Continuer", isLast }: {
   );
 }
 
-function StepHeader({ step, title, description }: { step: number; title: string; description: string }) {
-  const pct = Math.round((step / TOTAL_STEPS) * 100);
+const STEPPER_STEPS: { icon: string; label: string }[] = [
+  { icon: "truck-delivery", label: "Trajet" },
+  { icon: "box", label: "Inventaire" },
+  { icon: "package", label: "Spécial" },
+  { icon: "file-description", label: "Résumé" },
+  { icon: "user", label: "Contact" },
+];
+
+function Stepper({ step }: { step: number }) {
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span>Étape {step} sur {TOTAL_STEPS}</span>
-          <span>{pct}%</span>
-        </div>
-        <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-          <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${pct}%` }} />
-        </div>
-      </div>
+    <ol className="flex items-center" aria-label={`Étape ${step} sur ${TOTAL_STEPS}`}>
+      {STEPPER_STEPS.map((s, i) => {
+        const n = i + 1;
+        const isDone = n < step;
+        const isCurrent = n === step;
+        const isLast = n === STEPPER_STEPS.length;
+        return (
+          <li key={s.label} className={cn("flex items-center", !isLast && "flex-1")}>
+            <div className="flex flex-col items-center gap-1.5">
+              <span
+                aria-current={isCurrent ? "step" : undefined}
+                className={cn(
+                  "flex size-8 shrink-0 items-center justify-center rounded-full border-2 transition-colors sm:size-9",
+                  isDone || isCurrent
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-background text-muted-foreground",
+                )}
+              >
+                {isDone ? (
+                  <TablerIcon name="check" className="size-4" />
+                ) : (
+                  <TablerIcon name={s.icon} className="size-4" />
+                )}
+              </span>
+              <span
+                className={cn(
+                  "hidden text-[11px] font-semibold whitespace-nowrap sm:block",
+                  isDone || isCurrent ? "text-foreground" : "text-muted-foreground",
+                )}
+              >
+                {s.label}
+              </span>
+            </div>
+            {!isLast && (
+              <span
+                aria-hidden="true"
+                className={cn("mx-1.5 h-0.5 flex-1 rounded-full transition-colors sm:mx-2", isDone ? "bg-primary" : "bg-border")}
+              />
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function StepHeader({ step, title, description }: { step: number; title: string; description: string }) {
+  return (
+    <div className="space-y-5">
+      <Stepper step={step} />
       <div>
         <p className="text-xl font-bold tracking-tight text-foreground">{title}</p>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{description}</p>
@@ -475,7 +522,7 @@ function Step1({ data, onChange, onNext }: {
         </div>
       </div>
 
-      <NavButtons onNext={onNext} />
+      <NavButtons onPrev={() => window.location.assign("/")} onNext={onNext} />
     </div>
   );
 }
