@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import CTA from '../../../components/CTA.astro';
+import FAQSection from '../../../components/FAQSection.astro';
+import TablerIcon from '../../../components/TablerIcon.astro';
+import { client } from '../../../data/client';
+import { getPlacesData, formatRating } from '../../../lib/google-places';
+
+const places = await getPlacesData();
+const ratingDisplay = formatRating(places.rating);
+
+const factors = [
+  {
+    icon: 'box',
+    title: 'Le volume à transporter',
+    text: "Le premier facteur de prix : nombre de pièces, mobilier, cartons, objets volumineux. Plus le volume est précis au devis, plus le prix final est fiable.",
+  },
+  {
+    icon: 'map-pin',
+    title: "L'accès aux deux adresses",
+    text: "Étage, présence d'un ascenseur, distance de portage, possibilité de stationner le camion : chaque contrainte d'accès est intégrée au calcul.",
+  },
+  {
+    icon: 'truck-delivery',
+    title: 'La distance du trajet',
+    text: 'Un déménagement local à Montpellier et un trajet longue distance vers une autre ville ne mobilisent pas les mêmes ressources ni le même temps.',
+  },
+  {
+    icon: 'calendar',
+    title: 'La date et la flexibilité',
+    text: 'Les périodes de forte demande (week-ends, fins de mois, été) peuvent influencer la disponibilité. Une date flexible facilite le calage du créneau.',
+  },
+  {
+    icon: 'check',
+    title: 'Les prestations additionnelles',
+    text: 'Mise en carton, démontage/remontage de meubles, garde-meubles temporaire : chaque option choisie est détaillée séparément dans le devis.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Comment obtenir un tarif précis pour mon déménagement ?',
+    answer: "Le moyen le plus fiable est de remplir le formulaire de devis en ligne avec votre adresse, votre étage et votre date : vous recevez une estimation personnalisée sous 24h, sans engagement.",
+    open: true,
+  },
+  {
+    question: 'Le prix annoncé est-il le prix final ?',
+    answer: "Oui. Chez AC Coursing, le prix annoncé au devis est le prix payé, sauf si vous demandez vous-même une modification du périmètre du déménagement.",
+  },
+  {
+    question: 'Existe-t-il un prix moyen pour un déménagement à Montpellier ?',
+    answer: "Le prix varie fortement selon le volume, la distance et l'accès aux adresses : il n'existe pas de tarif générique fiable. Le devis personnalisé reste la seule façon d'obtenir un montant exact pour votre situation.",
+  },
+  {
+    question: 'Le devis est-il payant ?',
+    answer: "Non, l'estimation est entièrement gratuite et sans engagement, quelle que soit l'issue de votre projet.",
+  },
+];
+---
+
+<BaseLayout
+  title="Tarif Déménagement Montpellier | Devis Gratuit | AC Coursing"
+  description="Ce qui influence le tarif d'un déménagement à Montpellier : volume, accès, distance, date. Obtenez un prix fixe garanti et un devis gratuit sous 24h."
+  schema={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: "Tarif déménagement",
+        provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
+        areaServed: { '@type': 'City', name: 'Montpellier' },
+        description: "Explication des facteurs qui composent le tarif d'un déménagement à Montpellier, avec devis gratuit personnalisé.",
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+          { '@type': 'ListItem', position: 2, name: 'Prestations', item: `${client.domain}/prestations/` },
+          { '@type': 'ListItem', position: 3, name: 'Tarif déménagement', item: `${client.domain}/services/tarif-demenagement-montpellier/` },
+        ],
+      },
+    ],
+  }}
+>
+  <Header slot="header" />
+
+  <section class="bg-primary py-14 sm:py-16">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <nav aria-label="Breadcrumb" class="mb-4">
+        <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-fg/60">
+          <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><a href="/services" class="hover:text-primary-fg transition-colors">Services</a></li>
+          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><span class="text-primary-fg" aria-current="page">Tarif déménagement</span></li>
+        </ol>
+      </nav>
+      <h1 class="font-heading text-h1 text-primary-fg">Tarif d'un déménagement à Montpellier</h1>
+      <p class="mt-3 max-w-xl text-primary-fg/80">Aucun montant n'est avancé au hasard : voici ce qui compose réellement le prix d'un déménagement, et comment obtenir le vôtre en 24h.</p>
+    </div>
+  </section>
+
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+
+      <div class="max-w-3xl">
+        <p class="text-lg leading-relaxed text-muted-foreground">
+          Le prix d'un déménagement à Montpellier dépend toujours de votre situation précise : il n'existe pas de tarif fixe générique valable pour tout le monde. Chez AC Coursing, le prix annoncé au devis est le prix payé — sans mauvaise surprise le jour J. Voici les facteurs qui entrent réellement dans le calcul.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {factors.map(({ icon, title, text }) => (
+          <div class="rounded-2xl border border-border bg-panel p-6">
+            <span class="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <TablerIcon name={icon} class="text-lg leading-none" />
+            </span>
+            <h2 class="mt-4 font-heading text-lg font-semibold text-foreground">{title}</h2>
+            <p class="mt-2 leading-relaxed text-muted-foreground">{text}</p>
+          </div>
+        ))}
+
+        <div class="rounded-2xl border-2 border-primary bg-primary/5 p-6 flex flex-col justify-between">
+          <div>
+            <span class="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <TablerIcon name="arrow-right" class="text-lg leading-none" />
+            </span>
+            <h2 class="mt-4 font-heading text-lg font-semibold text-foreground">Votre tarif personnalisé</h2>
+            <p class="mt-2 leading-relaxed text-muted-foreground">Le seul moyen d'obtenir un prix exact pour votre déménagement : un devis gratuit et sans engagement, sous 24h.</p>
+          </div>
+          <a
+            href="/devis"
+            class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground shadow-md transition-all hover:opacity-90"
+          >
+            Obtenir mon devis gratuit
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 gap-6 border-t border-border pt-12 sm:grid-cols-3">
+        {[
+          { value: '1 500+', label: 'déménagements réalisés' },
+          { value: `${ratingDisplay}/5`, label: 'note Google' },
+          { value: '24h', label: 'réponse garantie' },
+        ].map(({ value, label }) => (
+          <div class="text-center" data-reveal>
+            <p class="font-heading text-4xl font-bold text-primary">{value}</p>
+            <p class="mt-1 text-sm text-muted-foreground">{label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FAQSection topper="FAQ Tarif" heading="Questions sur le prix d'un déménagement" items={faqItems} />
+
+  <CTA
+    title="Votre devis personnalisé en 4 étapes"
+    description="Adresses, dates, volume : remplissez le formulaire et recevez un prix fixe garanti sous 24h."
+  />
+  <Footer slot="footer" />
+</BaseLayout>
