@@ -88,10 +88,23 @@ async function fetchFromCommunesApi(query: string): Promise<AddressSuggestion[]>
     .filter((item: AddressSuggestion) => item.label);
 }
 
+/**
+ * The BAN rejects queries it cannot act on with a 400 — notably a bare street
+ * number ("12", typed before the street name) or a very short fragment. We
+ * skip those instead of firing a request that is guaranteed to fail.
+ * A full 5-digit postcode is valid on its own and must still go through.
+ */
+function isSearchable(query: string) {
+  if (/^\d{5}$/.test(query)) return true;
+
+  const letters = query.replace(/[^\p{L}]/gu, '');
+  return letters.length >= 3;
+}
+
 export const GET: APIRoute = async ({ url }) => {
   const query = url.searchParams.get('q')?.trim() ?? '';
 
-  if (query.length < 2) {
+  if (query.length < 2 || !isSearchable(query)) {
     return new Response(JSON.stringify({ suggestions: [] }), {
       status: 200,
       headers: {
