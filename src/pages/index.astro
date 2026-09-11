@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
-import TrustBar from '../components/TrustBar.astro';
 import Services from '../components/Services.astro';
 import PackagesSection from '../components/PackagesSection.astro';
 import StatementSection from '../components/StatementSection.astro';
@@ -68,13 +67,12 @@ const ratingDisplay = formatRating(places.rating);
 >
   <Header slot="header" />
 
-  <Hero ratingValue={`${ratingDisplay}/5`} />
-  <TrustBar
-    items={[
-      { icon: 'star-filled', value: `${ratingDisplay}/5`, label: 'sur Google' },
-      { icon: 'check', value: String(places.reviewCount), label: 'avis vérifiés' },
-      { icon: 'truck-delivery', value: '1 500+', label: 'déménagements' },
-      { icon: 'shield-check', value: 'Depuis 2015', label: "11 ans d'expérience" },
+  <Hero
+    ratingValue={`${ratingDisplay}/5`}
+    points={[
+      { icon: 'shield-check', label: "11 ans d'expérience" },
+      { icon: 'truck-delivery', label: '1 500+ déménagements' },
+      { icon: 'check', label: `${places.reviewCount} avis vérifiés` },
     ]}
   />
   <StatementSection
