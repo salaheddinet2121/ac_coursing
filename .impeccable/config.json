@@ -1,0 +1,18 @@
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/pages/galerie.astro"
+        ],
+        "createdAt": "2026-09-11T06:22:14.470Z",
+        "reason": "lb-img is a JS-populated lightbox template; src/alt are set on open, empty by design"
+      }
+    ]
+  }
+}

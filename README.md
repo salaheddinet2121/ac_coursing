@@ -95,34 +95,26 @@ This data flows automatically into the header, footer, contact page, and all SEO
 
 ---
 
-### Step 2 — Visual identity: `src/config/brand.ts`
+### Step 2 — Visual identity: `src/styles/theme.css` + `astro.config.mjs`
 
-This controls the site name, tagline, colors, and fonts.
+Colors, spacing, radius and shadows are Tailwind v4 design tokens defined once in `src/styles/theme.css`'s `:root` block (`--background`, `--primary`, `--border`, etc.) and consumed everywhere through Tailwind utility classes (`bg-background`, `text-primary`, `border-border`, ...). There is no separate color config to keep in sync — edit the hex values there and every component picks it up.
 
-```ts
-export const brand = {
-  name: 'Your Business Name',
-  tagline: 'Professional service you can trust.',
-  description: 'A short sentence used as the default SEO meta description.',
-  url: 'https://www.yourdomain.com',  // Must match client.domain
-
-  fonts: {
-    body: 'Inter',      // Google Fonts name for body text
-    display: 'Oswald',  // Google Fonts name for headings
-  },
-
-  colors: {
-    primary:    '#1B3A6B',  // Main brand color (nav, buttons, headings)
-    primaryFg:  '#ffffff',  // Text color on top of primary backgrounds
-    accent:     '#F97316',  // CTA buttons, highlights
-    // ... see file for full list
-  },
-};
+```css
+:root {
+  --background: #F7F7F5;
+  --primary:    #2563EB;
+  --primary-foreground: #FFFFFF;
+  --border:     #E3E5E8;
+  /* ...see the file for the full token list */
+}
 ```
 
-> **After changing colors** you must also update the matching hex values in `src/styles/theme.css` inside the `@theme { }` block. The variable names there correspond 1-to-1 with the keys in `brand.colors`.
->
-> **After changing fonts** you must also update `astro.config.mjs` — find the `fonts:` array and change the `name` field to match your new Google Font name.
+Fonts are set in two places that must match:
+
+1. `astro.config.mjs` — the `fonts:` array's `name` field (Google Font name, loaded via Astro's font API).
+2. `src/styles/theme.css` — the `--font-heading` / `--font-body` fallback stacks, near the bottom of the `@theme inline { }` block.
+
+`src/config/brand.ts` only holds identity text (`name`, `tagline`, `description`, `url`, `locale`) used in metadata and copy — it is not a source of visual tokens.
 
 ---
 
@@ -144,7 +136,7 @@ small-business-starter/
 │   │   ├── CTA.astro           # Full-bleed call-to-action section
 │   │   └── Banner.astro        # Inner-page hero with auto breadcrumbs
 │   ├── config/
-│   │   └── brand.ts            # ✏️  Visual identity (colors, fonts, tagline)
+│   │   └── brand.ts            # ✏️  Identity text (name, tagline, description)
 │   ├── content/
 │   │   └── blog/               # ✏️  Markdown blog posts (.md files)
 │   ├── data/
