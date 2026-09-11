@@ -4,6 +4,7 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import CTA from '../../../components/CTA.astro';
 import FAQSection from '../../../components/FAQSection.astro';
+import BofuHero from '../../../components/BofuHero.astro';
 import TablerIcon from '../../../components/TablerIcon.astro';
 import { client } from '../../../data/client';
 import { getPlacesData, formatRating } from '../../../lib/google-places';
@@ -86,26 +87,27 @@ const faqItems = [
 >
   <Header slot="header" />
 
-  <section class="bg-primary py-14 sm:py-16">
-    <div class="mx-auto max-w-site px-4 sm:px-6">
-      <nav aria-label="Breadcrumb" class="mb-4">
-        <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-fg/60">
-          <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
-          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><a href="/services" class="hover:text-primary-fg transition-colors">Services</a></li>
-          <li class="flex items-center gap-1.5"><TablerIcon name="chevron-right" class="size-3.5" /><span class="text-primary-fg" aria-current="page">Tarif déménagement</span></li>
-        </ol>
-      </nav>
-      <h1 class="font-heading text-h1 text-primary-fg">Tarif d'un déménagement à Montpellier</h1>
-      <p class="mt-3 max-w-xl text-primary-fg/80">Aucun montant n'est avancé au hasard : voici ce qui compose réellement le prix d'un déménagement, et comment obtenir le vôtre en 24h.</p>
-    </div>
-  </section>
+  <BofuHero
+    crumbs={[
+      { label: 'Services', href: '/services' },
+      { label: 'Tarif déménagement' },
+    ]}
+    heading="Tarif d'un déménagement à Montpellier"
+    description="Aucun montant n'est avancé au hasard : voici ce qui compose réellement le prix d'un déménagement, et comment obtenir le vôtre en 24h."
+    points={[
+      { icon: 'check', text: 'Le prix annoncé au devis est le prix payé' },
+      { icon: 'box', text: 'Volume, accès et distance sont détaillés poste par poste' },
+      { icon: 'clock', text: 'Estimation personnalisée sous 24h, sans engagement' },
+    ]}
+  />
 
   <section class="bg-background py-section">
     <div class="mx-auto max-w-site px-4 sm:px-6">
 
       <div class="max-w-3xl">
-        <p class="text-lg leading-relaxed text-muted-foreground">
-          Le prix d'un déménagement à Montpellier dépend toujours de votre situation précise : il n'existe pas de tarif fixe générique valable pour tout le monde. Chez AC Coursing, le prix annoncé au devis est le prix payé — sans mauvaise surprise le jour J. Voici les facteurs qui entrent réellement dans le calcul.
+        <h2 class="font-heading text-h2 text-foreground">Ce qui compose le prix de votre déménagement</h2>
+        <p class="mt-3 text-lg leading-relaxed text-muted-foreground">
+          Le prix d'un déménagement à Montpellier dépend toujours de votre situation précise : il n'existe pas de tarif fixe générique valable pour tout le monde. Voici les facteurs qui entrent réellement dans le calcul.
         </p>
       </div>
 
@@ -115,7 +117,7 @@ const faqItems = [
             <span class="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <TablerIcon name={icon} class="text-lg leading-none" />
             </span>
-            <h2 class="mt-4 font-heading text-lg font-medium text-foreground">{title}</h2>
+            <h3 class="mt-4 font-heading text-lg font-medium text-foreground">{title}</h3>
             <p class="mt-2 leading-relaxed text-muted-foreground">{text}</p>
           </div>
         ))}
@@ -125,7 +127,7 @@ const faqItems = [
             <span class="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <TablerIcon name="arrow-right" class="text-lg leading-none" />
             </span>
-            <h2 class="mt-4 font-heading text-lg font-medium text-foreground">Votre tarif personnalisé</h2>
+            <h3 class="mt-4 font-heading text-lg font-medium text-foreground">Votre tarif personnalisé</h3>
             <p class="mt-2 leading-relaxed text-muted-foreground">Le seul moyen d'obtenir un prix exact pour votre déménagement : un devis gratuit et sans engagement, sous 24h.</p>
           </div>
           <a
@@ -152,11 +154,12 @@ const faqItems = [
     </div>
   </section>
 
-  <FAQSection topper="FAQ Tarif" heading="Questions sur le prix d'un déménagement" items={faqItems} />
+  <FAQSection topper="FAQ Tarif" heading="Questions sur le prix d'un déménagement" items={faqItems} headingLevel="h3" />
 
   <CTA
     title="Votre devis personnalisé en 4 étapes"
     description="Adresses, dates, volume : remplissez le formulaire et recevez un prix fixe garanti sous 24h."
+    headingLevel="h3"
   />
   <Footer slot="footer" />
 </BaseLayout>

@@ -1,0 +1,115 @@
+---
+import TablerIcon from './TablerIcon.astro';
+import { BofuFormFields } from './BofuFormFields';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Point {
+  icon: string;
+  text: string;
+}
+
+interface FloorOption { value: string; label: string }
+
+interface Props {
+  crumbs: Crumb[];
+  heading: string;
+  description: string;
+  points?: Point[];
+  formTitle?: string;
+  formAction?: string;
+  submitLabel?: string;
+  floors?: FloorOption[];
+}
+
+const {
+  crumbs,
+  heading,
+  description,
+  points = [],
+  formTitle = 'Obtenez votre devis gratuit',
+  formAction = '/devis',
+  submitLabel = 'Obtenir mon devis gratuit',
+  floors = [
+    { value: '0', label: 'Rez-de-chaussée' },
+    { value: '1', label: '1er étage' },
+    { value: '2', label: '2e étage' },
+    { value: '3', label: '3e étage' },
+    { value: '4', label: '4e étage' },
+    { value: '5', label: '5e étage et plus' },
+  ],
+} = Astro.props;
+---
+
+<section class="bg-primary py-14 sm:py-16 lg:py-20">
+  <div class="mx-auto max-w-site px-4 sm:px-6">
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-fg/60">
+        <li><a href="/" class="hover:text-primary-fg transition-colors">Accueil</a></li>
+        {crumbs.map((c) => (
+          <li class="flex items-center gap-1.5">
+            <TablerIcon name="chevron-right" class="size-3.5" />
+            {c.href ? (
+              <a href={c.href} class="hover:text-primary-fg transition-colors">{c.label}</a>
+            ) : (
+              <span class="text-primary-fg" aria-current="page">{c.label}</span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start lg:gap-14">
+      <div class="order-1">
+        <h1 class="font-heading text-h1 leading-tight text-primary-fg">{heading}</h1>
+        <p class="mt-4 max-w-xl text-lead leading-relaxed text-primary-fg/80">{description}</p>
+
+        {points.length > 0 && (
+          <ul class="mt-7 space-y-3">
+            {points.map(({ icon, text }) => (
+              <li class="flex items-start gap-2.5 text-sm font-medium text-primary-fg/90">
+                <TablerIcon name={icon} class="mt-0.5 shrink-0 text-base leading-none text-primary-soft" />
+                {text}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div class="order-2 rounded-2xl border border-border bg-card p-7 shadow-lg sm:p-8">
+        <h3 class="font-heading text-h3 leading-snug text-foreground">{formTitle}</h3>
+
+        <form method="get" action={formAction} class="mt-6 space-y-5">
+          <BofuFormFields client:load floors={floors} />
+
+          <button
+            type="submit"
+            class="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-base font-bold text-primary-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            {submitLabel}
+          </button>
+
+          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-border pt-4 text-xs font-medium text-muted-foreground">
+            <span class="inline-flex items-center gap-1">
+              <TablerIcon name="clock" class="text-sm leading-none" />
+              Réponse sous 24h
+            </span>
+            <span class="text-border" aria-hidden="true">&middot;</span>
+            <span class="inline-flex items-center gap-1">
+              <TablerIcon name="shield-check" class="text-sm leading-none" />
+              Assuré & licencié
+            </span>
+            <span class="text-border" aria-hidden="true">&middot;</span>
+            <span class="inline-flex items-center gap-1">
+              <TablerIcon name="check" class="text-sm leading-none" />
+              100&nbsp;% gratuit
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
