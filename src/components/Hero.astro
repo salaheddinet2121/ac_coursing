@@ -61,7 +61,7 @@ const {
     <div class="absolute inset-0 bg-dark/72"></div>
   </div>
 
-  <div class="relative mx-auto grid max-w-site grid-cols-1 gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.3fr_0.9fr] lg:items-center lg:gap-16 lg:py-32">
+  <div class="relative mx-auto grid max-w-site grid-cols-1 gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-16 lg:py-32">
 
     <!-- Content -->
     <div class="order-1">
@@ -116,54 +116,54 @@ const {
     </div>
 
     <!-- Estimate form card -->
-    <div class="order-2 w-full rounded-2xl bg-dark-surface p-6 shadow-lg ring-1 ring-primary-fg/10 sm:p-7" transition:name="hero-image">
-      <h2 class="font-heading text-h3 leading-snug text-primary-fg">{formTitle}</h2>
+    <div class="order-2 w-full rounded-2xl bg-card p-7 shadow-lg sm:p-9" transition:name="hero-image">
+      <h2 class="font-heading text-h2 leading-snug text-foreground">{formTitle}</h2>
 
-      <form method="get" action={formAction} class="mt-5 space-y-3">
+      <form method="get" action={formAction} class="mt-6 space-y-4">
         <label class="block">
-          <span class="mb-1.5 block text-xs font-medium text-primary-fg/60">Adresse de départ</span>
+          <span class="mb-1.5 block text-xs font-medium text-muted-foreground">Adresse de départ</span>
           <div class="relative flex items-center">
-            <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/50 [&_svg]:size-4">
+            <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-muted-foreground [&_svg]:size-4">
               <TablerIcon name="map-pin" />
             </span>
             <input
               type="text"
               name="address"
               placeholder="Ex : 12 rue de la Loge, Montpellier"
-              class="w-full rounded-lg border border-primary-fg/10 bg-dark py-2.5 pr-3 pl-9 text-sm font-medium text-primary-fg placeholder:text-primary-fg/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              class="w-full rounded-lg border border-border bg-background py-3 pr-3 pl-9 text-sm font-medium text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             />
           </div>
         </label>
 
         <div class="grid grid-cols-2 gap-3">
           <label class="block">
-            <span class="mb-1.5 block text-xs font-medium text-primary-fg/60">Étage</span>
+            <span class="mb-1.5 block text-xs font-medium text-muted-foreground">Étage</span>
             <div class="relative flex items-center">
-              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/50 [&_svg]:size-4">
+              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-muted-foreground [&_svg]:size-4">
                 <TablerIcon name="stairs" />
               </span>
               <select
                 name="floor"
-                class="w-full appearance-none rounded-lg border border-primary-fg/10 bg-dark py-2.5 pr-8 pl-9 text-sm font-medium text-primary-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                class="w-full appearance-none rounded-lg border border-border bg-background py-3 pr-8 pl-9 text-sm font-medium text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {floors.map((f) => <option value={f.value}>{f.label}</option>)}
               </select>
-              <span class="pointer-events-none absolute right-3 flex size-3.5 rotate-90 items-center justify-center overflow-hidden text-primary-fg/40 [&_svg]:size-3.5">
+              <span class="pointer-events-none absolute right-3 flex size-3.5 rotate-90 items-center justify-center overflow-hidden text-muted-foreground [&_svg]:size-3.5">
                 <TablerIcon name="chevron-right" />
               </span>
             </div>
           </label>
 
           <label class="block">
-            <span class="mb-1.5 block text-xs font-medium text-primary-fg/60">Date</span>
+            <span class="mb-1.5 block text-xs font-medium text-muted-foreground">Date</span>
             <div class="relative flex items-center">
-              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-primary-fg/50 [&_svg]:size-4">
+              <span class="pointer-events-none absolute left-3 flex size-4 items-center justify-center overflow-hidden text-muted-foreground [&_svg]:size-4">
                 <TablerIcon name="calendar" />
               </span>
               <input
                 type="date"
                 name="date"
-                class="w-full appearance-none rounded-lg border border-primary-fg/10 bg-dark py-2.5 pr-3 pl-9 text-sm font-medium text-primary-fg [color-scheme:dark] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                class="w-full appearance-none rounded-lg border border-border bg-background py-3 pr-3 pl-9 text-sm font-medium text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               />
             </div>
           </label>
@@ -171,7 +171,7 @@ const {
 
         <button
           type="submit"
-          class="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-background px-6 py-3 text-base font-bold text-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+          class="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-base font-bold text-primary-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {submitLabel}
         </button>
