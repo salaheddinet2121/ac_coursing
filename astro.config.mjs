@@ -31,9 +31,9 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Manrope',
+      name: 'Inter Tight',
       cssVariable: '--font-display',
-      weights: ['500', '600', '700'],
+      weights: ['400', '500'],
       styles: ['normal'],
     },
     {

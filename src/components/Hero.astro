@@ -42,7 +42,7 @@ const {
       </div>
 
       <!-- Heading -->
-      <h1 class="font-heading text-display font-bold uppercase leading-none text-foreground" transition:name="hero-heading">
+      <h1 class="font-heading text-h1 leading-tight text-foreground" transition:name="hero-heading">
         {heading}
       </h1>
 
@@ -73,9 +73,6 @@ const {
     <!-- Image — hidden on mobile, visible from lg -->
     <div class="relative hidden lg:block lg:order-2" transition:name="hero-image">
 
-      <!-- Frame decoration -->
-      <div class="absolute -right-3 -top-3 h-full w-full rounded-xl border-2 border-primary/20" aria-hidden="true"></div>
-
       <!-- Badge -->
       <div class="absolute -bottom-4 -left-4 z-10 flex items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-lg">
         <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -88,7 +85,7 @@ const {
       </div>
 
       <!-- Image -->
-      <div class="relative overflow-hidden rounded-xl border border-border bg-card shadow-xl aspect-[4/3]">
+      <div class="relative overflow-hidden rounded-hero border border-border bg-card shadow-xl aspect-[4/3]">
         <img
           src={imageSrc}
           alt={imageAlt}

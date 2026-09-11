@@ -29,14 +29,14 @@ const {
 
     <!-- Topper -->
     <div class="flex justify-center reveal-fade">
-      <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
-        <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
-        <span class="text-topper font-bold uppercase tracking-widest text-primary">{topper}</span>
+      <div class="inline-flex items-center gap-2 rounded-full border border-primary-soft/30 bg-primary-soft/10 px-4 py-1.5">
+        <span class="size-2 rounded-full bg-primary-soft" aria-hidden="true"></span>
+        <span class="text-topper font-bold uppercase tracking-widest text-primary-soft">{topper}</span>
       </div>
     </div>
 
     <!-- Two-tone statement — words split for reveal -->
-    <h2 class="mx-auto mt-8 max-w-3xl text-center font-heading text-[clamp(1.5rem,2.8vw,2.25rem)] font-bold uppercase leading-snug">
+    <h2 class="mx-auto mt-8 max-w-3xl text-center font-heading text-[clamp(1.5rem,2.8vw,2.25rem)] leading-snug">
       <span data-words={statementBold + ' ' + statementFade} data-color="bright"></span>
     </h2>
 
@@ -46,7 +46,7 @@ const {
     <!-- Stats -->
     <dl class="mt-10 grid grid-cols-2 gap-y-10 lg:grid-cols-4">
       {stats.map(({ value, label }) => (
-        <div class="flex flex-col gap-2 reveal-fade">
+        <div class="flex flex-col items-center gap-2 text-center reveal-fade">
           <dt class="font-heading text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-none text-primary-fg"
               data-count={value}>
             {value}
