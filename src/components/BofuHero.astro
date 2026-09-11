@@ -1,6 +1,6 @@
 ---
 import TablerIcon from './TablerIcon.astro';
-import { BofuFormFields } from './BofuFormFields';
+import { HeroFormFields } from './HeroFormFields';
 
 interface Crumb {
   label: string;
@@ -92,30 +92,30 @@ const {
         )}
       </div>
 
-      <div class="order-2 rounded-2xl border border-border bg-card p-7 shadow-lg sm:p-8">
-        <h3 class="font-heading text-h3 leading-snug text-foreground">{formTitle}</h3>
+      <div class="order-2 rounded-2xl border border-primary-fg/15 bg-primary-fg/[0.07] p-7 shadow-lg ring-1 ring-inset ring-primary-fg/10 backdrop-blur-xl sm:p-9">
+        <h3 class="font-heading text-h3 leading-snug text-primary-fg">{formTitle}</h3>
 
         <form method="get" action={formAction} class="mt-6 space-y-5">
-          <BofuFormFields client:load floors={floors} />
+          <HeroFormFields client:load floors={floors} />
 
           <button
             type="submit"
-            class="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-base font-bold text-primary-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            class="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-background px-6 py-3 text-base font-bold text-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
           >
             {submitLabel}
           </button>
 
-          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-border pt-4 text-xs font-medium text-muted-foreground">
+          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-primary-fg/10 pt-4 text-xs font-medium text-primary-fg/70">
             <span class="inline-flex items-center gap-1">
               <TablerIcon name="clock" class="text-sm leading-none" />
               Réponse sous 24h
             </span>
-            <span class="text-border" aria-hidden="true">&middot;</span>
+            <span class="text-primary-fg/25" aria-hidden="true">&middot;</span>
             <span class="inline-flex items-center gap-1">
               <TablerIcon name="shield-check" class="text-sm leading-none" />
               Assuré & licencié
             </span>
-            <span class="text-border" aria-hidden="true">&middot;</span>
+            <span class="text-primary-fg/25" aria-hidden="true">&middot;</span>
             <span class="inline-flex items-center gap-1">
               <TablerIcon name="check" class="text-sm leading-none" />
               100&nbsp;% gratuit
