@@ -26,10 +26,8 @@ const { items = [
     </h2>
     <ul class="flex flex-wrap items-center justify-around gap-x-8 gap-y-4 lg:justify-center lg:gap-x-16" role="list">
       {items.map(({ icon, label, value }) => (
-        <li class="flex shrink-0 items-center gap-3">
-          <span class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <TablerIcon name={icon} filled class="text-lg leading-none" />
-          </span>
+        <li class="flex shrink-0 items-center gap-2">
+          <TablerIcon name={icon} filled class="text-lg leading-none text-primary" />
           <span class="font-heading text-sm font-semibold text-foreground sm:text-base">
             {value && <span class="text-primary">{value} </span>}
             {label}
