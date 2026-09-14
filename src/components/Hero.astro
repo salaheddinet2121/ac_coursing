@@ -104,11 +104,18 @@ const {
         <span>sur Google</span>
       </div>
 
-      <!-- Secondary CTA -->
-      <div class="mt-7">
+      <!-- CTAs -->
+      <div class="mt-7 flex flex-wrap items-center gap-3">
+        <a
+          href={formAction}
+          class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 text-base font-bold text-primary-foreground shadow-md transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto lg:hidden"
+        >
+          {submitLabel}
+          <TablerIcon name="arrow-right" class="text-base leading-none" />
+        </a>
         <a
           href={secondaryHref}
-          class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-primary-fg/30 px-7 py-3 text-base font-bold text-primary-fg transition-colors hover:bg-primary-fg/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fg"
+          class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 border-primary-fg/30 px-7 py-3 text-base font-bold text-primary-fg transition-colors hover:bg-primary-fg/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fg sm:w-auto"
         >
           {secondaryLabel}
           <TablerIcon name="arrow-right" class="text-base leading-none" />
