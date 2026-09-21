@@ -2,7 +2,6 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
-import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 
 import react from '@astrojs/react';
@@ -15,8 +14,8 @@ export default defineConfig({
   }),
 
   integrations: [
-    sitemap(),
     robotsTxt({
+      sitemap: 'https://ac-coursing.fr/sitemap.xml',
       policy: [
         {
           userAgent: '*',
