@@ -84,4 +84,15 @@ const {
     </ol>
 
   </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: heading,
+    step: steps.map(({ title, description }) => ({
+      '@type': 'HowToStep',
+      name: title,
+      text: description,
+    })),
+  })} />
 </section>
