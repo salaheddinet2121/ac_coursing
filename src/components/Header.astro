@@ -2,7 +2,7 @@
 import { brand } from '../config/brand';
 import { client } from '../data/client';
 import TablerIcon from './TablerIcon.astro';
-import { services, routes } from '../data/prestations';
+import { services, regionalCities, longDistanceRoutes } from '../data/prestations';
 
 const nav = [
   { label: 'Accueil', href: '/' },
@@ -89,10 +89,25 @@ const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].
                 ))}
               </ul>
             </div>
-            <div class="w-max pl-6">
-              <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Lieux d'intervention</p>
+            <div class="w-max px-6">
+              <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Occitanie</p>
               <ul>
-                {routes.map(({ title, icon, href }) => (
+                {regionalCities.map(({ title, icon, href }) => (
+                  <li>
+                    <a href={href} class="group/item flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted">
+                      <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70 transition-colors group-hover/item:bg-border">
+                        <TablerIcon name={icon} class="text-sm leading-none" />
+                      </span>
+                      <span>{title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="w-max pl-6">
+              <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Longue distance</p>
+              <ul>
+                {longDistanceRoutes.map(({ title, icon, href }) => (
                   <li>
                     <a href={href} class="group/item flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted">
                       <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70 transition-colors group-hover/item:bg-border">
@@ -203,8 +218,17 @@ const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].
               {title}
             </a>
           ))}
-          <p class="mb-1 mt-3 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Lieux d'intervention</p>
-          {routes.map(({ title, icon, href }) => (
+          <p class="mb-1 mt-3 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Occitanie</p>
+          {regionalCities.map(({ title, icon, href }) => (
+            <a href={href} class="flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground">
+              <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70">
+                <TablerIcon name={icon} class="text-sm leading-none" />
+              </span>
+              {title}
+            </a>
+          ))}
+          <p class="mb-1 mt-3 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Longue distance</p>
+          {longDistanceRoutes.map(({ title, icon, href }) => (
             <a href={href} class="flex items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground">
               <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70">
                 <TablerIcon name={icon} class="text-sm leading-none" />

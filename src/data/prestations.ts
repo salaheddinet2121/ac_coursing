@@ -16,8 +16,19 @@ export const services: PrestationLink[] = [
   { title: 'Tarif déménagement', icon: 'file-description', href: '/services/tarif-demenagement-montpellier' },
 ];
 
-export const routes: PrestationLink[] = [
+/** P1 immédiat — région Occitanie */
+export const regionalCities: PrestationLink[] = [
   { title: 'Montpellier', icon: 'home', href: '/' },
   { title: 'Nîmes', icon: 'map-pin', href: '/lieu-intervention/demenageur-nimes' },
-  { title: 'Déménagement Montpellier — Paris', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-paris' },
+  { title: 'Béziers', icon: 'map-pin', href: '/lieu-intervention/demenageur-beziers' },
+  { title: 'Sète', icon: 'map-pin', href: '/lieu-intervention/demenageur-sete' },
+  { title: 'Agde', icon: 'map-pin', href: '/lieu-intervention/demenageur-agde' },
+  { title: 'Narbonne', icon: 'map-pin', href: '/lieu-intervention/demenageur-narbonne' },
+];
+
+/** P1 longue distance */
+export const longDistanceRoutes: PrestationLink[] = [
+  { title: 'Déménagement Montpellier — Toulouse', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-toulouse' },
+  { title: 'Déménagement Montpellier — Lyon', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-lyon' },
+  { title: 'Déménagement Montpellier — Marseille', icon: 'truck', href: '/lieu-intervention/demenagement-montpellier-marseille' },
 ];

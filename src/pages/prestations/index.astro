@@ -6,7 +6,7 @@ import Banner from '../../components/Banner.astro';
 import CTA from '../../components/CTA.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import { client } from '../../data/client';
-import { services, routes } from '../../data/prestations';
+import { services, regionalCities, longDistanceRoutes } from '../../data/prestations';
 ---
 
 <BaseLayout
@@ -62,11 +62,33 @@ import { services, routes } from '../../data/prestations';
         </ul>
       </div>
 
-      <!-- Lieux d'intervention -->
+      <!-- Occitanie -->
       <div class="mt-14" data-reveal>
-        <h2 class="font-heading text-h3 text-foreground">Lieux d'intervention</h2>
+        <h2 class="font-heading text-h3 text-foreground">Déménageur en Occitanie</h2>
+        <p class="mt-2 max-w-2xl leading-relaxed text-muted-foreground">
+          En tant que <a href="/" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">déménageur à Montpellier</a>, nous intervenons régulièrement dans toute la région Occitanie, avec la même organisation et le même prix fixe garanti.
+        </p>
         <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
-          {routes.map(({ title, icon, href }) => (
+          {regionalCities.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 text-sm text-muted-foreground">Nous intervenons aussi à Lunel et dans les communes voisines — <a href="/contact" class="text-primary underline underline-offset-2 hover:opacity-80">contactez-nous</a> pour vérifier votre zone.</p>
+      </div>
+
+      <!-- Longue distance -->
+      <div class="mt-14" data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Déménagement longue distance</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {longDistanceRoutes.map(({ title, icon, href }) => (
             <li>
               <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md">
                 <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
