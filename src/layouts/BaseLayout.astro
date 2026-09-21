@@ -26,7 +26,11 @@ const {
   schema,
 } = Astro.props;
 
-const pageTitle = title === brand.name ? title : `${title} — ${brand.name}`;
+// Only append the brand suffix when the page's own title doesn't already
+// carry it — most commercial/BOFU pages already end in "AC Coursing" per
+// PRODUCT.md's title format, and appending on top of that duplicated the
+// brand name and pushed titles well past the pixel-width limit.
+const pageTitle = title.toLowerCase().includes('ac coursing') ? title : `${title} — ${brand.name}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
 ---
 
