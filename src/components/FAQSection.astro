@@ -82,4 +82,14 @@ const Heading = headingLevel;
       <a href="/contact" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">Contactez-nous</a>
     </div>
   </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  })} />
 </section>
