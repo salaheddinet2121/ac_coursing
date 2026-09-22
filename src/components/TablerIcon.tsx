@@ -165,11 +165,12 @@ interface Props {
   /** Used when called from React components */
   className?: string;
   id?: string;
+  stroke?: number;
 }
 
-export default function TablerIcon({ name, filled, class: classProp, className, id }: Props) {
+export default function TablerIcon({ name, filled, class: classProp, className, id, stroke }: Props) {
   const key = filled ? `${name}-filled` : name;
   const IconComponent = ICONS[key] ?? ICONS[name];
   if (!IconComponent) return null;
-  return <IconComponent id={id} className={className ?? classProp} aria-hidden="true" />;
+  return <IconComponent id={id} className={className ?? classProp} stroke={stroke} aria-hidden="true" />;
 }

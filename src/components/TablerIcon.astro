@@ -6,9 +6,10 @@ interface Props {
   filled?: boolean;
   class?: string;
   id?: string;
+  stroke?: number;
 }
 
-const { name, filled, class: className, id } = Astro.props;
+const { name, filled, class: className, id, stroke } = Astro.props;
 ---
 
-<TablerIconReact name={name} filled={filled} class={className} id={id} />
+<TablerIconReact name={name} filled={filled} class={className} id={id} stroke={stroke} />
