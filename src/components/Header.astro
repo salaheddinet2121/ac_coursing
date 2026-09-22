@@ -63,7 +63,7 @@ const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].
           ]}
         >
           Prestations
-          <TablerIcon id="prestations-chevron" name="chevron-down" class="size-3.5 shrink-0 opacity-60 transition-transform duration-150 group-hover:rotate-180" />
+          <TablerIcon id="prestations-chevron" name="chevron-down" class="relative top-px size-3 shrink-0 opacity-60 transition-transform duration-300 group-hover:rotate-180" />
         </button>
 
         <div
@@ -79,11 +79,11 @@ const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].
               <ul class="space-y-0.5">
                 {services.map(({ title, icon, href }) => (
                   <li>
-                    <a href={href} class="group/item flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted">
-                      <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70 transition-colors group-hover/item:bg-border">
+                    <a href={href} class="group/item flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted/40">
+                      <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted p-1.5 text-foreground/70 transition-colors group-hover/item:bg-border">
                         <TablerIcon name={icon} class="text-sm leading-none" />
                       </span>
-                      <span>{title}</span>
+                      <span class="font-medium">{title}</span>
                     </a>
                   </li>
                 ))}
@@ -94,11 +94,11 @@ const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].
               <ul>
                 {regionalCities.map(({ title, icon, href }) => (
                   <li>
-                    <a href={href} class="group/item flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted">
-                      <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70 transition-colors group-hover/item:bg-border">
+                    <a href={href} class="group/item flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted/40">
+                      <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted p-1.5 text-foreground/70 transition-colors group-hover/item:bg-border">
                         <TablerIcon name={icon} class="text-sm leading-none" />
                       </span>
-                      <span>{title}</span>
+                      <span class="font-medium">{title}</span>
                     </a>
                   </li>
                 ))}
@@ -109,11 +109,11 @@ const isPrestationsActive = ['/prestations', '/services', '/lieu-intervention'].
               <ul>
                 {longDistanceRoutes.map(({ title, icon, href }) => (
                   <li>
-                    <a href={href} class="group/item flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted">
-                      <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-foreground/70 transition-colors group-hover/item:bg-border">
+                    <a href={href} class="group/item flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-muted/40">
+                      <span class="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted p-1.5 text-foreground/70 transition-colors group-hover/item:bg-border">
                         <TablerIcon name={icon} class="text-sm leading-none" />
                       </span>
-                      <span>{title}</span>
+                      <span class="font-medium">{title}</span>
                     </a>
                   </li>
                 ))}
