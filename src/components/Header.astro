@@ -114,8 +114,8 @@ const isLieuActive = isActive('/lieu-intervention');
           data-panel
           class="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 rounded-2xl border border-border bg-card p-5 opacity-0 shadow-lg transition-opacity duration-150 group-hover:visible group-hover:opacity-100"
         >
-          <div class="flex items-start divide-x divide-border">
-            <div class="w-max pr-6">
+          <div class="flex items-stretch gap-6">
+            <div class="w-max border-r border-border pr-6">
               <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Occitanie</p>
               <ul>
                 {regionalCities.map(({ title, icon, href }) => (
@@ -130,7 +130,7 @@ const isLieuActive = isActive('/lieu-intervention');
                 ))}
               </ul>
             </div>
-            <div class="w-max pl-6">
+            <div class="flex w-56 flex-col">
               <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Longue distance</p>
               <ul>
                 {longDistanceRoutes.map(({ title, icon, href }) => (
@@ -144,6 +144,21 @@ const isLieuActive = isActive('/lieu-intervention');
                   </li>
                 ))}
               </ul>
+
+              <div class="mt-auto flex flex-col gap-2 rounded-xl bg-primary/8 p-4">
+                <TablerIcon name="map-pin" class="text-lg leading-none text-primary" />
+                <p class="text-sm font-semibold text-foreground">Une autre destination ?</p>
+                <p class="text-xs leading-relaxed text-muted-foreground">
+                  Nous intervenons partout en France, prix fixe garanti.
+                </p>
+                <a
+                  href="/devis"
+                  class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-opacity hover:opacity-80"
+                >
+                  Devis gratuit
+                  <TablerIcon name="arrow-right" class="text-sm leading-none" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
