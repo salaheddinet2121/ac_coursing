@@ -4,12 +4,12 @@ test.describe('Homepage', () => {
   test('renders heading and CTA', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByRole('link', { name: /estimer le coût gratuitement/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /voir les services/i })).toBeVisible();
   });
 
   test('has correct page title', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/AC Coursing Déménagement/i);
+    await expect(page).toHaveTitle(/AC Coursing/i);
   });
 
   test('has meta description', async ({ page }) => {
