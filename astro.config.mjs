@@ -8,7 +8,11 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://ac-coursing.fr',
+  trailingSlash: 'never',
   output: 'server',
+  redirects: {
+    '/prestations': { status: 301, destination: '/services' },
+  },
   adapter: node({
     mode: 'standalone',
   }),

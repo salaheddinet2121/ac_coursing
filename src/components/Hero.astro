@@ -21,7 +21,7 @@ interface Props {
 const {
   topper         = 'Déménagement à Montpellier',
   heading        = 'Déménageur à Montpellier : votre déménagement, géré avec soin.',
-  description    = "AC Coursing est votre déménageur à Montpellier, avec un devis gratuit sous 24h et un prix fixe garanti du premier jour au dernier carton.",
+  description    = "Déménagement à Montpellier avec AC Coursing : devis gratuit sous 24h et prix fixe garanti du premier jour au dernier carton.",
   secondaryLabel = 'Voir les services',
   secondaryHref  = '/#services',
   imageSrc       = '/hero_image.webp',
@@ -33,7 +33,7 @@ const {
   points = [
     { icon: 'shield-check',   label: "11 ans d'expérience" },
     { icon: 'truck-delivery', label: '1 500+ déménagements' },
-    { icon: 'check',          label: '194 avis vérifiés' },
+    { icon: 'check',          label: '243 avis vérifiés' },
   ],
   floors = [
     { value: '0', label: 'Rez-de-chaussée' },
@@ -50,16 +50,16 @@ const {
 <section id="accueil" class="relative isolate overflow-hidden bg-dark">
 
   <!-- Background photo -->
-  <div class="absolute inset-0" aria-hidden="true">
+  <div class="absolute inset-0">
     <img
       src={imageSrc}
-      alt=""
+      alt={imageAlt}
       loading="eager"
       fetchpriority="high"
       decoding="async"
       class="size-full object-cover"
     />
-    <div class="absolute inset-0 bg-dark/72"></div>
+    <div class="absolute inset-0 bg-dark/72" aria-hidden="true"></div>
   </div>
 
   <div class="relative mx-auto grid max-w-site grid-cols-1 gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-16 lg:py-32">

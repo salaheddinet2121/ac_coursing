@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Banner from '../../components/Banner.astro';
+import CTA from '../../components/CTA.astro';
+import TablerIcon from '../../components/TablerIcon.astro';
+import { client } from '../../data/client';
+
+const guides = [
+  {
+    title: 'Préparer son déménagement à Montpellier',
+    description: "Organisation, accès, devis et points de vigilance : l'essentiel pour préparer son déménagement à Montpellier.",
+    href: '/conseils/demenagement-montpellier',
+  },
+];
+---
+
+<BaseLayout
+  title="Conseils déménagement | AC Coursing Montpellier"
+  description="Les conseils pratiques d'AC Coursing pour préparer votre déménagement : organisation, accès, devis et points de vigilance."
+  schema={{
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
+      { '@type': 'ListItem', position: 2, name: 'Conseils', item: `${client.domain}/conseils` },
+    ],
+  }}
+>
+  <Header slot="header" />
+
+  <Banner title="Conseils déménagement" />
+
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="mx-auto mb-10 max-w-2xl text-center" data-reveal>
+        <p class="leading-relaxed text-muted-foreground">
+          Des guides pratiques rédigés par notre équipe pour préparer votre déménagement sereinement. Pour une estimation personnalisée, passez directement par le <a href="/devis" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">devis gratuit</a>.
+        </p>
+      </div>
+
+      <ul class="grid grid-cols-1 gap-4 md:grid-cols-2" role="list" data-reveal>
+        {guides.map(({ title, description, href }) => (
+          <li>
+            <a href={href} class="group flex h-full items-start gap-4 rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:shadow-md">
+              <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                <TablerIcon name="file-description" class="text-lg leading-none" />
+              </span>
+              <span class="flex-1">
+                <span class="block font-heading text-h3 text-foreground">{title}</span>
+                <span class="mt-2 block text-sm leading-relaxed text-muted-foreground">{description}</span>
+              </span>
+              <TablerIcon name="chevron-right" class="mt-1 text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTA />
+
+  <Footer slot="footer" />
+</BaseLayout>

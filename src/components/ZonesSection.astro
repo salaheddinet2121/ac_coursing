@@ -23,13 +23,22 @@ const {
   primaryZoneLabel = 'Zone principale',
   primaryZones = ['Montpellier', 'Castelnau-le-Lez', 'Lattes', 'Pérols', 'Mauguio', 'Juvignac', 'Saint-Jean-de-Védas', 'Grabels'],
   extendedZoneLabel = 'Zone élargie',
-  extendedZones = ['Palavas-les-Flots', 'Lunel', 'Sète', 'Béziers', 'Nîmes', 'Agde', 'Frontignan'],
+  extendedZones = ['Palavas-les-Flots', 'Lunel', 'Sète', 'Béziers', 'Nîmes', 'Agde', 'Narbonne', 'Frontignan'],
   nationalCtaLabel = 'Devis gratuit',
   nationalCtaHref = '/devis',
   footerText = 'Votre ville n\'est pas listée ?',
   footerLinkLabel = 'Contactez-nous',
   footerLinkHref = '/contact',
 } = Astro.props;
+
+// Cities with their own page. Add an entry here as each new city page goes live.
+const cityPages: Record<string, string> = {
+  'Nîmes': '/lieu-intervention/demenageur-nimes',
+  'Béziers': '/lieu-intervention/demenageur-beziers',
+  'Sète': '/lieu-intervention/demenageur-sete',
+  'Agde': '/lieu-intervention/demenageur-agde',
+  'Narbonne': '/lieu-intervention/demenageur-narbonne',
+};
 ---
 
 <section id="zones" class="bg-panel py-section">
@@ -58,7 +67,11 @@ const {
           {primaryZones.map((city) => (
             <li class="flex items-center gap-2.5 text-foreground">
               <TablerIcon name="map-pin" filled class="text-base text-primary leading-none shrink-0" />
-              {city}
+              {cityPages[city] ? (
+                <a href={cityPages[city]} class="underline-offset-2 transition-colors hover:text-primary hover:underline">{city}</a>
+              ) : (
+                city
+              )}
             </li>
           ))}
         </ul>
@@ -74,7 +87,11 @@ const {
           {extendedZones.map((city) => (
             <li class="flex items-center gap-2.5 text-foreground">
               <TablerIcon name="map-pin" filled class="text-base text-primary leading-none shrink-0" />
-              {city}
+              {cityPages[city] ? (
+                <a href={cityPages[city]} class="underline-offset-2 transition-colors hover:text-primary hover:underline">{city}</a>
+              ) : (
+                city
+              )}
             </li>
           ))}
         </ul>

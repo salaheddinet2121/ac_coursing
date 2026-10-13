@@ -9,14 +9,14 @@ import { client } from '../../data/client';
 
 const zones = [
   'Montpellier', 'Castelnau-le-Lez', 'Lattes', 'Saint-Jean-de-Védas',
-  'Béziers', 'Juvignac', 'Pérols', 'Palavas-les-Flots',
-  'Lunel', 'Sète', 'Frontignan', 'Mauguio',
+  'Juvignac', 'Pérols', 'Palavas-les-Flots', 'Lunel',
+  'Sète', 'Frontignan', 'Mauguio', 'Grabels',
 ];
 ---
 
 <BaseLayout
   title="Déménagement Local Montpellier et Alentours — AC Coursing"
-  description="Déménagement local à Montpellier, Castelnau-le-Lez, Lattes, Béziers et alentours. Disponible 7j/7, réponse rapide, prix fixe garanti."
+  description="Déménagement local à Montpellier, Castelnau-le-Lez, Lattes, Saint-Jean-de-Védas et alentours. Disponible du lundi au samedi, réponse rapide, prix fixe garanti."
   schema={{
     '@context': 'https://schema.org',
     '@graph': [
@@ -28,7 +28,7 @@ const zones = [
           { '@type': 'City', name: 'Montpellier' },
           { '@type': 'City', name: 'Castelnau-le-Lez' },
           { '@type': 'City', name: 'Lattes' },
-          { '@type': 'City', name: 'Béziers' },
+          { '@type': 'City', name: 'Saint-Jean-de-Védas' },
         ],
       },
       {
@@ -50,10 +50,10 @@ const zones = [
       { label: 'Déménagement local' },
     ]}
     heading="Déménagement local à Montpellier"
-    description="Montpellier et tout le département 34, disponible 7j/7. Un déménagement local mérite la même rigueur qu'un long trajet."
+    description="Montpellier et tout le département 34, du lundi au samedi. Un déménagement local mérite la même rigueur qu'un long trajet."
     points={[
       { icon: 'map-pin', text: 'Intervention rapide dans tout le 34' },
-      { icon: 'clock', text: 'Disponible 7j/7, créneaux tôt le matin ou en soirée' },
+      { icon: 'clock', text: 'Du lundi au samedi, de 7h à 20h : créneaux tôt le matin ou en fin de journée' },
       { icon: 'truck-delivery', text: 'Camions de différentes tailles selon le volume' },
       { icon: 'shield-check', text: 'Assurance transport incluse, prix fixe garanti' },
     ]}
@@ -68,7 +68,7 @@ const zones = [
             Un déménagement local, même court, mérite la même rigueur qu'un long trajet. On intervient vite, on emballe soigneusement et on remet en place dans le nouveau logement.
           </p>
           <p class="leading-relaxed text-muted-foreground">
-            Disponible du lundi au dimanche, on s'adapte à vos dates, même en dernière minute si le planning le permet.
+            Disponible du lundi au samedi, de 7h à 20h, on s'adapte à vos dates, même en dernière minute si le planning le permet.
           </p>
 
           <a href="/devis" class="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90">

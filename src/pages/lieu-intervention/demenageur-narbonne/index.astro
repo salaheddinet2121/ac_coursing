@@ -50,8 +50,8 @@ const faqItems = [
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${client.domain}/` },
-          { '@type': 'ListItem', position: 2, name: 'Prestations', item: `${client.domain}/prestations/` },
-          { '@type': 'ListItem', position: 3, name: 'Déménageur Narbonne', item: `${client.domain}/lieu-intervention/demenageur-narbonne/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${client.domain}/services` },
+          { '@type': 'ListItem', position: 3, name: 'Déménageur Narbonne', item: `${client.domain}/lieu-intervention/demenageur-narbonne` },
         ],
       },
     ],
@@ -61,7 +61,7 @@ const faqItems = [
 
   <BofuHero
     crumbs={[
-      { label: 'Prestations', href: '/prestations' },
+      { label: 'Services', href: '/services' },
       { label: 'Narbonne' },
     ]}
     heading="Déménageur à Narbonne"

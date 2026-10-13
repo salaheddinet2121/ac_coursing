@@ -22,8 +22,8 @@ const ratingDisplay = formatRating(places.rating);
 ---
 
 <BaseLayout
-  title="Déménageur Montpellier | Devis Gratuit | AC Coursing"
-  description="Déménageur à Montpellier depuis 2015. Prix fixe garanti, devis gratuit en 24h, assurance transport incluse. Résidentiel et longue distance partout en France."
+  title="Déménageur Montpellier – Déménagement et devis gratuit | AC Coursing"
+  description={`Déménagement à Montpellier depuis 2015 : 1 500+ déménagements, ${ratingDisplay}/5 sur ${places.reviewCount} avis Google, devis gratuit sous 24h, prix fixe garanti.`}
   schema={{
     '@context': 'https://schema.org',
     '@type': 'MovingCompany',
@@ -89,7 +89,7 @@ const ratingDisplay = formatRating(places.rating);
   <ZonesSection />
   <Services />
   <PackagesSection />
-  <About />
+  <About heading="AC Coursing, société de déménagement à Montpellier : une équipe cadrée, un interlocuteur unique" />
   <Reviews
     topper={`${places.reviewCount} avis vérifiés`}
     heading={`${ratingDisplay} / 5 sur Google`}
