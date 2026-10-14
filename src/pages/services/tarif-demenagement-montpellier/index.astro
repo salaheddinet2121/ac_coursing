@@ -3,6 +3,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import CTA from '../../../components/CTA.astro';
+import PageReviews from '../../../components/PageReviews.astro';
+import { pageReviews } from '../../../data/reviews';
 import FAQSection from '../../../components/FAQSection.astro';
 import BofuHero from '../../../components/BofuHero.astro';
 import TablerIcon from '../../../components/TablerIcon.astro';
@@ -155,6 +157,8 @@ const faqItems = [
   </section>
 
   <FAQSection topper="FAQ Tarif" heading="Questions sur le prix d'un déménagement" items={faqItems} headingLevel="h3" />
+
+  <PageReviews reviews={pageReviews.tarif} />
 
   <CTA
     title="Votre devis personnalisé en 4 étapes"

@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import CTA from '../../components/CTA.astro';
+import PageReviews from '../../components/PageReviews.astro';
+import { pageReviews } from '../../data/reviews';
 import BofuHero from '../../components/BofuHero.astro';
 import TablerIcon from '../../components/TablerIcon.astro';
 import { client } from '../../data/client';
@@ -100,6 +102,8 @@ const ratingDisplay = formatRating(places.rating);
       </div>
     </div>
   </section>
+
+  <PageReviews reviews={pageReviews.longueDistance} />
 
   <CTA headingLevel="h3" />
   <Footer slot="footer" />

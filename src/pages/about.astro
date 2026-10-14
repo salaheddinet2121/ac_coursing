@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Banner from '../components/Banner.astro';
 import CTA from '../components/CTA.astro';
+import PageReviews from '../components/PageReviews.astro';
+import { pageReviews } from '../data/reviews';
 import TablerIcon from '../components/TablerIcon.astro';
 import { Image } from 'astro:assets';
 import { brand } from '../config/brand';
@@ -71,6 +73,8 @@ const commitments = [
       </div>
     </div>
   </section>
+
+  <PageReviews reviews={pageReviews.about} />
 
   <CTA />
 

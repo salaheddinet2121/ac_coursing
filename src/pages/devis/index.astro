@@ -30,4 +30,34 @@ const prefillDate = params.get('date')?.trim() || undefined;
     prefillFloor={prefillFloor}
     prefillDate={prefillDate}
   />
+
+  <section class="bg-background px-4 pb-16 pt-4 sm:px-6">
+    <div class="mx-auto max-w-2xl space-y-5 text-[0.95rem] leading-relaxed text-muted-foreground">
+      <h2 class="font-heading text-h3 text-foreground">Votre devis de déménagement à Montpellier</h2>
+      <p>
+        Le devis AC Coursing est gratuit et sans engagement. Indiquez vos adresses de départ et d'arrivée, la date souhaitée, l'étage, la présence d'un ascenseur et le volume à transporter : cela prend quelques minutes. Nous vous répondons sous 24h, du lundi au samedi, avec un devis détaillé poste par poste.
+      </p>
+
+      <h3 class="font-heading text-lg text-foreground">Ce que comprend le devis</h3>
+      <ul class="list-disc space-y-1.5 pl-5">
+        <li>L'équipe et le camion adaptés à votre volume.</li>
+        <li>La protection du mobilier et l'assurance transport.</li>
+        <li>Les options que vous choisissez : emballage, démontage et remontage, garde-meubles, matériel complémentaire.</li>
+      </ul>
+
+      <h3 class="font-heading text-lg text-foreground">Ce qui fait varier le montant</h3>
+      <p>
+        Le volume réel des biens, la distance entre les deux adresses, les conditions d'accès (étage, ascenseur, stationnement, ruelles étroites) et les options retenues. Pour en savoir plus, consultez notre page <a href="/services/tarif-demenagement-montpellier" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">tarif déménagement Montpellier</a>.
+      </p>
+
+      <h3 class="font-heading text-lg text-foreground">Visite technique</h3>
+      <p>
+        Pour les volumes plus complexes, une visite sur place permet de fiabiliser l'évaluation avant de vous remettre le devis.
+      </p>
+
+      <p>
+        Une question avant de commencer ? Appelez-nous au <a href={`tel:${client.phoneForTel}`} class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">{client.phoneFormatted}</a>.
+      </p>
+    </div>
+  </section>
 </BaseLayout>
