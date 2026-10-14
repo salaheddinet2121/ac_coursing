@@ -17,12 +17,15 @@ export const client = {
     state: 'Occitanie',
     zip: '34070',
     country: 'FR',
-    mapLink: 'https://maps.app.goo.gl/i8CPg2Emk7VvuQ9SA',
+    mapLink: 'https://maps.google.com/?cid=7916219538418612696',
   },
   socials: {
     facebook: '',
     instagram: '',
-    google: 'https://www.google.com/maps/place/Ac+Coursing+D%C3%A9m%C3%A9nagement/@43.5733038,3.8568844,17z/data=!3m2!4b1!5s0x12b6ae2a1368b97f:0xd4e32ba98aa5de0a!4m6!3m5!1s0x12b6afe39eda3587:0x6ddc0fba6f72b9d8!8m2!3d43.5733!4d3.8617553!16s%2Fg%2F11qm09_lbh?entry=ttu',
+    google: 'https://maps.google.com/?cid=7916219538418612696',
+    // Paste the "Demander des avis" link from the Google Business Profile dashboard (g.page/r/…/review).
+    // The invite block on /reviews only shows once this is set.
+    googleReview: '',
   },
   domain: 'https://ac-coursing.fr',
 } as const;

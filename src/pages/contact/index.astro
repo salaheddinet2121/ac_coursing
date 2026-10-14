@@ -149,6 +149,19 @@ const error = Astro.url.searchParams.get('error');
         </div>
 
         <div>
+          <h3 class="font-heading text-lg font-medium text-text">Nous trouver</h3>
+          <p class="mt-1 text-text-muted">{client.address.lineOne}, {client.address.zip} {client.address.city}</p>
+          <div id="contact-map" class="mt-3 overflow-hidden rounded-lg border border-border bg-panel" data-src={`${client.address.mapLink.replace('/?cid=', '/maps?cid=')}&output=embed`}>
+            <button type="button" id="contact-map-load" class="flex h-56 w-full cursor-pointer items-center justify-center px-4 text-center text-sm font-semibold text-primary transition-colors hover:bg-primary/5">
+              Afficher la carte Google Maps
+            </button>
+          </div>
+          <a href={client.address.mapLink} target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline underline-offset-2 hover:opacity-80">
+            Itinéraire
+          </a>
+        </div>
+
+        <div>
           <h3 class="font-heading text-lg font-medium text-text">Disponibilité</h3>
           <p class="mt-1 text-text-muted">
             Lundi – samedi: 7h – 20h<br />
@@ -160,4 +173,25 @@ const error = Astro.url.searchParams.get('error');
   </section>
 
   <Footer slot="footer" />
+
+  <script>
+    // The map is only requested from Google once the visitor clicks, so no third-party call happens before that.
+    function initContactMap() {
+      const box = document.getElementById('contact-map');
+      const btn = document.getElementById('contact-map-load');
+      if (!box || !btn || btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', () => {
+        const frame = document.createElement('iframe');
+        frame.src = box.dataset.src ?? '';
+        frame.title = 'Carte Google Maps — AC Coursing Déménagement';
+        frame.loading = 'lazy';
+        frame.referrerPolicy = 'no-referrer-when-downgrade';
+        frame.className = 'h-56 w-full border-0';
+        box.replaceChildren(frame);
+      });
+    }
+    initContactMap();
+    document.addEventListener('astro:page-load', initContactMap);
+  </script>
 </BaseLayout>

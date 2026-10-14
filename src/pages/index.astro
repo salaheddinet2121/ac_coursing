@@ -48,6 +48,7 @@ const ratingDisplay = formatRating(places.rating);
       { '@type': 'City', name: 'Nîmes' },
       { '@type': 'State', name: 'Occitanie' },
     ],
+    hasMap: client.address.mapLink,
     sameAs: [client.socials.google].filter(Boolean),
     address: {
       '@type': 'PostalAddress',

@@ -5,38 +5,146 @@ import Footer from '../../../components/Footer.astro';
 import CTA from '../../../components/CTA.astro';
 import FAQSection from '../../../components/FAQSection.astro';
 import BofuHero from '../../../components/BofuHero.astro';
+import RatingInline from '../../../components/RatingInline.astro';
 import TablerIcon from '../../../components/TablerIcon.astro';
 import { client } from '../../../data/client';
-import { getPlacesData, formatRating } from '../../../lib/google-places';
+import { cityPhotos } from '../../../data/city-photos';
+import { services as serviceLinks, regionalCities, longDistanceRoutes } from '../../../data/prestations';
 
-const places = await getPlacesData();
-const ratingDisplay = formatRating(places.rating);
-
+const city = "Agde";
+const photos = cityPhotos["agde"];
+const steps = [
+  {
+    "title": "Votre devis sous 24h.",
+    "text": "Adresse, étage, période souhaitée : vous recevez un prix détaillé, poste par poste."
+  },
+  {
+    "title": "On prépare l'accès et le créneau.",
+    "text": "Rues étroites du centre, circulation du Cap d'Agde en été : le camion et l'heure de chargement sont calés en conséquence."
+  },
+  {
+    "title": "Le jour J.",
+    "text": "Chargement tôt le matin, transport assuré, installation dans le nouveau logement. Le prix du devis ne bouge pas."
+  }
+];
+const localProblem = {
+  "heading": "Déménager à Agde : centre historique, Cap d'Agde et saison estivale",
+  "paragraphs": [
+    "Le centre historique d'Agde est bâti en pierre volcanique. Ses rues sont étroites et le camion se gare rarement devant l'immeuble.",
+    "Le Cap d'Agde, à quelques kilomètres, change de visage en été. En juillet-août, la fréquentation touristique ralentit la circulation et les places se font rares.",
+    "On avance l'heure de chargement et on prévoit l'emplacement du camion plus tôt."
+  ]
+};
+const neighbourhoods = [
+  "Centre historique",
+  "Le Grau d'Agde",
+  "Cap d'Agde",
+  "La Tamarissière"
+];
+const formulas = [
+  {
+    "name": "Formule Économique",
+    "text": "Transport et chargement avec cartons fournis, protection du mobilier à l'arrivée. Pour un studio ou un deux-pièces que vous emballez vous-même."
+  },
+  {
+    "name": "Formule Standard",
+    "text": "Démontage, remontage et prise en charge des objets fragiles. Pratique pour un appartement aux accès étroits."
+  },
+  {
+    "name": "Formule Confort",
+    "text": "Prise en charge complète du logement. Utile pour vider une maison ou une résidence secondaire du Cap d'Agde."
+  }
+];
+const formulaIcons = ['truck-delivery', 'package', 'shield-check'];
+const guarantees = [
+  { icon: 'lock', title: 'Prix fixe', text: 'Le montant du devis validé ne change pas le jour du déménagement.' },
+  { icon: 'shield-check', title: 'Assurance transport', text: 'Incluse sur tout le trajet.' },
+  { icon: 'calendar', title: 'Créneau confirmé', text: 'À l\'avance, pour le chargement et la livraison.' },
+];
+const priceFactors = {
+  "items": [
+    {
+      "title": "Le volume",
+      "text": "ce que contient le logement, des cartons au gros mobilier."
+    },
+    {
+      "title": "L'accès",
+      "text": "centre ancien ou résidence du Cap d'Agde, étage, ascenseur."
+    },
+    {
+      "title": "La date",
+      "text": "juillet et août demandent le plus d'anticipation."
+    }
+  ],
+  "closing": "Le devis détaille chaque poste. Une fois validé, le prix ne change pas."
+};
+const priceIcons = ['box', 'stairs', 'calendar'];
+const tips = [
+  "Entre juin et septembre, réservez le plus tôt possible.",
+  "Au Cap d'Agde, précisez le nom de la résidence : l'accès et le stationnement en dépendent.",
+  "Dans le centre historique, indiquez la largeur de la rue et la distance jusqu'à la porte.",
+  "Chargez tôt le matin en été : la circulation est plus fluide et la chaleur moins forte."
+];
 const faqItems = [
   {
-    question: 'Intervenez-vous vraiment à Agde ou seulement à Montpellier ?',
-    answer: "Agde fait partie de notre zone d'intervention régulière : environ 65 km depuis Montpellier via l'A9, soit 45 à 50 minutes de route. Nos équipes s'y déplacent aussi souvent qu'à Montpellier même.",
-    open: true,
+    "question": "Le trafic estival complique-t-il un déménagement à Agde ?",
+    "answer": "Oui, surtout au Cap d'Agde. On cale un créneau tôt le matin et on prévoit le stationnement à l'avance."
   },
   {
-    question: "Le trafic estival à Cap d'Agde complique-t-il un déménagement ?",
-    answer: "Oui, en juillet-août la fréquentation touristique du Cap d'Agde ralentit sérieusement la circulation. On en tient compte au moment du devis pour caler un créneau réaliste, surtout si votre adresse se trouve sur la station.",
-    open: false,
+    "question": "Peut-on déménager dans le centre historique d'Agde ?",
+    "answer": "Oui. Le camion s'arrête au point le plus proche et l'équipe porte les meubles jusqu'à l'adresse."
   },
   {
-    question: 'Le prix est-il différent pour un déménagement à Agde ?',
-    answer: "La distance Montpellier-Agde reste modérée et n'alourdit pas fortement le prix. Le volume à transporter et l'accès aux adresses restent les facteurs principaux, comme pour un déménagement local.",
+    "question": "Y a-t-il un bon moment pour déménager à Agde ?",
+    "answer": "Hors juillet-août, la circulation est plus simple et les créneaux plus faciles à trouver."
   },
   {
-    question: 'Pouvez-vous organiser un déménagement depuis Agde vers Montpellier ?',
-    answer: 'Oui, le trajet fonctionne dans les deux sens. Le devis se construit de la même façon, quel que soit le sens du déménagement.',
+    "question": "Déménagez-vous aussi au départ d'Agde ?",
+    "answer": "Oui, vers toute la région ou plus loin."
+  }
+].map((item) => ({ ...item, open: true }));
+
+// Cards: title and icon come from the shared link data, matched by URL.
+const linkIndex = new Map([...serviceLinks, ...regionalCities, ...longDistanceRoutes].map((l) => [l.href, l]));
+const toCards = (list: { label: string; href: string }[]) =>
+  list.map(({ label, href }) => ({ href, title: linkIndex.get(href)?.title ?? label, icon: linkIndex.get(href)?.icon ?? 'map-pin' }));
+const serviceCards = toCards([
+  {
+    "label": "Mise en carton",
+    "href": "/services/mise-en-carton"
   },
-];
+  {
+    "label": "Objets volumineux",
+    "href": "/services/objets-volumineux"
+  },
+  {
+    "label": "Enlèvement de déchets",
+    "href": "/services/enlevement-dechets"
+  },
+  {
+    "label": "Déménagement seniors",
+    "href": "/services/seniors"
+  }
+]);
+const nearbyCards = toCards([
+  {
+    "label": "Béziers",
+    "href": "/lieu-intervention/demenageur-beziers"
+  },
+  {
+    "label": "Sète",
+    "href": "/lieu-intervention/demenageur-sete"
+  },
+  {
+    "label": "Montpellier",
+    "href": "/"
+  }
+]);
 ---
 
 <BaseLayout
-  title="Déménageur Agde | AC Coursing Montpellier"
-  description="Déménageur à Agde depuis Montpellier : équipe locale, prix annoncé = prix payé, devis gratuit sous 24h. Emballage et transport assurés en Occitanie."
+  title="Déménageur Agde (34300) – Devis gratuit sous 24h | AC Coursing"
+  description="Déménageur à Agde : centre historique, Le Grau d'Agde, Cap d'Agde. Rues étroites et affluence estivale anticipées, prix fixe garanti. Devis sous 24h."
   schema={{
     '@context': 'https://schema.org',
     '@graph': [
@@ -45,7 +153,7 @@ const faqItems = [
         name: 'Déménageur Agde',
         provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
         areaServed: { '@type': 'City', name: 'Agde' },
-        description: "Déménagement à Agde depuis Montpellier, à environ 65 km via l'A9, prix fixe garanti.",
+        description: "Déménagement à Agde : centre historique et affluence estivale anticipés, prix fixe garanti, assurance transport incluse.",
       },
       {
         '@type': 'BreadcrumbList',
@@ -63,92 +171,231 @@ const faqItems = [
   <BofuHero
     crumbs={[
       { label: 'Services', href: '/services' },
-      { label: 'Agde' },
+      { label: city },
     ]}
     heading="Déménageur à Agde"
-    description="À environ 65 km de Montpellier, nos équipes interviennent régulièrement à Agde avec la même organisation et le même prix fixe garanti."
+    description="Votre déménagement à Agde, du centre historique au Cap d'Agde, avec un créneau réaliste en été et un prix garanti dès le devis."
     points={[
-      { icon: 'map-pin', text: "Environ 65 km depuis Montpellier — 45 à 50 minutes via l'A9" },
-      { icon: 'truck-delivery', text: 'Équipe locale, même organisation que pour un déménagement à Montpellier' },
-      { icon: 'shield-check', text: 'Assurance transport incluse sur tout le trajet' },
-      { icon: 'calendar', text: "Créneau adapté à la forte affluence estivale du Cap d'Agde" },
+      { icon: "map-pin", text: "45 à 50 min depuis Montpellier par l'A9" },
+      { icon: "clock", text: "Devis sous 24h" },
+      { icon: "shield-check", text: "Prix fixe garanti" },
+      { icon: "truck-delivery", text: "Assurance transport incluse" }
     ]}
-  />
+    imageSrc={photos.hero.src}
+    imageAlt="La cathédrale Saint-Étienne d'Agde"
+  >
+    <RatingInline slot="after-heading" />
+  </BofuHero>
 
+  <!-- 4. How it goes -->
+  <section class="bg-panel py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="max-w-2xl" data-reveal>
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+          <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-topper font-bold uppercase tracking-widest text-primary">En 3 étapes</span>
+        </div>
+        <h2 class="mt-4 font-heading text-h2 text-foreground">Comment se passe votre déménagement à {city}</h2>
+      </div>
+      <ol class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3" role="list">
+        {steps.map(({ title, text }, i) => (
+          <li class="relative rounded-xl border border-border bg-card p-6" data-reveal style={`transition-delay:${i * 90}ms`}>
+            <div class="flex items-center justify-between">
+              <span class="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <TablerIcon name={['file-description', 'map-pin', 'truck-delivery'][i]} class="text-xl leading-none" />
+              </span>
+              <span class="font-heading text-4xl text-input">0{i + 1}</span>
+            </div>
+            <p class="mt-5 font-heading text-lg font-medium text-foreground">{title}</p>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. The real local problem -->
   <section class="bg-background py-section">
     <div class="mx-auto max-w-site px-4 sm:px-6">
-      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-
-        <div>
+      <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
+        <div class="space-y-4" data-reveal>
+          <h2 class="font-heading text-h2 text-foreground">{localProblem.heading}</h2>
+          {localProblem.paragraphs.map((p) => (
+            <p class="leading-relaxed text-muted-foreground">{p}</p>
+          ))}
+        </div>
+        <figure class="overflow-hidden rounded-2xl border border-border bg-card" data-reveal>
           <img
-            src="/hero_image.webp"
-            alt="Camion AC Coursing prêt pour un déménagement entre Montpellier et Agde"
+            src={photos.local.src}
+            alt="L'Hérault à Agde"
             loading="lazy"
             decoding="async"
-            class="w-full rounded-2xl border border-border object-cover aspect-[4/3]"
+            class="aspect-[4/3] w-full object-cover"
           />
-        </div>
-
-        <div class="space-y-6">
-          <h2 class="font-heading text-h2 text-foreground">Agde, une zone d'intervention régulière</h2>
-          <p class="text-lg leading-relaxed text-muted-foreground">
-            En tant que <a href="/" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">déménageur à Montpellier</a>, nous intervenons régulièrement à Agde, au même titre que Montpellier et son agglomération. Le trajet par l'A9 est court, mais l'organisation reste la même : cadrage du volume, créneau confirmé, accès aux deux adresses anticipé.
-          </p>
-          <p class="leading-relaxed text-muted-foreground">
-            Le centre historique, construit en pierre volcanique, a des rues étroites. Et sur la commune, la station du Cap d'Agde connaît une forte affluence touristique en juillet-août qui ralentit la circulation — on en tient compte pour caler un créneau réaliste.
-          </p>
-
-          <a
-            href="/devis"
-            class="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90"
-          >
-            Devis gratuit
-            <TablerIcon name="arrow-right" class="text-base leading-none" />
-          </a>
-        </div>
+          <figcaption class="px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+            Photos :
+            <a href={photos.hero.source} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.hero.author}</a>
+            (<a href={photos.hero.licenseUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.hero.license}</a>),
+            <a href={photos.local.source} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.local.author}</a>
+            (<a href={photos.local.licenseUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.local.license}</a>), Wikimedia Commons.
+          </figcaption>
+        </figure>
       </div>
 
-      <div class="mt-16 rounded-2xl border border-border bg-panel p-8 sm:p-10">
-        <h3 class="font-heading text-h3 text-foreground">Ce qui influence le prix d'un déménagement à Agde</h3>
-        <p class="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-          La distance Montpellier-Agde reste modérée et n'alourdit pas fortement le prix. Le devis détaille précisément ce qui compose le montant final — aucun chiffre n'est avancé avant d'avoir vu votre situation.
-        </p>
-        <ul class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {[
-            'Volume à transporter (mobilier, cartons, objets volumineux)',
-            "Accès aux deux adresses, notamment au Cap d'Agde en été",
-            'Date souhaitée et flexibilité du créneau',
-            'Prestations additionnelles (mise en carton, démontage/remontage)',
-          ].map((text) => (
-            <li class="flex items-start gap-2.5 text-sm text-muted-foreground">
-              <TablerIcon name="check" class="mt-0.5 shrink-0 text-base leading-none text-primary" />
-              {text}
+      <div class="mt-12 rounded-2xl border border-border bg-panel p-6 sm:p-8" data-reveal>
+        <h3 class="font-heading text-h3 text-foreground">Quartiers de {city}</h3>
+        <ul class="mt-5 flex flex-wrap gap-2.5" role="list">
+          {neighbourhoods.map((n) => (
+            <li class="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5 text-sm text-foreground">
+              <TablerIcon name="map-pin" class="text-sm leading-none text-primary" />
+              {n}
             </li>
           ))}
         </ul>
       </div>
 
-      <div class="mt-16 grid grid-cols-1 gap-6 border-t border-border pt-12 sm:grid-cols-3">
-        {[
-          { value: '1 500+', label: 'déménagements réalisés' },
-          { value: `${ratingDisplay}/5`, label: 'note Google' },
-          { value: '24h', label: 'réponse garantie' },
-        ].map(({ value, label }) => (
-          <div class="text-center" data-reveal>
-            <p class="font-heading text-4xl font-medium text-primary">{value}</p>
-            <p class="mt-1 text-sm text-muted-foreground">{label}</p>
-          </div>
+    </div>
+  </section>
+
+  <!-- 7. Formulas -->
+  <section class="bg-panel py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="max-w-2xl" data-reveal>
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+          <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-topper font-bold uppercase tracking-widest text-primary">Les formules</span>
+        </div>
+        <h2 class="mt-4 font-heading text-h2 text-foreground">Nos formules à {city}</h2>
+      </div>
+      <ul class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3" role="list">
+        {formulas.map(({ name, text }, i) => (
+          <li
+            class:list={[
+              'flex flex-col gap-4 rounded-xl border p-7 shadow-sm',
+              i === 1 ? 'border-primary/40 bg-primary text-primary-foreground' : 'border-border bg-background',
+            ]}
+            data-reveal
+            style={`transition-delay:${i * 90}ms`}
+          >
+            <span class:list={['flex size-11 items-center justify-center rounded-lg', i === 1 ? 'bg-primary-foreground/15' : 'bg-primary/10 text-primary']}>
+              <TablerIcon name={formulaIcons[i]} class="text-xl leading-none" />
+            </span>
+            <p class="font-heading text-xl font-medium">{name}</p>
+            <p class:list={['flex-1 text-sm leading-relaxed', i === 1 ? 'text-primary-foreground/90' : 'text-muted-foreground']}>{text}</p>
+            <a
+              href={`/devis?address=${encodeURIComponent(city)}`}
+              class:list={[
+                'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-bold transition-opacity hover:opacity-90',
+                i === 1 ? 'bg-background text-foreground' : 'bg-primary text-primary-foreground',
+              ]}
+            >
+              Choisir ma formule
+              <TablerIcon name="arrow-right" class="text-base leading-none" />
+            </a>
+          </li>
         ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8 + 9. Guarantees and what sets the price -->
+  <section class="bg-card py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <h2 class="font-heading text-h2 text-foreground" data-reveal>Ce qui est garanti</h2>
+      <ul class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3" role="list">
+        {guarantees.map(({ icon, title, text }, i) => (
+          <li class="flex items-start gap-4 rounded-xl border border-border bg-background p-6" data-reveal style={`transition-delay:${i * 90}ms`}>
+            <span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <TablerIcon name={icon} class="text-xl leading-none" />
+            </span>
+            <div>
+              <p class="font-heading text-lg font-medium text-foreground">{title}</p>
+              <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-14 rounded-2xl border border-border bg-panel p-6 sm:p-10" data-reveal>
+        <h2 class="font-heading text-h2 text-foreground">Ce qui fait le prix d'un déménagement à {city}</h2>
+        <ul class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3" role="list">
+          {priceFactors.items.map(({ title, text }, i) => (
+            <li class="flex items-start gap-3">
+              <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-background text-primary ring-1 ring-border">
+                <TablerIcon name={priceIcons[i]} class="text-lg leading-none" />
+              </span>
+              <p class="text-sm leading-relaxed text-muted-foreground"><span class="block font-semibold text-foreground">{title}</span>{text}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 border-t border-border pt-5 font-medium text-foreground">{priceFactors.closing}</p>
       </div>
     </div>
   </section>
 
-  <FAQSection topper="FAQ Agde" heading="Questions sur le déménagement à Agde" items={faqItems} headingLevel="h3" />
+  <!-- 10. Tips -->
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <h2 class="font-heading text-h2 text-foreground" data-reveal>Nos conseils pour déménager à {city}</h2>
+      <ol class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2" role="list">
+        {tips.map((tip, i) => (
+          <li class="flex items-start gap-4 rounded-xl border border-border bg-card p-6" data-reveal style={`transition-delay:${i * 70}ms`}>
+            <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">{i + 1}</span>
+            <p class="leading-relaxed text-muted-foreground">{tip}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
+  <!-- 11. FAQ -->
+  <FAQSection topper={`FAQ ${city}`} heading="Questions fréquentes" items={faqItems} />
+
+  <!-- 12 + 13. Services and nearby towns, as cards -->
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site space-y-14 px-4 sm:px-6">
+      <div data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Nos services</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          {serviceCards.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Nous intervenons aussi à proximité</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          {nearbyCards.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. CTA -->
   <CTA
-    title="Votre devis déménageur Agde"
-    description="Adresses, dates, volume : remplissez le formulaire et recevez un prix fixe garanti sous 24h."
-    headingLevel="h3"
+    title="Votre devis pour un déménagement à Agde"
+    description="Centre ou Cap d'Agde, étage, période : le formulaire prend quelques minutes."
+    buttonText="Obtenir mon devis gratuit"
+    headingLevel="h2"
   />
   <Footer slot="footer" />
 </BaseLayout>

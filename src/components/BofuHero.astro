@@ -80,6 +80,7 @@ const {
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start lg:gap-14">
       <div class="order-1">
         <h1 class="font-heading text-h1 leading-tight text-primary-fg">{heading}</h1>
+        <slot name="after-heading" />
         <p class="mt-4 max-w-xl text-lead leading-relaxed text-primary-fg/80">{description}</p>
 
         {points.length > 0 && (
@@ -109,18 +110,18 @@ const {
 
           <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-primary-fg/10 pt-4 text-xs font-medium text-primary-fg/70">
             <span class="inline-flex items-center gap-1">
-              <TablerIcon name="clock" class="text-sm leading-none" />
-              Réponse sous 24h
-            </span>
-            <span class="text-primary-fg/25" aria-hidden="true">&middot;</span>
-            <span class="inline-flex items-center gap-1">
               <TablerIcon name="shield-check" class="text-sm leading-none" />
-              Assuré & licencié
+              Assuré
             </span>
             <span class="text-primary-fg/25" aria-hidden="true">&middot;</span>
             <span class="inline-flex items-center gap-1">
               <TablerIcon name="check" class="text-sm leading-none" />
-              100&nbsp;% gratuit
+              Devis gratuit
+            </span>
+            <span class="text-primary-fg/25" aria-hidden="true">&middot;</span>
+            <span class="inline-flex items-center gap-1">
+              <TablerIcon name="clock" class="text-sm leading-none" />
+              Réponse sous 24h
             </span>
           </div>
         </form>

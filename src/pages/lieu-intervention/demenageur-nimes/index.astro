@@ -5,37 +5,150 @@ import Footer from '../../../components/Footer.astro';
 import CTA from '../../../components/CTA.astro';
 import FAQSection from '../../../components/FAQSection.astro';
 import BofuHero from '../../../components/BofuHero.astro';
+import RatingInline from '../../../components/RatingInline.astro';
 import TablerIcon from '../../../components/TablerIcon.astro';
 import { client } from '../../../data/client';
-import { getPlacesData, formatRating } from '../../../lib/google-places';
+import { cityPhotos } from '../../../data/city-photos';
+import { services as serviceLinks, regionalCities, longDistanceRoutes } from '../../../data/prestations';
 
-const places = await getPlacesData();
-const ratingDisplay = formatRating(places.rating);
-
+const city = "Nîmes";
+const photos = cityPhotos["nimes"];
+const steps = [
+  {
+    "title": "Votre devis sous 24h.",
+    "text": "Adresses, étages, ascenseur ou non, date : vous recevez un prix détaillé."
+  },
+  {
+    "title": "On organise l'accès.",
+    "text": "Dans le centre ancien, on prévoit l'emplacement du camion, la distance de portage et l'autorisation de stationnement."
+  },
+  {
+    "title": "Le jour J.",
+    "text": "Chargement protégé, transport assuré, installation dans le nouveau logement, au prix du devis."
+  }
+];
+const localProblem = {
+  "heading": "Déménager dans l'Écusson et sur les boulevards",
+  "paragraphs": [
+    "Le cœur de Nîmes, autour des Arènes et de la Maison Carrée, est en grande partie piéton. Le camion ne se gare pas devant la porte : il faut un point d'arrêt autorisé, puis du portage à pied jusqu'à l'immeuble.",
+    "Les boulevards autour de l'Écusson (Gambetta, Victor-Hugo, Amiral-Courbet) sont chargés aux heures de pointe. On place le chargement en dehors de ces heures quand c'est possible.",
+    "Beaucoup d'immeubles anciens n'ont pas d'ascenseur, ou un ascenseur trop petit pour les meubles. On le vérifie au devis pour prévoir le démontage et le bon nombre de bras."
+  ]
+};
+const neighbourhoods = [
+  "Écusson",
+  "Gambetta",
+  "Richelieu",
+  "Jean-Jaurès",
+  "Jardins de la Fontaine",
+  "Feuchères",
+  "Castanet",
+  "Mas de Mingue",
+  "Pissevin",
+  "Valdegour",
+  "Les Costières",
+  "Saint-Césaire"
+];
+const formulas = [
+  {
+    "name": "Formule Économique",
+    "text": "Chargement, transport, déchargement et cartons fournis. Pour un petit logement dont vous gérez vous-même l'emballage."
+  },
+  {
+    "name": "Formule Standard",
+    "text": "Démontage, remontage, vaisselle et objets fragiles inclus. Le bon choix pour un appartement de l'Écusson aux escaliers étroits."
+  },
+  {
+    "name": "Formule Confort",
+    "text": "Tout est pris en charge, de l'emballage à la remise en place. Utile pour une maison à Castanet ou Saint-Césaire."
+  }
+];
+const formulaIcons = ['truck-delivery', 'package', 'shield-check'];
+const guarantees = [
+  { icon: 'lock', title: 'Prix fixe', text: 'Le montant du devis validé ne change pas le jour du déménagement.' },
+  { icon: 'shield-check', title: 'Assurance transport', text: 'Incluse sur tout le trajet.' },
+  { icon: 'calendar', title: 'Créneau confirmé', text: 'À l\'avance, pour le chargement et la livraison.' },
+];
+const priceFactors = {
+  "items": [
+    {
+      "title": "Le volume",
+      "text": "à transporter."
+    },
+    {
+      "title": "L'accès",
+      "text": "zone piétonne, distance de portage, étages sans ascenseur."
+    },
+    {
+      "title": "La date",
+      "text": "fins de mois, été et rentrée sont plus chargés."
+    }
+  ],
+  "closing": "Le devis détaille chaque poste. Une fois validé, le prix ne bouge plus."
+};
+const priceIcons = ['box', 'stairs', 'calendar'];
+const tips = [
+  "Dans l'Écusson, prévoyez la demande de stationnement plusieurs jours avant.",
+  "Indiquez la distance entre le point d'arrêt possible et votre porte : elle compte dans le temps de portage.",
+  "Mesurez l'ascenseur et la cage d'escalier si vous avez de gros meubles.",
+  "En été, préférez un chargement tôt le matin : la chaleur est forte dès midi."
+];
 const faqItems = [
   {
-    question: 'Intervenez-vous vraiment à Nîmes ou seulement à Montpellier ?',
-    answer: "Nîmes fait partie de notre zone d'intervention régulière : environ 50 km depuis Montpellier via l'A9, soit 40 à 45 minutes de route. Nos équipes s'y déplacent aussi souvent qu'à Montpellier même.",
-    open: true,
+    "question": "Peut-on déménager dans l'Écusson alors que les rues sont piétonnes ?",
+    "answer": "Oui. Le camion s'arrête au point autorisé le plus proche et l'équipe porte les meubles jusqu'à l'adresse. Cette distance est prise en compte dans le devis."
   },
   {
-    question: "L'accès au centre historique de Nîmes pose-t-il problème ?",
-    answer: "Les rues étroites du centre ancien (autour des Arènes et de la Maison Carrée) demandent une organisation spécifique : stationnement du camion, créneau de portage. On anticipe ces contraintes avec vous avant le jour J.",
+    "question": "Faut-il une autorisation de stationnement à Nîmes ?",
+    "answer": "Dans le centre piéton, l'accès du camion est réglementé. La démarche se fait auprès de la mairie, à anticiper de plusieurs jours."
   },
   {
-    question: 'Le prix est-il différent pour un déménagement à Nîmes ?',
-    answer: "La distance Montpellier-Nîmes reste modérée et n'alourdit pas fortement le prix. Le volume à transporter et l'accès aux adresses restent les facteurs principaux, comme pour un déménagement local.",
+    "question": "Mon immeuble n'a pas d'ascenseur, ça change quoi ?",
+    "answer": "Plus de portage et parfois du démontage. On le prévoit au devis, sans surprise le jour J."
   },
   {
-    question: 'Pouvez-vous organiser un déménagement depuis Nîmes vers Montpellier ?',
-    answer: 'Oui, le trajet fonctionne dans les deux sens. Le devis se construit de la même façon, quel que soit le sens du déménagement.',
+    "question": "Vous déménagez aussi de Nîmes vers une autre ville ?",
+    "answer": "Oui, dans le Gard, l'Hérault ou partout en France."
+  }
+].map((item) => ({ ...item, open: true }));
+
+// Cards: title and icon come from the shared link data, matched by URL.
+const linkIndex = new Map([...serviceLinks, ...regionalCities, ...longDistanceRoutes].map((l) => [l.href, l]));
+const toCards = (list: { label: string; href: string }[]) =>
+  list.map(({ label, href }) => ({ href, title: linkIndex.get(href)?.title ?? label, icon: linkIndex.get(href)?.icon ?? 'map-pin' }));
+const serviceCards = toCards([
+  {
+    "label": "Objets volumineux",
+    "href": "/services/objets-volumineux"
   },
-];
+  {
+    "label": "Mise en carton",
+    "href": "/services/mise-en-carton"
+  },
+  {
+    "label": "Déménagement d'entreprise",
+    "href": "/services/demenagement-entreprise-montpellier"
+  },
+  {
+    "label": "Longue distance",
+    "href": "/services/longue-distance"
+  }
+]);
+const nearbyCards = toCards([
+  {
+    "label": "Montpellier",
+    "href": "/"
+  },
+  {
+    "label": "Sète",
+    "href": "/lieu-intervention/demenageur-sete"
+  }
+]);
 ---
 
 <BaseLayout
-  title="Déménageur Nîmes | AC Coursing Montpellier"
-  description="Déménageur à Nîmes depuis Montpellier : équipe locale, prix annoncé = prix payé, devis gratuit sous 24h. Emballage et transport assurés en Occitanie."
+  title="Déménageur Nîmes (30000) – Devis gratuit sous 24h | AC Coursing"
+  description="Déménageur à Nîmes : Écusson piéton, boulevards, Jean-Jaurès, Castanet. Accès et portage anticipés, prix fixe garanti. Devis sous 24h."
   schema={{
     '@context': 'https://schema.org',
     '@graph': [
@@ -44,7 +157,7 @@ const faqItems = [
         name: 'Déménageur Nîmes',
         provider: { '@type': 'MovingCompany', name: client.name, telephone: client.phoneForTel, url: client.domain },
         areaServed: { '@type': 'City', name: 'Nîmes' },
-        description: "Déménagement à Nîmes depuis Montpellier, à environ 50 km via l'A9, prix fixe garanti.",
+        description: "Déménagement à Nîmes : accès et portage anticipés dans l'Écusson, prix fixe garanti, assurance transport incluse.",
       },
       {
         '@type': 'BreadcrumbList',
@@ -62,92 +175,231 @@ const faqItems = [
   <BofuHero
     crumbs={[
       { label: 'Services', href: '/services' },
-      { label: 'Nîmes' },
+      { label: city },
     ]}
     heading="Déménageur à Nîmes"
-    description="À environ 50 km de Montpellier, nos équipes interviennent régulièrement à Nîmes avec la même organisation et le même prix fixe garanti."
+    description="Votre déménagement à Nîmes, de l'Écusson aux quartiers résidentiels, avec un accès préparé avant le jour J et un prix garanti dès le devis."
     points={[
-      { icon: 'map-pin', text: "Environ 50 km depuis Montpellier — 40 à 45 minutes via l'A9" },
-      { icon: 'truck-delivery', text: 'Équipe locale, même organisation que pour un déménagement à Montpellier' },
-      { icon: 'shield-check', text: 'Assurance transport incluse sur tout le trajet' },
-      { icon: 'stairs', text: 'Accès au centre historique anticipé (rues étroites, stationnement)' },
+      { icon: "map-pin", text: "40 à 45 min depuis Montpellier par l'A9" },
+      { icon: "clock", text: "Devis sous 24h" },
+      { icon: "shield-check", text: "Prix fixe garanti" },
+      { icon: "truck-delivery", text: "Assurance transport incluse" }
     ]}
-  />
+    imageSrc={photos.hero.src}
+    imageAlt="Les Arènes de Nîmes"
+  >
+    <RatingInline slot="after-heading" />
+  </BofuHero>
 
+  <!-- 4. How it goes -->
+  <section class="bg-panel py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="max-w-2xl" data-reveal>
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+          <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-topper font-bold uppercase tracking-widest text-primary">En 3 étapes</span>
+        </div>
+        <h2 class="mt-4 font-heading text-h2 text-foreground">Comment se passe votre déménagement à {city}</h2>
+      </div>
+      <ol class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3" role="list">
+        {steps.map(({ title, text }, i) => (
+          <li class="relative rounded-xl border border-border bg-card p-6" data-reveal style={`transition-delay:${i * 90}ms`}>
+            <div class="flex items-center justify-between">
+              <span class="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <TablerIcon name={['file-description', 'map-pin', 'truck-delivery'][i]} class="text-xl leading-none" />
+              </span>
+              <span class="font-heading text-4xl text-input">0{i + 1}</span>
+            </div>
+            <p class="mt-5 font-heading text-lg font-medium text-foreground">{title}</p>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. The real local problem -->
   <section class="bg-background py-section">
     <div class="mx-auto max-w-site px-4 sm:px-6">
-      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-
-        <div>
+      <div class="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
+        <div class="space-y-4" data-reveal>
+          <h2 class="font-heading text-h2 text-foreground">{localProblem.heading}</h2>
+          {localProblem.paragraphs.map((p) => (
+            <p class="leading-relaxed text-muted-foreground">{p}</p>
+          ))}
+        </div>
+        <figure class="overflow-hidden rounded-2xl border border-border bg-card" data-reveal>
           <img
-            src="/hero_image.webp"
-            alt="Camion AC Coursing prêt pour un déménagement entre Montpellier et Nîmes"
+            src={photos.local.src}
+            alt="La Maison Carrée à Nîmes"
             loading="lazy"
             decoding="async"
-            class="w-full rounded-2xl border border-border object-cover aspect-[4/3]"
+            class="aspect-[4/3] w-full object-cover"
           />
-        </div>
-
-        <div class="space-y-6">
-          <h2 class="font-heading text-h2 text-foreground">Nîmes, une zone d'intervention régulière</h2>
-          <p class="text-lg leading-relaxed text-muted-foreground">
-            En tant que <a href="/" class="font-semibold text-primary underline underline-offset-2 hover:opacity-80">déménageur à Montpellier</a>, nous intervenons régulièrement à Nîmes, au même titre que Montpellier et son agglomération. Le trajet par l'A9 est court, mais l'organisation reste la même : cadrage du volume, créneau confirmé, accès aux deux adresses anticipé.
-          </p>
-          <p class="leading-relaxed text-muted-foreground">
-            Créneau de chargement et de livraison confirmé à l'avance, quel que soit le sens du trajet.
-          </p>
-
-          <a
-            href="/devis"
-            class="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-bold text-primary-foreground shadow-md transition-all hover:opacity-90"
-          >
-            Devis gratuit
-            <TablerIcon name="arrow-right" class="text-base leading-none" />
-          </a>
-        </div>
+          <figcaption class="px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+            Photos :
+            <a href={photos.hero.source} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.hero.author}</a>
+            (<a href={photos.hero.licenseUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.hero.license}</a>),
+            <a href={photos.local.source} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.local.author}</a>
+            (<a href={photos.local.licenseUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{photos.local.license}</a>), Wikimedia Commons.
+          </figcaption>
+        </figure>
       </div>
 
-      <div class="mt-16 rounded-2xl border border-border bg-panel p-8 sm:p-10">
-        <h3 class="font-heading text-h3 text-foreground">Ce qui influence le prix d'un déménagement à Nîmes</h3>
-        <p class="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-          La distance Montpellier-Nîmes reste modérée et n'alourdit pas fortement le prix. Le devis détaille précisément ce qui compose le montant final — aucun chiffre n'est avancé avant d'avoir vu votre situation.
-        </p>
-        <ul class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {[
-            'Volume à transporter (mobilier, cartons, objets volumineux)',
-            "Accès aux deux adresses, notamment en centre-ville de Nîmes",
-            'Date souhaitée et flexibilité du créneau',
-            'Prestations additionnelles (mise en carton, démontage/remontage)',
-          ].map((text) => (
-            <li class="flex items-start gap-2.5 text-sm text-muted-foreground">
-              <TablerIcon name="check" class="mt-0.5 shrink-0 text-base leading-none text-primary" />
-              {text}
+      <div class="mt-12 rounded-2xl border border-border bg-panel p-6 sm:p-8" data-reveal>
+        <h3 class="font-heading text-h3 text-foreground">Quartiers de {city}</h3>
+        <ul class="mt-5 flex flex-wrap gap-2.5" role="list">
+          {neighbourhoods.map((n) => (
+            <li class="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-1.5 text-sm text-foreground">
+              <TablerIcon name="map-pin" class="text-sm leading-none text-primary" />
+              {n}
             </li>
           ))}
         </ul>
       </div>
 
-      <div class="mt-16 grid grid-cols-1 gap-6 border-t border-border pt-12 sm:grid-cols-3">
-        {[
-          { value: '1 500+', label: 'déménagements réalisés' },
-          { value: `${ratingDisplay}/5`, label: 'note Google' },
-          { value: '24h', label: 'réponse garantie' },
-        ].map(({ value, label }) => (
-          <div class="text-center" data-reveal>
-            <p class="font-heading text-4xl font-medium text-primary">{value}</p>
-            <p class="mt-1 text-sm text-muted-foreground">{label}</p>
-          </div>
+    </div>
+  </section>
+
+  <!-- 7. Formulas -->
+  <section class="bg-panel py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <div class="max-w-2xl" data-reveal>
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
+          <span class="size-2 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-topper font-bold uppercase tracking-widest text-primary">Les formules</span>
+        </div>
+        <h2 class="mt-4 font-heading text-h2 text-foreground">Nos formules à {city}</h2>
+      </div>
+      <ul class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3" role="list">
+        {formulas.map(({ name, text }, i) => (
+          <li
+            class:list={[
+              'flex flex-col gap-4 rounded-xl border p-7 shadow-sm',
+              i === 1 ? 'border-primary/40 bg-primary text-primary-foreground' : 'border-border bg-background',
+            ]}
+            data-reveal
+            style={`transition-delay:${i * 90}ms`}
+          >
+            <span class:list={['flex size-11 items-center justify-center rounded-lg', i === 1 ? 'bg-primary-foreground/15' : 'bg-primary/10 text-primary']}>
+              <TablerIcon name={formulaIcons[i]} class="text-xl leading-none" />
+            </span>
+            <p class="font-heading text-xl font-medium">{name}</p>
+            <p class:list={['flex-1 text-sm leading-relaxed', i === 1 ? 'text-primary-foreground/90' : 'text-muted-foreground']}>{text}</p>
+            <a
+              href={`/devis?address=${encodeURIComponent(city)}`}
+              class:list={[
+                'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-bold transition-opacity hover:opacity-90',
+                i === 1 ? 'bg-background text-foreground' : 'bg-primary text-primary-foreground',
+              ]}
+            >
+              Choisir ma formule
+              <TablerIcon name="arrow-right" class="text-base leading-none" />
+            </a>
+          </li>
         ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8 + 9. Guarantees and what sets the price -->
+  <section class="bg-card py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <h2 class="font-heading text-h2 text-foreground" data-reveal>Ce qui est garanti</h2>
+      <ul class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3" role="list">
+        {guarantees.map(({ icon, title, text }, i) => (
+          <li class="flex items-start gap-4 rounded-xl border border-border bg-background p-6" data-reveal style={`transition-delay:${i * 90}ms`}>
+            <span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <TablerIcon name={icon} class="text-xl leading-none" />
+            </span>
+            <div>
+              <p class="font-heading text-lg font-medium text-foreground">{title}</p>
+              <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-14 rounded-2xl border border-border bg-panel p-6 sm:p-10" data-reveal>
+        <h2 class="font-heading text-h2 text-foreground">Ce qui fait le prix d'un déménagement à {city}</h2>
+        <ul class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3" role="list">
+          {priceFactors.items.map(({ title, text }, i) => (
+            <li class="flex items-start gap-3">
+              <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-background text-primary ring-1 ring-border">
+                <TablerIcon name={priceIcons[i]} class="text-lg leading-none" />
+              </span>
+              <p class="text-sm leading-relaxed text-muted-foreground"><span class="block font-semibold text-foreground">{title}</span>{text}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 border-t border-border pt-5 font-medium text-foreground">{priceFactors.closing}</p>
       </div>
     </div>
   </section>
 
-  <FAQSection topper="FAQ Nîmes" heading="Questions sur le déménagement à Nîmes" items={faqItems} headingLevel="h3" />
+  <!-- 10. Tips -->
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site px-4 sm:px-6">
+      <h2 class="font-heading text-h2 text-foreground" data-reveal>Nos conseils pour déménager à {city}</h2>
+      <ol class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2" role="list">
+        {tips.map((tip, i) => (
+          <li class="flex items-start gap-4 rounded-xl border border-border bg-card p-6" data-reveal style={`transition-delay:${i * 70}ms`}>
+            <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">{i + 1}</span>
+            <p class="leading-relaxed text-muted-foreground">{tip}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
+  <!-- 11. FAQ -->
+  <FAQSection topper={`FAQ ${city}`} heading="Questions fréquentes" items={faqItems} />
+
+  <!-- 12 + 13. Services and nearby towns, as cards -->
+  <section class="bg-background py-section">
+    <div class="mx-auto max-w-site space-y-14 px-4 sm:px-6">
+      <div data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Nos services</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          {serviceCards.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div data-reveal>
+        <h2 class="font-heading text-h3 text-foreground">Nous intervenons aussi à proximité</h2>
+        <ul class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
+          {nearbyCards.map(({ title, icon, href }) => (
+            <li>
+              <a href={href} class="group flex h-full items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <TablerIcon name={icon} class="text-lg leading-none" />
+                </span>
+                <span class="flex-1 font-semibold text-foreground">{title}</span>
+                <TablerIcon name="chevron-right" class="text-base leading-none text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. CTA -->
   <CTA
-    title="Votre devis déménageur Nîmes"
-    description="Adresses, dates, volume : remplissez le formulaire et recevez un prix fixe garanti sous 24h."
-    headingLevel="h3"
+    title="Votre devis pour un déménagement à Nîmes"
+    description="Adresse, étage, ascenseur, date souhaitée : le formulaire prend quelques minutes."
+    buttonText="Obtenir mon devis gratuit"
+    headingLevel="h2"
   />
   <Footer slot="footer" />
 </BaseLayout>
