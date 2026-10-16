@@ -66,6 +66,29 @@ function parsePayload(body: unknown): QuoteRequest | null {
   };
 }
 
+/**
+ * Also files the request in the AC Coursing CRM (ac-crm /api/intake), which
+ * reads this form's own fields and item ids. Opt-in: only when
+ * CRM_INTAKE_URL and CRM_INTAKE_SECRET are set. Never blocks the client: the
+ * email above is already sent, a CRM failure is only logged.
+ */
+async function forwardToCrm(payload: QuoteRequest) {
+  const url = process.env.CRM_INTAKE_URL;
+  const secret = process.env.CRM_INTAKE_SECRET;
+  if (!url || !secret) return;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-intake-secret': secret },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) console.error('CRM intake rejected the request', res.status, await res.text());
+  } catch (error) {
+    console.error('CRM intake unreachable', error);
+  }
+}
+
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   // Payload size guard
   const contentLength = Number(request.headers.get('content-length') ?? 0);
@@ -123,6 +146,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       text: email.text,
       replyTo: payload.email,
     });
+
+    await forwardToCrm(payload);
 
     return new Response(
       JSON.stringify({
