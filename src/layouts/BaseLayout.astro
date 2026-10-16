@@ -78,37 +78,74 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
       <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
     )}
 
-    <!-- Consent Mode v2 — defaults + immediate update if already accepted -->
+    <!--
+      Cookie consent (CNIL): Google Tag Manager is only fetched once the visitor
+      accepts, so nothing reaches Google before a choice. The choice is kept
+      6 months, then the banner asks again. Refusing later also deletes the
+      Google cookies already set. window.acConsent is used by the banner below.
+    -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = window.gtag || gtag;
 
-      var _consent = localStorage.getItem('cookie_consent');
+      window.acConsent = window.acConsent || (function () {
+        var KEY = 'cookie_consent';
+        var MAX_AGE = 1000 * 60 * 60 * 24 * 182; // ~6 months
+        var GTM_ID = 'GTM-T9KGJ6CN';
+        var gtmLoaded = false;
 
-      gtag('consent', 'default', {
-        analytics_storage:  _consent === 'accepted' ? 'granted' : 'denied',
-        ad_storage:         _consent === 'accepted' ? 'granted' : 'denied',
-        ad_user_data:       _consent === 'accepted' ? 'granted' : 'denied',
-        ad_personalization: _consent === 'accepted' ? 'granted' : 'denied',
-      });
-      gtag('set', 'ads_data_redaction', true);
-      gtag('set', 'url_passthrough', true);
+        function all(state) {
+          return { analytics_storage: state, ad_storage: state, ad_user_data: state, ad_personalization: state };
+        }
+        function read() {
+          try {
+            var v = JSON.parse(localStorage.getItem(KEY));
+            if (v && (v.value === 'accepted' || v.value === 'rejected') && Date.now() - v.at < MAX_AGE) return v.value;
+          } catch (e) {}
+          return null;
+        }
+        function save(value) {
+          try { localStorage.setItem(KEY, JSON.stringify({ value: value, at: Date.now() })); } catch (e) {}
+        }
+        function loadGtm() {
+          gtag('consent', 'update', all('granted'));
+          if (gtmLoaded) return;
+          gtmLoaded = true;
+          dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
+          document.head.appendChild(s);
+        }
+        function clearGoogleCookies() {
+          var host = location.hostname.replace(/^www\./, '');
+          var domains = ['', host, '.' + host];
+          document.cookie.split(';').forEach(function (c) {
+            var name = c.split('=')[0].trim();
+            if (!/^(_ga|_gid|_gat|_gcl|_gac)/.test(name)) return;
+            domains.forEach(function (d) {
+              document.cookie = name + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : '');
+            });
+          });
+        }
+
+        gtag('consent', 'default', all('denied'));
+        if (read() === 'accepted') loadGtm();
+
+        return {
+          read: read,
+          accept: function () { save('accepted'); loadGtm(); },
+          reject: function () { save('rejected'); gtag('consent', 'update', all('denied')); clearGoogleCookies(); },
+        };
+      })();
     </script>
-
-    <!-- Google Tag Manager -->
-    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-T9KGJ6CN');</script>
 
     <slot name="head" />
     <ClientRouter />
   </head>
 
   <body class="bg-background text-text antialiased">
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9KGJ6CN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a
       class="sr-only focus:not-sr-only focus:absolute focus:z-99999 focus:bg-primary focus:text-primary-fg focus:px-4 focus:py-2 focus:rounded-md"
       href="#main"
@@ -152,19 +189,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     >
       <div class="mx-auto flex max-w-site flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p class="text-sm text-muted-foreground leading-relaxed">
-          Ce site utilise des cookies analytiques (Google Analytics) pour mesurer l'audience et améliorer votre expérience.
+          Avec votre accord, nous utilisons des cookies de mesure d'audience (Google Analytics) et publicitaires (Google Ads).
+          Vous pouvez changer d'avis à tout moment via « Gérer les cookies » en bas de page.
           <a href="/politique-confidentialite" class="text-primary underline underline-offset-2 hover:opacity-80">En savoir plus</a>.
         </p>
         <div class="flex shrink-0 gap-2">
           <button
-            id="cookie-reject"
-            class="rounded-full border border-border bg-background px-5 py-2 text-sm font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+            type="button"
+            data-cookie-action="reject"
+            class="rounded-full border-2 border-primary bg-background px-5 py-2 text-sm font-bold text-primary transition hover:bg-primary/10"
           >
             Refuser
           </button>
           <button
-            id="cookie-accept"
-            class="rounded-full bg-primary px-5 py-2 text-sm font-bold text-primary-foreground shadow transition hover:opacity-90"
+            type="button"
+            data-cookie-action="accept"
+            class="rounded-full border-2 border-primary bg-primary px-5 py-2 text-sm font-bold text-primary-foreground transition hover:opacity-90"
           >
             Accepter
           </button>
@@ -173,41 +213,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
 
     <script is:inline>
+      // Delegated so it survives ClientRouter page swaps; the footer's
+      // « Gérer les cookies » button reopens the banner.
       (function () {
-        var GRANTED = {
-          analytics_storage:  'granted',
-          ad_storage:         'granted',
-          ad_user_data:       'granted',
-          ad_personalization: 'granted',
-        };
+        if (window.__cookieBannerReady) return;
+        window.__cookieBannerReady = true;
 
-        function updateConsent() {
-          window.gtag('consent', 'update', GRANTED);
+        function show(open) {
+          var banner = document.getElementById('cookie-banner');
+          if (banner) banner.style.display = open ? 'block' : 'none';
+          return banner;
         }
+        function sync() { show(!window.acConsent.read()); }
 
-        var banner = document.getElementById('cookie-banner');
-        var stored = localStorage.getItem('cookie_consent');
-
-        if (stored === 'accepted') {
-          updateConsent();
-        } else if (!stored) {
-          banner.style.display = 'block';
-        }
-
-        document.addEventListener('astro:after-swap', function () {
-          if (localStorage.getItem('cookie_consent') === 'accepted') updateConsent();
+        document.addEventListener('click', function (e) {
+          var el = e.target.closest && e.target.closest('[data-cookie-action]');
+          if (!el) return;
+          var action = el.getAttribute('data-cookie-action');
+          if (action === 'accept') { window.acConsent.accept(); show(false); }
+          if (action === 'reject') { window.acConsent.reject(); show(false); }
+          if (action === 'manage') {
+            var banner = show(true);
+            var first = banner && banner.querySelector('button');
+            if (first) first.focus();
+          }
         });
 
-        document.getElementById('cookie-accept').addEventListener('click', function () {
-          localStorage.setItem('cookie_consent', 'accepted');
-          banner.style.display = 'none';
-          updateConsent();
-        });
-
-        document.getElementById('cookie-reject').addEventListener('click', function () {
-          localStorage.setItem('cookie_consent', 'rejected');
-          banner.style.display = 'none';
-        });
+        document.addEventListener('astro:page-load', sync);
+        sync();
       })();
     </script>
 
